@@ -1,0 +1,26 @@
+{
+  "format_on_save": "on",
+  "formatter": { "language_server": { "name": "oxfmt" } },
+  "languages": {
+    "JavaScript": {
+      "language_servers": ["!typescript-ls", "..."],
+      "formatter": [
+        { "code_action": "source.fixAll.oxc" },
+        { "language_server": { "name": "oxfmt" } }
+      ]
+    },
+    "TypeScript": {
+      "language_servers": ["!typescript-ls", "..."],
+      "formatter": [
+        { "code_action": "source.fixAll.oxc" },
+        { "language_server": { "name": "oxfmt" } }
+      ]
+    },
+    "Svelte": {
+      "formatter": [
+        { "code_action": "source.fixAll.oxc" },
+        { "language_server": { "name": "oxfmt" } }
+      ]
+    }
+  }
+}

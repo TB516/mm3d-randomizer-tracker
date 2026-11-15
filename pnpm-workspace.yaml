@@ -1,0 +1,4 @@
+allowBuilds:
+  electron: true
+  # Only used for Squirrel.Windows installers.
+  electron-winstaller: false

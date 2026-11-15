@@ -1,0 +1,24 @@
+appId: io.github.tb516.mm3d-tracker
+productName: MM3D Tracker
+directories:
+  buildResources: build
+files:
+  - 'out/**'
+  - 'resources/**'
+win:
+  executableName: mm3d-tracker
+nsis:
+  artifactName: ${name}-${version}-setup.${ext}
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
+mac:
+  entitlementsInherit: build/entitlements.mac.plist
+  notarize: false
+dmg:
+  artifactName: ${name}-${version}.${ext}
+linux:
+  target:
+    - dir
+  category: Utility
+npmRebuild: false

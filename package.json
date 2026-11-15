@@ -1,0 +1,40 @@
+{
+  "name": "mm3d-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Live item tracker for the Majora's Mask 3D Randomizer, read from Azahar.",
+  "author": "TB516",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "start": "electron-vite preview",
+    "lint": "oxlint",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json --composite false && effect-language-service diagnostics --project tsconfig.node.json && svelte-check --tsconfig ./tsconfig.web.json",
+    "check": "pnpm lint && pnpm format:check && pnpm typecheck",
+    "build": "pnpm typecheck && electron-vite build",
+    "build:win": "pnpm build && electron-builder --win",
+    "build:mac": "pnpm build && electron-builder --mac",
+    "build:linux": "pnpm build && electron-builder --linux"
+  },
+  "dependencies": {
+    "@electron-toolkit/utils": "^4.0.0",
+    "effect": "4.1.4"
+  },
+  "devDependencies": {
+    "@effect/language-service": "^0.87.5",
+    "@electron-toolkit/tsconfig": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@types/node": "^24.19.2",
+    "electron": "^44.7.2",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^6.0.0",
+    "oxfmt": "^0.78.0",
+    "oxlint": "^1.93.0",
+    "svelte": "^5.57.2",
+    "svelte-check": "^4.7.6",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.4"
+  }
+}
