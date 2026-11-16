@@ -13,7 +13,10 @@ against a live game unless marked otherwise.
 ## Test setup
 
 - Azahar data lives on `<azahar-data>` (moved from the Flatpak default).
-- Seed patch: `<azahar-data>/sdmc/luma/titles/0004000000125500/code.ips`.
+- Seed patch: Azahar loads the installed seed from
+  `~/.var/app/org.azahar_emu.Azahar/data/azahar-emu/load/mods/0004000000125500/code.ips`, backed up in
+  `<azahar-data>/mod-sets/randomizer-current/`. The generator writes new seeds to
+  `<azahar-data>/sdmc/luma/titles/0004000000125500/`, which Azahar doesn't read.
 - Save files under `<azahar-data>/sdmc/Nintendo 3DS/<zeros>/<zeros>/`:
   - game save: `title/00040000/00125500/data/00000001/save0.bin`
   - randomizer data: `extdata/00000000/00125500/user/0.bin` (4296 bytes)
@@ -73,8 +76,8 @@ and reading Azahar's process memory directly from Linux.
   | collectedTradeItems   | 4268   | u8[9]                                           |
   | dungeonFairyBitfields | 4280   | u32[4]                                          |
 
-  The plan is to generate these offsets from the real headers (compile a small file against them for
-  the 3DS ABI) instead of counting by hand.
+  These hand-counted offsets are the ones the tracker uses. They're confirmed against the live game
+  and the saved `0.bin`, so they aren't generated from the headers.
 
 ## Seed data in `code.ips`
 
@@ -93,8 +96,11 @@ and reading Azahar's process memory directly from Linux.
 - `SpoilerLog_UpdateIngameLog` (`mm3dr/code/source/rnd/spoiler_data.cpp`) runs when an item is
   received. It marks the first location whose (OverrideType, scene, flag) matches the override key.
 - Some checks share one item and get marked together: Tingle maps sold in two places, the three
-  postboxes, Kotake in the potion shop and the woods, and the Goron Village winter/spring scrub and
-  heart piece. Count them as one check. (Confirmed live: buying the Great Bay map marked both the
+  postboxes, Kotake in the potion shop and the woods, Keaton in three places, and the winter/spring
+  or poisoned/cleared versions of some Goron Village and swamp checks. `SpoilerLog_CheckMultiLocationItems`
+  marks the others by a hardcoded list (same type and flag, different scenes), and
+  `SpoilerData_IsUniqueLocation` lists which copies the game skips when counting. The tracker uses
+  that list; the test seed has 301 locations and 283 after removing duplicates. (Confirmed live: buying the Great Bay map marked both the
   Milk Road and Great Bay Coast entries at once.)
 - `chestRewarded` keeps chest and Spider House token state across cycles. The Swamp Spider House uses
   `skulltulaMapSSH` order and the Ocean house uses index+1 (see `mm3dr/code/source/rnd/actors/en_si.cpp`).

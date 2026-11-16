@@ -19,6 +19,7 @@
     "build:linux": "pnpm build && electron-builder --linux"
   },
   "dependencies": {
+    "@effect/platform-node": "4.1.4",
     "@electron-toolkit/utils": "^4.0.0",
     "effect": "4.1.4"
   },
