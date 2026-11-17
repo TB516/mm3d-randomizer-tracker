@@ -1,5 +1,5 @@
 import { NodeDatagramSocket } from '@effect/platform-node';
-import { Context, Deferred, Effect, Layer, Schema } from 'effect';
+import { Context, Deferred, Effect, Fiber, Layer, Schema } from 'effect';
 import { DatagramSocket } from 'effect/socket';
 
 import {
@@ -25,22 +25,51 @@ export class MemoryReadFailed extends Schema.TaggedError<MemoryReadFailed>()('Me
   address: Schema.Number
 }) {}
 
+/** The socket closed underneath the client, so no more replies can arrive on it. */
+export class AzaharSocketClosed extends Schema.TaggedError<AzaharSocketClosed>()(
+  'AzaharSocketClosed',
+  { cause: Schema.Defect() }
+) {}
+
 /** How long each try waits for its reply. Local replies take well under a millisecond. */
 const replyTimeout = '500 millis';
+
+/**
+ * Turns a failed send into the error the caller sees.
+ *
+ * @param error - Why the send failed.
+ * @returns The error for the request that was being sent.
+ */
+const sendError = (
+  error: DatagramSocket.DatagramSocketError
+): AzaharSocketClosed | AzaharNotResponding => {
+  // A send can find the socket closed before the reply loop reports it.
+  if (error.reason._tag === 'DatagramSocketClosedError') {
+    return new AzaharSocketClosed({ cause: error });
+  }
+
+  // Any other failed send looks the same to the player as no reply.
+  return new AzaharNotResponding();
+};
 
 /** Read-only client for Azahar's RPC server. */
 export class AzaharRpc extends Context.Service<
   AzaharRpc,
   {
     /** Lists every process running in the emulated 3DS. */
-    readonly listProcesses: Effect.Effect<ReadonlyArray<EmulatedProcess>, AzaharNotResponding>;
+    readonly listProcesses: Effect.Effect<
+      ReadonlyArray<EmulatedProcess>,
+      AzaharNotResponding | AzaharSocketClosed
+    >;
 
     /**
      * Points later reads at a process. Without it, reads hit whatever process is running.
      *
      * @param processId - The process to read from, from `listProcesses`.
      */
-    readonly selectProcess: (processId: number) => Effect.Effect<void, AzaharNotResponding>;
+    readonly selectProcess: (
+      processId: number
+    ) => Effect.Effect<void, AzaharNotResponding | AzaharSocketClosed>;
 
     /**
      * Reads memory from the selected process.
@@ -52,7 +81,7 @@ export class AzaharRpc extends Context.Service<
     readonly readMemory: (
       address: number,
       size: number
-    ) => Effect.Effect<Uint8Array, AzaharNotResponding | MemoryReadFailed>;
+    ) => Effect.Effect<Uint8Array, AzaharNotResponding | AzaharSocketClosed | MemoryReadFailed>;
   }
 >()('mm3d-tracker/main/azahar/AzaharRpc') {
   /** Azahar RPC live layer. */
@@ -82,11 +111,11 @@ export class AzaharRpc extends Context.Service<
         return Deferred.succeed(waiting.reply, reply.payload);
       };
 
-      yield* reader.pull.pipe(
+      const replyLoop = yield* reader.pull.pipe(
         Effect.flatMap(Effect.forEach((datagram) => routeIncomingPacket(datagram.payload))),
         Effect.forever,
-        // Only fails if the socket closes under it. Requests then time out, so log why.
-        Effect.tapError((error) => Effect.logError('Azahar reply loop stopped', error)),
+        // Only fails if the socket closes under it.
+        Effect.mapError((cause) => new AzaharSocketClosed({ cause })),
         Effect.forkScoped
       );
 
@@ -106,18 +135,19 @@ export class AzaharRpc extends Context.Service<
           pending.set(id, { type, reply });
 
           return yield* writer.write({ payload: encodeRequest(id, type, args) }).pipe(
-            Effect.andThen(Deferred.await(reply)),
+            // The reply, or the reply loop's failure if it has stopped, whichever comes first.
+            Effect.andThen(Effect.raceFirst(Deferred.await(reply), Fiber.join(replyLoop))),
             Effect.timeoutOrElse({
               duration: replyTimeout,
               orElse: () => Effect.fail(new AzaharNotResponding())
             }),
-            // A failed send looks the same to the player as no reply.
-            Effect.catchTag('DatagramSocketError', () => Effect.fail(new AzaharNotResponding())),
+            Effect.catchTag('DatagramSocketError', (error) => Effect.fail(sendError(error))),
             Effect.ensuring(Effect.sync(() => pending.delete(id)))
           );
         },
-        // UDP can drop packets, so a lost reply gets a couple more tries.
-        Effect.retry({ times: 2 })
+        // UDP can drop packets, so a lost reply gets a couple more tries. A closed socket won't
+        // recover, so that fails straight away.
+        Effect.retry({ times: 2, while: (error) => error._tag === 'AzaharNotResponding' })
       );
 
       const readMemory = Effect.fn('AzaharRpc.readMemory')(function* (

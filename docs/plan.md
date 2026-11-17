@@ -32,18 +32,22 @@ Check: 301 locations for the test seed, named as the prototype printed them.
 - Save data: inventory, masks, songs, remains, sword and shield, hearts, Skulltula tokens.
 - Randomizer data: find the block by scan, read collected checks, and scan again when it goes away
   (reset or another file loaded).
-- Group checks that share one item by check type, scene, and flag, so each group counts once.
+- Leave out the locations the game itself treats as duplicates of a shared item
+  (`SpoilerData_IsUniqueLocation` in mm3dr), so each shared item counts once.
 
-Open decision: generate the `ExtSaveData` offsets from the real headers now, or start from the
-hand-counted offsets confirmed live.
+The `ExtSaveData` offsets stay hand-counted. They match the live game and the test save, so
+generating them with the 3DS toolchain isn't worth it.
 
 Check: collected checks add up to the save's token counts and hearts.
 
 ## 4. Poll loop and IPC
 
 - Select the process, find the randomizer block, then read about twice a second.
-- Status: waiting for Azahar, waiting for MM3D, waiting for a loaded file, tracking.
-- Push state to the page through the preload's `onState` only when it changes. The state type
+- Game status: waiting for Azahar, waiting for MM3D, waiting for a loaded file, tracking, or
+  failed. Seed status is separate: none, loading, error, or loaded.
+- The page chooses the seed with a file picker and can restart tracking. The seed path is
+  remembered between launches.
+- Push state to the page through the preload's `watchTracker` only when it changes. The state type
   lives in `src/shared/` and has no Effect code.
 - A throwaway debug page shows the status, collected checks, and raw inventory.
 
@@ -58,6 +62,9 @@ Check: play for a few minutes, including closing and reopening Azahar.
 - Sphere-replay test (the test runner gets set up here): every location in sphere N must be
   reachable with only items from earlier spheres.
 - The debug page shows each check as done, available, or locked.
+- Shared-item copies (the duplicates list in `seed/spoiler-data.ts`) each have their own access
+  rule. Decide whether the list stays a skip list or becomes "one check, reachable from several
+  places", available when any copy is.
 
 ## 6. UI
 

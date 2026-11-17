@@ -1,7 +1,16 @@
 import { electronApp, optimizer } from '@electron-toolkit/utils';
+import { Layer, ManagedRuntime } from 'effect';
 import { app, BrowserWindow } from 'electron';
 
+import { GameConnection } from './game/connection';
+import { setupIpc } from './ipc';
+import { CurrentSeed } from './seed/current-seed';
+import { Tracker } from './tracker';
 import { createWindow } from './window';
+
+const runtime = ManagedRuntime.make(
+  Layer.mergeAll(Tracker.layer, CurrentSeed.layer, GameConnection.layer)
+);
 
 app.whenReady().then(() => {
   electronApp.setAppUserModelId('io.github.tb516.mm3d-tracker');
@@ -11,6 +20,7 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window, { zoom: true })
   );
 
+  setupIpc(runtime);
   createWindow();
 
   // macOS keeps the app running without windows, so reopen one from the dock.
@@ -22,3 +32,6 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
+
+// Stops tracking and closes the RPC socket.
+app.on('will-quit', () => void runtime.dispose());
