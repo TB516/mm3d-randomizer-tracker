@@ -7,8 +7,11 @@ import icon from '../../resources/icon.png?asset';
 
 export const createWindow = (): BrowserWindow => {
   const window = new BrowserWindow({
-    width: 900,
-    height: 670,
+    // The size to restore to after un-maximizing. The window opens maximized.
+    width: 1440,
+    height: 900,
+    minWidth: 1024,
+    minHeight: 680,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -18,7 +21,11 @@ export const createWindow = (): BrowserWindow => {
     }
   });
 
-  window.on('ready-to-show', () => window.show());
+  // Opens maximized: the map, the inventory and the longest zones' checks all fit at 1080p.
+  window.on('ready-to-show', () => {
+    window.maximize();
+    window.show();
+  });
 
   // Nothing in the app opens new windows from the page itself.
   window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));

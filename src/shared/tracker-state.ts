@@ -1,8 +1,11 @@
 import type { Inventory } from './inventory';
+import type { ZoneId } from './zones';
 
 /** One of the seed's checks. Shared-item duplicates are already left out. */
 export type CheckState = {
+  /** The check's name without its zone prefix. */
   readonly name: string;
+  readonly zone: ZoneId;
   readonly collected: boolean;
 };
 

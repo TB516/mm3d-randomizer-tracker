@@ -1,5 +1,6 @@
 import { Effect, Schema } from 'effect';
 
+import { inventoryItems, type InventoryItem } from '../../shared/items';
 import { AzaharRpc } from '../azahar/rpc';
 
 /** No randomizer data in memory yet, usually because no save file is loaded. */
@@ -17,11 +18,28 @@ const offsets = {
   version: 0,
   isNewFile: 8,
   itemCollected: 44,
-  chestRewarded: 556
+  chestRewarded: 556,
+  collectedTradeItems: 4268
 } as const;
 
 /** One byte per seed location, the same 512 slots as the seed's location table. */
 const itemCollectedSize = 512;
+
+/**
+ * The trade items the player holds, one slot each in this order. A slot holds its item's ID while
+ * the player has it, and is emptied when it's traded away (mm3dr's `SaveFile_InitExtSaveData`).
+ */
+const tradeItems: ReadonlyArray<InventoryItem> = [
+  'MoonTear',
+  'LandTitleDeed',
+  'SwampTitleDeed',
+  'MountainTitleDeed',
+  'OceanTitleDeed',
+  'RoomKey',
+  'LetterToKafei',
+  'PendantOfMemories',
+  'LetterToMama'
+];
 
 /** One byte per chest flag, for every scene. */
 const sceneCount = 116;
@@ -94,16 +112,28 @@ export const findExtSaveData = Effect.fn('findExtSaveData')(function* () {
 });
 
 /**
- * Reads which seed locations are collected.
+ * Gets the trade items the player holds from a randomizer data block.
+ *
+ * @param block - A whole `ExtSaveData` block.
+ * @returns The trade items held, in slot order.
+ */
+const readTradeItems = (block: Uint8Array) =>
+  tradeItems.filter(
+    (item, slot) => inventoryItems[block[offsets.collectedTradeItems + slot] ?? -1] === item
+  );
+
+/**
+ * Reads which seed locations are collected, and the trade items the player holds. The game's own
+ * item screen shows only one trade item per slot, so these come from the randomizer's list.
  *
  * @param address - The randomizer data's address, from `findExtSaveData`.
- * @returns One byte per seed location, 1 once collected. Fails with `ExtSaveDataNotFound` if the
- * block no longer looks like the data, for example after a reset.
+ * @returns One byte per seed location, 1 once collected, and the trade items held. Fails with
+ * `ExtSaveDataNotFound` if the block no longer looks like the data, for example after a reset.
  */
-export const readCollected = Effect.fn('readCollected')(function* (address: number) {
+export const readRandomizerData = Effect.fn('readRandomizerData')(function* (address: number) {
   const rpc = yield* AzaharRpc;
   const block = yield* rpc.readMemory(address, extSaveDataSize);
   if (!isExtSaveData(block)) return yield* new ExtSaveDataNotFound();
 
-  return readItemCollected(block);
+  return { collected: readItemCollected(block), tradeItems: readTradeItems(block) };
 });

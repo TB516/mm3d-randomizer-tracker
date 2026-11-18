@@ -1,110 +1,96 @@
 <script lang="ts">
-  import './reset.css';
   import type { TrackerState } from '../../shared/tracker-state';
+  import type { ZoneId } from '../../shared/zones';
+  import Inventory from './components/Inventory.svelte';
+  import MapView from './components/MapView.svelte';
+  import StatusBanner from './components/StatusBanner.svelte';
+  import TopBar from './components/TopBar.svelte';
+  import ZoneChecks from './components/ZoneChecks.svelte';
+  import { groupByZone } from './lib/checks';
 
-  // Temporary debug page: shows the raw tracker state until the real UI is designed.
-  let state = $state<TrackerState>();
+  let tracker = $state<TrackerState>();
+  let selected = $state<ZoneId>('southClockTown');
 
-  $effect(() => window.api.watchTracker((next) => (state = next)));
+  $effect(() => window.api.watchTracker((next) => (tracker = next)));
 
-  const gameText = {
-    waitingForAzahar: 'Waiting for Azahar (is the RPC server on?)',
-    waitingForGame: 'Waiting for Majora’s Mask to start',
-    waitingForFile: 'Waiting for a save file to load',
-    tracking: 'Tracking',
-    failed: 'Tracking stopped'
-  } satisfies Record<TrackerState['game']['status'], string>;
+  const groups = $derived(groupByZone(tracker?.checks ?? []));
+  const selectedGroup = $derived(groups.find((group) => group.zone.id === selected));
+  const neighbors = $derived(
+    groups.filter(
+      (group) => group.zone.region === selectedGroup?.zone.region && group.zone.id !== selected
+    )
+  );
 </script>
 
-<main>
-  <h1>MM3D Tracker (debug)</h1>
+<div class="app">
+  <TopBar state={tracker} />
 
-  {#if !state}
-    <p>Connecting…</p>
-  {:else}
-    {@const { seed, game, inventory, checks } = state}
-    {@const collected = checks.filter((check) => check.collected).length}
+  <div class="body">
+    <main>
+      <!-- The status floats over the map instead of pushing it down. -->
+      <MapView {groups} inventory={tracker?.inventory ?? null} bind:selected>
+        {#snippet notice()}
+          {#if tracker}<StatusBanner state={tracker} />{/if}
+        {/snippet}
+      </MapView>
+      <div class="panel"><Inventory inventory={tracker?.inventory ?? null} /></div>
+    </main>
 
-    <h2>Seed</h2>
-    {#if seed.status === 'none'}
-      <p>No seed chosen.</p>
-    {:else if seed.status === 'loading'}
-      <p>Loading {seed.path}…</p>
-    {:else if seed.status === 'error'}
-      <p><strong>Seed problem:</strong> {seed.message}</p>
-      <p>{seed.path}</p>
-    {:else}
-      <p>{seed.path}</p>
-    {/if}
-    <button onclick={() => window.api.chooseSeed()}>Choose seed</button>
-
-    <h2>Game</h2>
-    <p><strong>{gameText[game.status]}</strong></p>
-    {#if game.status === 'failed'}
-      <p>{game.message}</p>
-    {/if}
-    <button onclick={() => window.api.restartTracking()}>Restart tracking</button>
-
-    {#if inventory}
-      <h2>Inventory</h2>
-      <dl>
-        <dt>Items</dt>
-        <dd>{inventory.items.join(', ') || 'none'}</dd>
-        <dt>Masks</dt>
-        <dd>{inventory.masks.join(', ') || 'none'}</dd>
-        <dt>Songs</dt>
-        <dd>{inventory.songs.join(', ') || 'none'}</dd>
-        <dt>Remains</dt>
-        <dd>{inventory.bossRemains.join(', ') || 'none'}</dd>
-        <dt>Sword / shield</dt>
-        <dd>{inventory.sword ?? 'none'} / {inventory.shield ?? 'none'}</dd>
-        <dt>Upgrades</dt>
-        <dd>
-          quiver {inventory.quiver}, bomb bag {inventory.bombBag}, wallet {inventory.wallet}, magic
-          {inventory.magic}, double defense {inventory.doubleDefense}, notebook
-          {inventory.bombersNotebook}
-        </dd>
-        <dt>Hearts</dt>
-        <dd>{inventory.maxHearts} + {inventory.heartPieces}/4</dd>
-        <dt>Tokens</dt>
-        <dd>swamp {inventory.swampTokens}, ocean {inventory.oceanTokens}</dd>
-      </dl>
-    {/if}
-
-    {#if checks.length > 0}
-      <h2>Checks ({collected}/{checks.length})</h2>
-      <ul>
-        {#each checks as check}
-          <li class:collected={check.collected}>{check.name}</li>
-        {/each}
-      </ul>
-    {/if}
-  {/if}
-</main>
+    <aside class="panel">
+      {#if selectedGroup}
+        <ZoneChecks group={selectedGroup} {neighbors} onselect={(zone) => (selected = zone)} />
+      {:else}
+        <p class="empty">Each area's checks show here once a seed is loaded.</p>
+      {/if}
+    </aside>
+  </div>
+</div>
 
 <style>
+  .app {
+    /* How wide the map's column is for the window's height: the map's shape, plus the inventory
+       under it, which grows with the column. */
+    --map-width: 113vh;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 56px 1fr;
+  }
+
+  /* The map and the inventory under it, then the selected zone's checks at full height. The map's
+     column is about as wide as the map is at the window's height, and the checks column takes the
+     rest, so the map keeps its shape with no empty bands beside it. */
+  .body {
+    display: grid;
+    grid-template-columns: 1fr clamp(300px, 100vw - 48px - var(--map-width), 50vw);
+    gap: 16px;
+    padding: 0 16px 16px;
+    min-height: 0;
+  }
+
   main {
-    padding: 1rem;
-    font-family: system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 0;
   }
 
-  dt {
-    font-weight: bold;
+  .panel {
+    border-radius: 14px;
+    background: var(--surface);
+    padding: 14px 18px 16px;
   }
 
-  dd {
-    margin: 0 0 0.5rem;
+  .empty {
+    align-self: center;
+    padding: 24px;
+    color: var(--dim);
+    text-align: center;
   }
 
-  ul {
-    columns: 3;
-  }
-
-  li {
-    opacity: 0.5;
-  }
-
-  li.collected {
-    opacity: 1;
+  aside.panel {
+    display: grid;
+    min-height: 0;
+    padding: 0;
+    container: checks / inline-size;
   }
 </style>

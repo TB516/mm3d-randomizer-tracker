@@ -1,0 +1,54 @@
+:root {
+  /* The night sky over Termina, lit by the moon. */
+  --night: #15142c;
+  --surface: #201e40;
+  --surface-raised: #2c2954;
+  --well: #18172f;
+  --line: #34315f;
+  --ink: #ece8f8;
+  --dim: #9a95c2;
+  --moon: #f4c35a;
+
+  /* Check states. Logic will add blocked; until then everything left is available. */
+  --done: #6f6b8f;
+  --available: #6fd38a;
+  --blocked: #ef6b6b;
+  /* The unlit part of a progress ring. */
+  --ring-track: #57537a;
+
+  --font-body: system-ui, sans-serif;
+
+  color-scheme: dark;
+}
+
+body {
+  /* Faint moonlight from the top corner, where the moon hangs over Clock Town. */
+  background:
+    radial-gradient(900px 500px at 92% -12%, rgba(244, 195, 90, 0.07), transparent 70%),
+    var(--night);
+  color: var(--ink);
+  font: 14px/1.4 var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 700;
+}
+
+button {
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Thin scrollbars in the theme's colors, for the panels that scroll on small windows. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--moon);
+  outline-offset: 2px;
+}

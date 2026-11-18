@@ -5,6 +5,8 @@ export type Inventory = {
   /** Contents of the item and mask screens, without empty slots. */
   readonly items: ReadonlyArray<InventoryItem>;
   readonly masks: ReadonlyArray<InventoryItem>;
+  /** Trade items held, such as the title deeds. The item screen only ever shows one at a time. */
+  readonly tradeItems: ReadonlyArray<InventoryItem>;
   readonly songs: ReadonlyArray<Song>;
   readonly bossRemains: ReadonlyArray<BossRemains>;
   readonly bombersNotebook: boolean;

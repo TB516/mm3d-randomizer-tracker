@@ -1,5 +1,12 @@
 import type { Inventory } from '../../shared/inventory';
-import { bossRemains, inventoryItems, shields, songs, swords } from '../../shared/items';
+import {
+  bossRemains,
+  inventoryItems,
+  type InventoryItem,
+  shields,
+  songs,
+  swords
+} from '../../shared/items';
 
 /**
  * The game's `SaveData` in memory (`CommonData.save`), laid out as in mm3dr's
@@ -105,9 +112,13 @@ const readSlots = (save: Uint8Array, offset: number) =>
  * Decodes what the player has from the game's save data.
  *
  * @param save - `saveDataSize` bytes read from `saveDataAddress`.
+ * @param tradeItems - The trade items held, from the randomizer's data.
  * @returns The player's inventory.
  */
-export const decodeInventory = (save: Uint8Array): Inventory => {
+export const decodeInventory = (
+  save: Uint8Array,
+  tradeItems: ReadonlyArray<InventoryItem>
+): Inventory => {
   // These four hold several values each, which the field tables above split apart.
   const view = new DataView(save.buffer, save.byteOffset, save.byteLength);
   const swordShield = view.getUint16(offsets.swordShield, true);
@@ -121,6 +132,7 @@ export const decodeInventory = (save: Uint8Array): Inventory => {
 
   return {
     items: readSlots(save, offsets.items),
+    tradeItems,
     masks: readSlots(save, offsets.masks),
     songs: readFlags(collected, collectFields.songs, songs),
     bossRemains: readFlags(collected, collectFields.bossRemains, bossRemains),

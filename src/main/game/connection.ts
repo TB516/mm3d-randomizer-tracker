@@ -9,7 +9,7 @@ import {
   type MemoryReadFailed
 } from '../azahar/rpc';
 import { describeDefect } from '../describe-defect';
-import { type ExtSaveDataNotFound, findExtSaveData, readCollected } from './ext-save-data';
+import { type ExtSaveDataNotFound, findExtSaveData, readRandomizerData } from './ext-save-data';
 import { decodeInventory, saveDataAddress, saveDataSize } from './save-data';
 import { type GameNotRunning, selectGame } from './select-game';
 
@@ -84,12 +84,12 @@ export class GameConnection extends Context.Service<
        */
       const poll = Effect.fn('GameConnection.poll')(function* (extSaveDataAddress: number) {
         const rpc = yield* AzaharRpc;
-        const collected = yield* readCollected(extSaveDataAddress);
+        const { collected, tradeItems } = yield* readRandomizerData(extSaveDataAddress);
         const save = yield* rpc.readMemory(saveDataAddress, saveDataSize);
 
         yield* SubscriptionRef.set(status, {
           status: 'tracking',
-          snapshot: { collected, inventory: decodeInventory(save) }
+          snapshot: { collected, inventory: decodeInventory(save, tradeItems) }
         });
       });
 

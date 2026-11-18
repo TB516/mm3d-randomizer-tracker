@@ -70,3 +70,13 @@ Check: play for a few minutes, including closing and reopening Azahar.
 
 Design the real page and replace the debug page: area list, check states, item grid, seed file
 picker, and status messages.
+
+Done: a map view (a pin per zone on the official map of Termina), the icon inventory, the seed
+picker, and status banners. Still to do:
+
+- Show where the player is (needs the current scene from memory), and have the selected zone follow
+  it until another zone is picked.
+- A narrow-window layout (a single column of regions that expand), and an items-only window for
+  OBS. A three-column list view was tried and dropped: it repeated the map view's sidebar.
+- Remember the window's size and position between launches, in `settings.json` next to the seed
+  path. For now a new window opens maximized.

@@ -13,15 +13,16 @@ import { CurrentSeed, type SeedStatus } from './seed/current-seed';
  */
 const toTrackerState = (seed: SeedStatus, game: GameStatus): TrackerState => {
   const snapshot = game.status === 'tracking' ? game.snapshot : null;
-  const locations = seed.status === 'loaded' ? seed.locations : [];
+  const checks = seed.status === 'loaded' ? seed.checks : [];
 
   return {
     // The page gets the statuses without the data attached to them.
     seed: seed.status === 'loaded' ? { status: 'loaded', path: seed.path } : seed,
     game: game.status === 'tracking' ? { status: 'tracking' } : game,
-    checks: locations.map((location) => ({
-      name: location.name,
-      collected: snapshot?.collected[location.index] === 1
+    checks: checks.map((check) => ({
+      name: check.name,
+      zone: check.zone,
+      collected: snapshot?.collected[check.index] === 1
     })),
     inventory: snapshot?.inventory ?? null
   };

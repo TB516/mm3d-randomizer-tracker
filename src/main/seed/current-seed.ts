@@ -6,7 +6,8 @@ import { describeDefect } from '../describe-defect';
 import { Settings } from '../settings';
 import type { InvalidIpsPatch } from './ips';
 import { loadSeed, type SeedFileUnreadable } from './load-seed';
-import type { SeedLocation, SpoilerDataNotFound } from './spoiler-data';
+import type { SeedCheck } from './place-in-zone';
+import type { SpoilerDataNotFound } from './spoiler-data';
 
 /** The seed's state as the page sees it, with a loaded seed's checks attached. */
 export type SeedStatus =
@@ -14,7 +15,7 @@ export type SeedStatus =
   | {
       readonly status: 'loaded';
       readonly path: string;
-      readonly locations: ReadonlyArray<SeedLocation>;
+      readonly checks: ReadonlyArray<SeedCheck>;
     };
 
 /**
@@ -62,8 +63,8 @@ export class CurrentSeed extends Context.Service<
         function* (path: string) {
           yield* SubscriptionRef.set(status, { status: 'loading', path });
 
-          const locations = yield* loadSeed(path);
-          yield* SubscriptionRef.set(status, { status: 'loaded', path, locations });
+          const checks = yield* loadSeed(path);
+          yield* SubscriptionRef.set(status, { status: 'loaded', path, checks });
 
           // Only a seed that loaded is worth coming back to.
           yield* settings.rememberSeedPath(path);
