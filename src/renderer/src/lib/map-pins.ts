@@ -2,8 +2,7 @@ import type { ZoneId } from '../../../shared/zones';
 
 /**
  * Where each zone's pin sits on `assets/termina.png`, in the image's pixels. Pins follow the
- * landmarks painted on the map, checked against maps of the game's layout. Zones without a place on
- * the map, like `other`, have no pin.
+ * landmarks painted on the map, checked against maps of the game's layout.
  */
 export const mapPins: Partial<Record<ZoneId, readonly [x: number, y: number]>> = {
   // Clock Town's zones sit in a ring around the town, spread enough that the pins don't touch.
@@ -50,7 +49,10 @@ export const mapPins: Partial<Record<ZoneId, readonly [x: number, y: number]>> =
   stoneTowerTemple: [1117, 385],
 
   // The moon has no place on the map, so it hangs in the sky above the mountains.
-  moon: [1000, 125]
+  moon: [1000, 125],
+
+  // Checks that match no zone get a pin in the paper's top-right corner, so they're never hidden.
+  other: [1200, 130]
 };
 
 /** Size of `assets/termina.png`, in pixels. */

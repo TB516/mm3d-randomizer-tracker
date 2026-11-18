@@ -21,8 +21,16 @@ export const zones = [
     id: 'southClockTown',
     name: 'South Clock Town',
     region: 'Clock Town',
-    // The four starting items come from the Clock Tower, which is in South Clock Town.
-    prefixes: ['SCT ', 'Song of Time', 'Song of Healing', 'Deku Mask', 'Bombers Notebook']
+    // The Clock Tower's checks are in South Clock Town: the four starting items, and the Ocarina
+    // when the seed doesn't start with it.
+    prefixes: [
+      'SCT ',
+      'Song of Time',
+      'Song of Healing',
+      'Deku Mask',
+      'Bombers Notebook',
+      'Ocarina of Time'
+    ]
   },
   { id: 'northClockTown', name: 'North Clock Town', region: 'Clock Town', prefixes: ['NCT '] },
   {
@@ -118,7 +126,7 @@ export const zones = [
 
   { id: 'moon', name: 'The Moon', region: 'The Moon', prefixes: ['The Moon', 'Oath to Order'] },
 
-  // Catches any check whose name matches no prefix, so it still shows up somewhere.
+  // Any check whose name matches no prefix, such as one added by a newer randomizer version.
   { id: 'other', name: 'Other', region: 'Other', prefixes: [] }
 ] as const satisfies ReadonlyArray<{
   readonly id: string;
