@@ -1,4 +1,15 @@
-import type { BossRemains, InventoryItem, Shield, Song, Sword } from './items';
+import type { BossRemains, InventoryItem, Shield, Song, Sword, Temple } from './items';
+
+/** One temple's own items. */
+export type DungeonItems = {
+  /** Keys held now. Opening a locked door uses one up. */
+  readonly smallKeys: number;
+  readonly bossKey: boolean;
+  readonly map: boolean;
+  readonly compass: boolean;
+  /** Stray fairies held for the temple's Great Fairy, out of 15. */
+  readonly strayFairies: number;
+};
 
 /** What the player has, read from the game's save data. */
 export type Inventory = {
@@ -27,4 +38,6 @@ export type Inventory = {
   readonly heartPieces: number;
   readonly swampTokens: number;
   readonly oceanTokens: number;
+
+  readonly dungeons: Readonly<Record<Temple, DungeonItems>>;
 };

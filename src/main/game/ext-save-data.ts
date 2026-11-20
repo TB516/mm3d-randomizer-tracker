@@ -41,6 +41,9 @@ const tradeItems: ReadonlyArray<InventoryItem> = [
   'LetterToMama'
 ];
 
+/** What a trade slot holds when the player doesn't have its item: `game::ItemId::None`. */
+const emptyTradeSlot = 0xff;
+
 /** One byte per chest flag, for every scene. */
 const sceneCount = 116;
 const chestFlagsPerScene = 32;
@@ -86,8 +89,12 @@ const isExtSaveData = (block: Uint8Array) => {
   return (
     itemCollected.every((value) => value <= 1) &&
     chestRewarded.every((value) => value <= 1) &&
-    // Every seed starts with some checks collected, which rules out blocks of zeros.
-    itemCollected.some((value) => value === 1)
+    // Each trade slot is empty or holds its own item, which rules out blocks of zeros. A new file
+    // has no checks collected yet, so this can't rely on those.
+    tradeItems.every((item, slot) => {
+      const itemId = block[offsets.collectedTradeItems + slot];
+      return itemId === emptyTradeSlot || itemId === inventoryItems.indexOf(item);
+    })
   );
 };
 

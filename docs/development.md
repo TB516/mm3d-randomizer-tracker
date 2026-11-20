@@ -29,7 +29,7 @@ Tools are managed with [mise](https://mise.jdx.dev). Run `mise install`, then `p
 ## Assets
 
 - `src/renderer/src/assets/termina.png` is Nintendo's painted map of Termina from the official Japanese Majora's Mask 3D site (`nintendo.co.jp/3ds/ajrj/world/images/world_map.png`).
-- `src/renderer/src/assets/items/` holds the game's menu icons, from Zelda Wiki's Majora's Mask 3D sprites. Icons MM3D shares with Ocarina of Time 3D are stored there under their OoT3D names. The magic meter has no icon, so the counters draw one, twice as long for double magic like in the game. The Child's Wallet has no icon either, so until the first upgrade the counters show the Adult's Wallet greyed out.
+- `src/renderer/src/assets/items/` holds the game's menu icons, from Zelda Wiki's Majora's Mask 3D sprites. Icons MM3D shares with Ocarina of Time 3D are stored there under their OoT3D names. The magic meter has no icon, so the counters draw one, twice as long for double magic like in the game. The Child's Wallet has no icon either, so until the first upgrade the counters show the Adult's Wallet greyed out. Each temple's stray fairy is the pink Woodfall icon recolored with a CSS filter.
 - Both are Nintendo's artwork.
 
 Each directory under `src/main/` is one area, and its service lives inside it. A service's operations are defined inside its layer. Effects that only use another service and keep no state are standalone functions, in their own file when that keeps the service file short. Files read in the same order: errors, constants, types, helpers, then the service or exported functions.

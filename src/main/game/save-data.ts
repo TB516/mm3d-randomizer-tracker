@@ -1,11 +1,13 @@
-import type { Inventory } from '../../shared/inventory';
+import type { DungeonItems, Inventory } from '../../shared/inventory';
 import {
   bossRemains,
   inventoryItems,
   type InventoryItem,
   shields,
   songs,
-  swords
+  swords,
+  type Temple,
+  temples
 } from '../../shared/items';
 
 /**
@@ -28,6 +30,10 @@ const offsets = {
   masks: inventory + 0x18,
   upgrades: inventory + 0x78,
   collectRegister: inventory + 0x7c,
+  // One byte per temple each, in `temples` order.
+  dungeonItems: inventory + 0x80,
+  smallKeys: inventory + 0x8a,
+  strayFairies: inventory + 0x94,
   skulltulas: 0x1208
 } as const;
 
@@ -62,6 +68,16 @@ const collectFields = {
   bombersNotebook: { start: 18, length: 1 },
   heartPieces: { start: 28, length: 4 }
 } as const satisfies Record<string, BitField>;
+
+/** Each temple's byte at `dungeonItems`. */
+const dungeonItemFields = {
+  bossKey: { start: 0, length: 1 },
+  compass: { start: 1, length: 1 },
+  map: { start: 2, length: 1 }
+} as const satisfies Record<string, BitField>;
+
+/** The game's small key count before the randomizer sets it to 0 on a new file. */
+const noKeys = 0xff;
 
 /** The u32 at `skulltulas`: one token count per Spider House. */
 const skulltulaFields = {
@@ -109,6 +125,27 @@ const readSlots = (save: Uint8Array, offset: number) =>
   });
 
 /**
+ * Reads one temple's keys, fairies, and dungeon items.
+ *
+ * @param save - The game's save data.
+ * @param temple - Which temple.
+ * @returns The temple's items.
+ */
+const readDungeonItems = (save: Uint8Array, temple: Temple): DungeonItems => {
+  const index = temples.indexOf(temple);
+  const items = save[offsets.dungeonItems + index] ?? 0;
+  const smallKeys = save[offsets.smallKeys + index] ?? 0;
+
+  return {
+    smallKeys: smallKeys === noKeys ? 0 : smallKeys,
+    bossKey: readBits(items, dungeonItemFields.bossKey) === 1,
+    map: readBits(items, dungeonItemFields.map) === 1,
+    compass: readBits(items, dungeonItemFields.compass) === 1,
+    strayFairies: save[offsets.strayFairies + index] ?? 0
+  };
+};
+
+/**
  * Decodes what the player has from the game's save data.
  *
  * @param save - `saveDataSize` bytes read from `saveDataAddress`.
@@ -150,6 +187,13 @@ export const decodeInventory = (
     maxHearts: Math.floor(view.getUint16(offsets.healthMax, true) / healthPerHeart),
     heartPieces: readBits(collected, collectFields.heartPieces),
     swampTokens: readBits(skulltulas, skulltulaFields.swamp),
-    oceanTokens: readBits(skulltulas, skulltulaFields.ocean)
+    oceanTokens: readBits(skulltulas, skulltulaFields.ocean),
+
+    dungeons: {
+      Woodfall: readDungeonItems(save, 'Woodfall'),
+      Snowhead: readDungeonItems(save, 'Snowhead'),
+      GreatBay: readDungeonItems(save, 'GreatBay'),
+      StoneTower: readDungeonItems(save, 'StoneTower')
+    }
   };
 };

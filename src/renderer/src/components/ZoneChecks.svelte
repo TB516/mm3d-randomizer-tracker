@@ -1,18 +1,24 @@
 <script lang="ts">
+  import type { Inventory } from '../../../shared/inventory';
   import termina from '../assets/termina.png';
   import { summarize, type ZoneGroup } from '../lib/checks';
+  import { dungeonTiles } from '../lib/inventory-tiles';
   import { mapImage, mapPins } from '../lib/map-pins';
   import CheckList from './CheckList.svelte';
+  import ItemTile from './ItemTile.svelte';
   import ProgressRing from './ProgressRing.svelte';
 
   let {
     group,
     neighbors,
+    inventory,
     onselect
   }: {
     group: ZoneGroup;
     /** The other zones in the same region, listed below for quick switching. */
     neighbors: ReadonlyArray<ZoneGroup>;
+    /** For a temple's keys, fairies, and dungeon items. Null until tracking. */
+    inventory: Inventory | null;
     onselect: (zone: ZoneGroup['zone']['id']) => void;
   } = $props();
 
@@ -23,6 +29,7 @@
   const paper = { left: 40, top: 40, right: 1295, bottom: 900 };
 
   const summary = $derived(summarize(group.checks));
+  const dungeon = $derived('temple' in group.zone && dungeonTiles(inventory, group.zone.temple));
   const pin = $derived(mapPins[group.zone.id]);
 
   // Where the zoomed map's corner goes: centered on the pin, but kept inside the paper so its torn
@@ -82,6 +89,16 @@
           <span style:width="{((summary.total - summary.left) / summary.total) * 100}%"></span>
         </span>
       </p>
+
+      {#if dungeon}
+        <div class="dungeon" aria-label="Dungeon items">
+          {#each dungeon.items as tile (tile.name)}
+            <ItemTile {tile} />
+          {/each}
+          <span class="divider" aria-hidden="true"></span>
+          <ItemTile tile={dungeon.fairies} />
+        </div>
+      {/if}
     </div>
   </header>
 
@@ -218,6 +235,21 @@
     display: block;
     height: 100%;
     background: var(--moon);
+  }
+
+  /* The temple's items in slots like the inventory's, with the fairies set apart. */
+  .dungeon {
+    display: grid;
+    grid-template-columns: repeat(4, 40px) auto 40px;
+    justify-content: start;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .divider {
+    width: 1px;
+    margin: 4px 4px;
+    background: var(--line);
   }
 
   .checks {

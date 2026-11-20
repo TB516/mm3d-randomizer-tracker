@@ -1,5 +1,5 @@
 import type { Inventory } from '../../../shared/inventory';
-import type { BossRemains, InventoryItem, Song } from '../../../shared/items';
+import type { BossRemains, InventoryItem, Song, Temple } from '../../../shared/items';
 
 /** Icon URLs keyed by file name, such as `deku-mask`. */
 const icons = Object.fromEntries(
@@ -15,6 +15,8 @@ export type Tile = {
   readonly has: boolean;
   /** A small number in the corner, such as how many arrows the quiver holds. */
   readonly badge?: string;
+  /** A CSS filter that recolors the icon, such as a temple's stray fairy color. */
+  readonly tint?: string;
 };
 
 /** Ammo each upgrade level holds, from the in-game shops and upgrades. Level 0 is none. */
@@ -152,6 +154,48 @@ const tile = (icon: string, name: string, has: boolean, badge?: string): Tile =>
   has,
   ...(badge ? { badge } : {})
 });
+
+/** Stray fairies in each temple. */
+const fairiesPerTemple = 15;
+
+/**
+ * Each temple's stray fairy color, as a filter on the pink Woodfall icon. Stone Tower's gets
+ * brightened so its yellow doesn't come out brown.
+ */
+const fairyTints: Record<Temple, string | undefined> = {
+  Woodfall: undefined,
+  Snowhead: 'hue-rotate(140deg)',
+  GreatBay: 'hue-rotate(230deg)',
+  StoneTower: 'hue-rotate(75deg) saturate(1.3) brightness(1.15)'
+};
+
+/**
+ * Lays out a temple's keys, dungeon items, and stray fairies. Without an inventory, everything
+ * shows as missing.
+ *
+ * @param inventory - What the player has, or null before tracking starts.
+ * @param temple - Which temple.
+ * @returns The key and dungeon item tiles, and the stray fairy tile.
+ */
+export const dungeonTiles = (inventory: Inventory | null, temple: Temple) => {
+  const items = inventory?.dungeons[temple];
+  const keys = items?.smallKeys ?? 0;
+  const fairies = items?.strayFairies ?? 0;
+  const tint = fairyTints[temple];
+
+  return {
+    items: [
+      tile('small-key', 'Small Keys', keys > 0, keys ? String(keys) : undefined),
+      tile('boss-key', 'Boss Key', items?.bossKey ?? false),
+      tile('dungeon-map', 'Map', items?.map ?? false),
+      tile('compass', 'Compass', items?.compass ?? false)
+    ],
+    fairies: {
+      ...tile('stray-fairy', 'Stray Fairies', fairies > 0, `${fairies}/${fairiesPerTemple}`),
+      ...(tint ? { tint } : {})
+    }
+  };
+};
 
 /**
  * Lays out the inventory panel. Without an inventory, everything shows as missing.

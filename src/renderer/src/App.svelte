@@ -38,7 +38,12 @@
 
     <aside class="panel">
       {#if selectedGroup}
-        <ZoneChecks group={selectedGroup} {neighbors} onselect={(zone) => (selected = zone)} />
+        <ZoneChecks
+          group={selectedGroup}
+          {neighbors}
+          inventory={tracker?.inventory ?? null}
+          onselect={(zone) => (selected = zone)}
+        />
       {:else}
         <p class="empty">Each area's checks show here once a seed is loaded.</p>
       {/if}

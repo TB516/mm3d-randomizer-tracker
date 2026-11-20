@@ -9,7 +9,7 @@
   class:missing={!tile.has}
   title={tile.has ? tile.name : `${tile.name} (not yet)`}
 >
-  <img src={tile.icon} alt={tile.name} />
+  <img src={tile.icon} alt={tile.name} style:filter={tile.tint} />
   {#if tile.badge}<span class="badge">{tile.badge}</span>{/if}
 </span>
 
@@ -37,6 +37,7 @@
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
   }
 
+  /* A tile's tint replaces this filter, so each temple's fairy keeps its color when missing. */
   .missing img {
     filter: grayscale(1) brightness(0.9);
     opacity: 0.32;

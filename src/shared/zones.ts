@@ -1,3 +1,5 @@
+import type { Temple } from './items';
+
 /** The big areas of Termina, in the order the list view shows them. */
 export const regions = [
   'Clock Town',
@@ -67,7 +69,8 @@ export const zones = [
     id: 'woodfallTemple',
     name: 'Woodfall Temple',
     region: 'Southern Swamp',
-    prefixes: ['Woodfall Temple']
+    prefixes: ['Woodfall Temple'],
+    temple: 'Woodfall'
   },
 
   { id: 'mountainVillage', name: 'Mountain Village', region: 'Snowhead', prefixes: ['MV '] },
@@ -84,7 +87,8 @@ export const zones = [
     id: 'snowheadTemple',
     name: 'Snowhead Temple',
     region: 'Snowhead',
-    prefixes: ['Snowhead Temple']
+    prefixes: ['Snowhead Temple'],
+    temple: 'Snowhead'
   },
 
   { id: 'greatBayCoast', name: 'Great Bay Coast', region: 'Great Bay', prefixes: ['GBC '] },
@@ -102,7 +106,8 @@ export const zones = [
     id: 'greatBayTemple',
     name: 'Great Bay Temple',
     region: 'Great Bay',
-    prefixes: ['Great Bay Temple']
+    prefixes: ['Great Bay Temple'],
+    temple: 'GreatBay'
   },
 
   { id: 'roadToIkana', name: 'Road to Ikana', region: 'Ikana', prefixes: ['Road to Ikana'] },
@@ -121,7 +126,8 @@ export const zones = [
     id: 'stoneTowerTemple',
     name: 'Stone Tower Temple',
     region: 'Ikana',
-    prefixes: ['Stone Tower Temple']
+    prefixes: ['Stone Tower Temple'],
+    temple: 'StoneTower'
   },
 
   { id: 'moon', name: 'The Moon', region: 'The Moon', prefixes: ['The Moon', 'Oath to Order'] },
@@ -133,6 +139,8 @@ export const zones = [
   readonly name: string;
   readonly region: Region;
   readonly prefixes: ReadonlyArray<string>;
+  /** Which temple's keys, fairies, and dungeon items the zone shows. */
+  readonly temple?: Temple;
 }>;
 
 export type Zone = (typeof zones)[number];

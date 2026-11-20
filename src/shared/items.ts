@@ -112,3 +112,8 @@ export type Sword = (typeof swords)[number];
 export const shields = ['HeroShield', 'MirrorShield'] as const;
 
 export type Shield = (typeof shields)[number];
+
+/** The four temples, in the order the save keeps their keys, fairies, and dungeon items. */
+export const temples = ['Woodfall', 'Snowhead', 'GreatBay', 'StoneTower'] as const;
+
+export type Temple = (typeof temples)[number];

@@ -52,12 +52,20 @@ and reading Azahar's process memory directly from Linux.
   - `PlayerData` at +0x118: max health u16 at +0x1A (16 per heart), rupees u16 at +0x20.
   - Sword/shield u16 at +0x172. `InventoryData` at +0x174: items[24], masks[24], ...; count register
     at +0x78, collect register (remains, songs, heart pieces) at +0x7C.
+  - Temple items, one byte per temple in the order Woodfall, Snowhead, Great Bay, Stone Tower, at
+    `InventoryData` +0x80 (bits: boss key 0, compass 1, map 2), small keys at +0x8A, and stray
+    fairies at +0x94. The game starts keys at `0xFF`, which the randomizer sets to 0 on a new file.
+    The randomizer skips the Song of Time loop that clears these (`patch_DoNotRemoveKeys`), so they
+    carry across cycles. Keys and dungeon items confirmed live on a new file with them set to "Start
+    With"; the fairy counts aren't confirmed live yet.
   - Skulltula register at +0x1208: ocean count = low 16 bits, swamp count = high 16 bits.
   - Layouts: `mm3dr/code/include/game/common_data.h`, item IDs in `game/items.h`.
 - Randomizer data (`ExtSaveData`, 4296 bytes) is a global placed by the linker in the randomizer's
   section (`.text` through `.bss`, starting at `0x7D0000`). Found at **`0x8C3940`** in the test game,
   but found by search, not hardcoded: scan `0x7D0000..0xA00000` for a 4-byte-aligned block with
-  version `19`, `isNewFile` in {0,1}, and the collected and chest arrays containing only 0/1.
+  version `19`, `isNewFile` in {0,1}, the collected and chest arrays containing only 0/1, and each
+  trade item slot either `0xFF` or its own item's ID. A new file has no checks collected, so the
+  scan can't require any.
 - `ExtSaveData` offsets (from `mm3dr/code/include/rnd/savefile.h`, check alignment carefully; an
   earlier hand count was off by 4):
 
