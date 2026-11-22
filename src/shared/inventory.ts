@@ -19,6 +19,8 @@ export type Inventory = {
   /** Trade items held, such as the title deeds. The item screen only ever shows one at a time. */
   readonly tradeItems: ReadonlyArray<InventoryItem>;
   readonly songs: ReadonlyArray<Song>;
+  /** Whether the player has the Goron Lullaby's intro, the first half of the full song. */
+  readonly lullabyIntro: boolean;
   readonly bossRemains: ReadonlyArray<BossRemains>;
   readonly bombersNotebook: boolean;
 

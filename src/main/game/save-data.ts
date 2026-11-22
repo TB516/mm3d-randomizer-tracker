@@ -66,6 +66,7 @@ const collectFields = {
   bossRemains: { start: 0, length: bossRemains.length },
   songs: { start: 6, length: songs.length },
   bombersNotebook: { start: 18, length: 1 },
+  lullabyIntro: { start: 24, length: 1 },
   heartPieces: { start: 28, length: 4 }
 } as const satisfies Record<string, BitField>;
 
@@ -172,6 +173,7 @@ export const decodeInventory = (
     tradeItems,
     masks: readSlots(save, offsets.masks),
     songs: readFlags(collected, collectFields.songs, songs),
+    lullabyIntro: readBits(collected, collectFields.lullabyIntro) === 1,
     bossRemains: readFlags(collected, collectFields.bossRemains, bossRemains),
     bombersNotebook: readBits(collected, collectFields.bombersNotebook) === 1,
 

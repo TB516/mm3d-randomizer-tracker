@@ -7,7 +7,7 @@
 <span
   class="tile"
   class:missing={!tile.has}
-  title={tile.has ? tile.name : `${tile.name} (not yet)`}
+  title={tile.has || tile.badge ? tile.name : `${tile.name} (not yet)`}
 >
   <img src={tile.icon} alt={tile.name} style:filter={tile.tint} />
   {#if tile.badge}<span class="badge">{tile.badge}</span>{/if}

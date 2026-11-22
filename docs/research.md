@@ -51,7 +51,7 @@ and reading Azahar's process memory directly from Linux.
   +8). Same layout as `save0.bin` from file offset 8.
   - `PlayerData` at +0x118: max health u16 at +0x1A (16 per heart), rupees u16 at +0x20.
   - Sword/shield u16 at +0x172. `InventoryData` at +0x174: items[24], masks[24], ...; count register
-    at +0x78, collect register (remains, songs, heart pieces) at +0x7C.
+    at +0x78, collect register (remains, songs, the Goron Lullaby intro, heart pieces) at +0x7C.
   - Temple items, one byte per temple in the order Woodfall, Snowhead, Great Bay, Stone Tower, at
     `InventoryData` +0x80 (bits: boss key 0, compass 1, map 2), small keys at +0x8A, and stray
     fairies at +0x94. The game starts keys at `0xFF`, which the randomizer sets to 0 on a new file.
