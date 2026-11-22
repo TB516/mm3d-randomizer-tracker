@@ -85,8 +85,7 @@ Logic runs in the main process and only sends each check's status to the page.
 - **Test:** Vitest (`pnpm test`). Sphere replay through the real path from collected checks onward:
   every location in sphere N must be in logic with only earlier spheres collected. The spheres come
   from the spoiler log the generator writes, since the patch only has them with in-game spoilers on.
-  Reads both paths from environment variables and skips without them, so no seed is checked in.
-  Passes for the test seed.
+  Runs every seed in `fixtures/seeds/`, which holds finished runs only. Passes for the test seed.
 - **Page:** checks out of logic show as blocked, which the sidebar and map pins already style.
   Each blocked check shows what it needs: the items that each unlock it, or one set of items that
   does it together. Only items the seed has and the player hasn't found count, so it never
@@ -105,6 +104,7 @@ picker, and status banners. Still to do, in order:
   seed.
 - A reminder of items the Song of Time takes away (like the seahorse and gold dust), and which
   check to go back to for each. The full list comes from the randomizer's code.
+- When the run is in go mode, meaning everything needed to finish it is in logic, say so.
 - A narrow-window layout (a single column of regions that expand), and an items-only window for
   OBS. A three-column list view was tried and dropped: it repeated the map view's sidebar.
 - Remember the window's size and position between launches, in `settings.json` next to the seed

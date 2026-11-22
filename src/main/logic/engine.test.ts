@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 
 import { NodeFileSystem } from '@effect/platform-node';
 import { Effect } from 'effect';
@@ -8,11 +8,11 @@ import { loadSeed } from '../seed/load-seed';
 import { findLocationsInLogic } from './engine';
 
 /**
- * A seed's `code.ips` and the spoiler log the generator wrote with it. Seeds and logs hold the
- * whole spoiler, so none are checked in; the test skips without them.
+ * Test seeds, one folder each: the seed's `code.ips` and the spoiler log the generator wrote with
+ * it, from runs that are finished so spoilers don't matter.
  */
-const seedPath = process.env.MM3D_TEST_SEED;
-const spoilerLogPath = process.env.MM3D_TEST_SPOILER_LOG;
+const seedsFolder = new URL('../../../fixtures/seeds/', import.meta.url);
+const seeds = readdirSync(seedsFolder);
 
 const xmlEntities: Record<string, string> = { amp: '&', apos: "'", quot: '"', lt: '<', gt: '>' };
 
@@ -36,33 +36,37 @@ const readPlaythrough = (xml: string) => {
     );
 };
 
-describe.skipIf(!seedPath || !spoilerLogPath)('logic', () => {
-  it("reaches each of the generator's spheres with only the checks from earlier ones", async () => {
-    const seed = await loadSeed(seedPath ?? '').pipe(
-      Effect.provide(NodeFileSystem.layer),
-      Effect.runPromise
-    );
-    if (!seed.logic) throw new Error("The seed's settings aren't ones logic follows.");
+describe('logic', () => {
+  it.each(seeds)(
+    "reaches each of the generator's spheres in seed %s with only the checks from earlier ones",
+    async (name) => {
+      const folder = new URL(`${name}/`, seedsFolder);
+      const seed = await loadSeed(new URL('code.ips', folder).pathname).pipe(
+        Effect.provide(NodeFileSystem.layer),
+        Effect.runPromise
+      );
+      if (!seed.logic) throw new Error("The seed's settings aren't ones logic follows.");
 
-    const spheres = readPlaythrough(readFileSync(spoilerLogPath ?? '', 'utf8'));
-    expect(spheres.length).toBeGreaterThan(0);
+      const spheres = readPlaythrough(readFileSync(new URL('spoilerlog.xml', folder), 'utf8'));
+      expect(spheres.length).toBeGreaterThan(0);
 
-    // Playthrough locations the seed's table leaves out count by themselves once in logic.
-    const indexesByName = new Map(
-      seed.checks.flatMap((check) =>
-        check.locations.map((name, at) => [name, check.indexes[at] ?? -1] as const)
-      )
-    );
+      // Playthrough locations the seed's table leaves out count by themselves once in logic.
+      const indexesByName = new Map(
+        seed.checks.flatMap((check) =>
+          check.locations.map((location, at) => [location, check.indexes[at] ?? -1] as const)
+        )
+      );
 
-    const collected: number[] = [];
-    for (const [sphere, names] of spheres.entries()) {
-      const inLogic = findLocationsInLogic(seed.logic, collected);
-      expect(
-        names.filter((name) => !inLogic.has(name)),
-        `sphere ${sphere + 1}`
-      ).toEqual([]);
+      const collected: number[] = [];
+      for (const [sphere, names] of spheres.entries()) {
+        const inLogic = findLocationsInLogic(seed.logic, collected);
+        expect(
+          names.filter((location) => !inLogic.has(location)),
+          `sphere ${sphere + 1}`
+        ).toEqual([]);
 
-      collected.push(...names.flatMap((name) => indexesByName.get(name) ?? []));
+        collected.push(...names.flatMap((location) => indexesByName.get(location) ?? []));
+      }
     }
-  });
+  );
 });

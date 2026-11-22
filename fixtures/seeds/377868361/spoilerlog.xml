@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="spoiler-log.css"?>
+<spoiler-log version="v1.5.1" seed="377868361" hash="Bottled Zora Egg, Ice Arrow, Kokiri Sword, Garo Mask, Gilded Sword" xmlns:h="http://www.w3.org/1999/xhtml">
+    <h:input type="checkbox" checked="" id="hide-spoilers"/>
+    <settings>
+        <setting name="Logic">Glitchless</setting>
+        <setting name="All Locations Reachable">On</setting>
+        <setting name="Console/Emulator">Emulator</setting>
+        <setting name="Game Version">1.1</setting>
+        <setting name="Generate Spoiler Log">Yes</setting>
+        <setting name="Ingame Spoilers">Hide</setting>
+        <setting name="Game Region">NA</setting>
+        <setting name="Language"></setting>
+        <setting name="Shuffle Main Inventory">On</setting>
+        <setting name="Shuffle Masks">On</setting>
+        <setting name="Shuffle Transformation">On</setting>
+        <setting name="Starting Sword">None</setting>
+        <setting name="Starting Shield">None</setting>
+        <setting name="Start With Ocarina">Yes</setting>
+        <setting name="Shuffle Piece of Heart">On</setting>
+        <setting name="Shuffle Songs">Anywhere</setting>
+        <setting name="Shuffle Song of Soaring">On</setting>
+        <setting name="Shuffle Song of Time">Off</setting>
+        <setting name="Tokensanity">On</setting>
+        <setting name="Shuffle Fairy Rewards">Anywhere</setting>
+        <setting name="Shuffle Scrub Trades">On</setting>
+        <setting name="Shuffle Anju and Kafei">On</setting>
+        <setting name="Shuffle Tingle Maps">On</setting>
+        <setting name="Shuffle Notebook">On</setting>
+        <setting name="Shuffle Moon Items">On</setting>
+        <setting name="Shuffle Fierce Deity">On</setting>
+        <setting name="Randomize Settings">No</setting>
+        <setting name="Maps/Compasses">Any Dungeon</setting>
+        <setting name="Small Keys">Own Dungeon</setting>
+        <setting name="Boss Keys">Own Dungeon</setting>
+        <setting name="Dungeon Rewards">Anywhere</setting>
+        <setting name="Heart Containers">Random</setting>
+        <setting name="Moon Requirements">Vanilla</setting>
+        <setting name="Majora Requirements">Vanilla</setting>
+        <setting name="Item Pool">Balanced</setting>
+        <setting name="Remove Double Defense">No</setting>
+        <setting name="Blast Mask Cooldown">Short</setting>
+        <setting name="Fast Mask Transform">Yes</setting>
+        <setting name="Fast Notebook">Yes</setting>
+        <setting name="Fierce Deity Anywhere">No</setting>
+        <setting name="Fast Elegy Statues">Yes</setting>
+        <setting name="Fast Zora Swimming">Yes</setting>
+        <setting name="Ocarina Dive">No</setting>
+        <setting name="DPad Transformation">Yes</setting>
+        <setting name="DPad Ocarina">Yes</setting>
+        <setting name="Dpad Arrow Swap">No</setting>
+        <setting name="Twinmold Restoration">Yes</setting>
+        <setting name="Skip HMS Cutscenes">Skip</setting>
+        <setting name="Skip Darmani Cutscenes">Skip</setting>
+        <setting name="Skip Mikau Cutscenes">Skip</setting>
+        <setting name="Skip Giants Cutscene">Skip</setting>
+        <setting name="Map">Default</setting>
+        <setting name="Items">Default</setting>
+        <setting name="Masks">Default</setting>
+        <setting name="Bombers Notebook">Start</setting>
+        <setting name="Ingame Spoiler Log">Select</setting>
+        <setting name="Colored Small Keys">Off</setting>
+        <setting name="Show Postman Item">Off</setting>
+    </settings>
+    <h:input type="checkbox" class="collapse" checked=""/>
+    <starting-inventory>
+        <item name="Song of Time">Song of Time</item>
+    </starting-inventory>
+    <h:input type="checkbox" class="collapse" checked=""/>
+    <playthrough>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="1">
+            <location name="ECT Chest" _="                                               ">Piece of Heart</location>
+            <location name="LP Bremen Mask" _="                                          ">Chateau Romani</location>
+            <location name="TF Grass Chest" _="                                          ">Piece of Heart</location>
+            <location name="WCT Bomb Bag Purchase" _="                       " price="000">Progressive Bomb Bag</location>
+            <location name="TF Pillar Grotto Chest" _="                                  ">Heart Container</location>
+            <location name="Road to Southern Swamp Grotto" _="                           ">Oath to Order</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="2">
+            <location name="TF Dodongo Grotto Chest" _="                                 ">Letter to Kafei</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="3">
+            <location name="LP Kafei's Pendant" _="                                      ">Goron Mask</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="4">
+            <location name="SPI Reservation" _="                                         ">Piece of Heart</location>
+            <location name="Road to Ikana Grotto" _="                                    ">Deku Mask</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="5">
+            <location name="DP West Garden" _="                                          ">Garo's Mask</location>
+            <location name="SS Near Spider House Grotto" _="                             ">Piece of Heart</location>
+            <location name="SSH Main Room Lower Left Soil" _="                           ">Piece of Heart</location>
+            <location name="SSH Main Room Lower Right Soil" _="                          ">Captain's Hat</location>
+            <location name="SSH Main Room Jar" _="                                       ">Progressive Bow</location>
+            <location name="WF Behind Owl Chest" _="                                     ">Piece of Heart</location>
+            <location name="SSH Gold Room Pillar" _="                                    ">Piece of Heart</location>
+            <location name="SSH Main Room Upper Pillar" _="                              ">Piece of Heart</location>
+            <location name="SSH Main Room Near Ceiling" _="                              ">Epona's Song</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="6">
+            <location name="Song of Time" _="                                            ">Song of Time</location>
+            <location name="ECT Honey and Darling 3 Days" _="                            ">Piece of Heart</location>
+            <location name="ECT Archery #1" _="                                          ">Piece of Heart</location>
+            <location name="ECT Archery #2" _="                                          ">Piece of Heart</location>
+            <location name="Road to Southern Swamp Tree" _="                             ">Piece of Heart</location>
+            <location name="SSH Monument Room Lower Wall" _="                            ">Heart Container</location>
+            <location name="SSH Pot Room Beehive 1" _="                                  ">Zora Mask</location>
+            <location name="SSH Pot Room Beehive 2" _="                                  ">Progressive Wallet</location>
+            <location name="SSH Gold Room Beehive" _="                                   ">Progressive Sword</location>
+            <location name="SSH Tree Room Tree 1" _="                                    ">Gyorg's Remains</location>
+            <location name="SSH Tree Room Grass 2" _="                                   ">Fire Arrow</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="7">
+            <location name="OSH Entrance Right Wall" _="                                 ">Bunny Hood</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="8">
+            <location name="WCT Postman's Game" _="                                      ">Mask of Truth</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="9">
+            <location name="RR Dog Race" _="                                             ">Progressive Magic Meter</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="10">
+            <location name="MV Razor Sword" _="                                          ">Hookshot</location>
+            <location name="GV Powder Keg Challenge" _="                                 ">Odolwa's Remains</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="11">
+            <location name="MV Hungry Goron" _="                                         ">Special Delivery to Mama</location>
+            <location name="OSH Chest" _="                                               ">Light Arrow</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="12">
+            <location name="ECT Postman's Freedom" _="                                   ">Twinmold's Remains</location>
+            <location name="Secret Shrine Wizzrobe Chest" _="                            ">Goht's Remains</location>
+        </sphere>
+        <h:input type="checkbox" class="collapse" checked=""/>
+        <sphere level="13">
+            <location name="Majora" _="                                                  ">Majora's Mask</location>
+        </sphere>
+    </playthrough>
+    <h:input type="checkbox" class="collapse" checked=""/>
+    <way-of-the-hero-locations>
+        <location name="LP Bremen Mask" _="                                          ">Chateau Romani</location>
+        <location name="Road to Southern Swamp Grotto" _="                           ">Oath to Order</location>
+        <location name="TF Dodongo Grotto Chest" _="                                 ">Letter to Kafei</location>
+        <location name="LP Kafei's Pendant" _="                                      ">Goron Mask</location>
+        <location name="Road to Ikana Grotto" _="                                    ">Deku Mask</location>
+        <location name="DP West Garden" _="                                          ">Garo's Mask</location>
+        <location name="SSH Main Room Lower Right Soil" _="                          ">Captain's Hat</location>
+        <location name="SSH Main Room Jar" _="                                       ">Progressive Bow</location>
+        <location name="SSH Main Room Near Ceiling" _="                              ">Epona's Song</location>
+        <location name="SSH Pot Room Beehive 1" _="                                  ">Zora Mask</location>
+        <location name="SSH Pot Room Beehive 2" _="                                  ">Progressive Wallet</location>
+        <location name="SSH Tree Room Tree 1" _="                                    ">Gyorg's Remains</location>
+        <location name="SSH Tree Room Grass 2" _="                                   ">Fire Arrow</location>
+        <location name="OSH Entrance Right Wall" _="                                 ">Bunny Hood</location>
+        <location name="WCT Postman's Game" _="                                      ">Mask of Truth</location>
+        <location name="RR Dog Race" _="                                             ">Progressive Magic Meter</location>
+        <location name="MV Razor Sword" _="                                          ">Hookshot</location>
+        <location name="GV Powder Keg Challenge" _="                                 ">Odolwa's Remains</location>
+        <location name="MV Hungry Goron" _="                                         ">Special Delivery to Mama</location>
+        <location name="OSH Chest" _="                                               ">Light Arrow</location>
+        <location name="ECT Postman's Freedom" _="                                   ">Twinmold's Remains</location>
+        <location name="Secret Shrine Wizzrobe Chest" _="                            ">Goht's Remains</location>
+    </way-of-the-hero-locations>
+    <hints>
+        <hint location="TF Near Milk Road Tree Gossip Stone">They say that #the Laundry Pool# is on the way of the hero.</hint>
+        <hint location="TF Between Ikana And Snowhead Gossip Stone">They say that #the Swamp Spider House# is on the way of the hero.</hint>
+        <hint location="TF Behind Observatory Gossip Stone">They say that the #Clock Tower's balcony# contains #a Swamp Skulltula Token#.</hint>
+        <hint location="TF Top Snowhead Area Gossip Stone">They say that #the Hookshot# can be found at #the Mountain Village#.</hint>
+        <hint location="TF Lower Snowhead Area Gossip Stone">They say that #the Woodfall Temple# hoards #a Piece of Heart#.</hint>
+        <hint location="TF Near Grass Chest Gossip Stone">They say that #Igos du Ikana# has #an Oceanside Skulltula Token#.</hint>
+        <hint location="TF Four Gossip Stone Grotto 1">They say Gorons discovered a method of space travel.</hint>
+        <hint location="TF Four Gossip Stone Grotto 2">They say that the #man from the Curiosity Shop# entrusts #an Oceanside Skulltula Token#.</hint>
+        <hint location="TF Four Gossip Stone Grotto 3">They say that #the Snowhead Temple# hoards #a Snowhead Temple Small Key#.</hint>
+        <hint location="TF Four Gossip Stone Grotto 4">They say that #an Oceanside Skulltula Token# can be found at #Termina Field#.</hint>
+        <hint location="Road to SS Gossip Stone">They say that the #Great Bay Temple Wart# protects #the Stone Tower Temple Compass#.</hint>
+        <hint location="SS Gossip Stone">They say you can find the Star Fox cast in your mask inventory screen.</hint>
+        <hint location="SSH Gossip Stone">Goodbye then.</hint>
+        <hint location="Path to MV Gossip Stone">I'm stoned. Get it?</hint>
+        <hint location="MV Near Frogs Gossip Stone (Spring)">They say that #an Oceanside Skulltula Token# can be found at #the Laundry Pool#.</hint>
+        <hint location="MV Near Grotto Gossip Stone (Spring)">They say that #a Swamp Skulltula Token# can be found at #Snowhead#.</hint>
+        <hint location="GBC Beneath Cow Grotto Gossip Stone">They say that #the Secret Shrine# is on the way of the hero.</hint>
+        <hint location="GBC Outside Fortres Gates Gossip Stone">They say that #the Swamp Spider House# is on the way of the hero.</hint>
+        <hint location="ZC Gossip Stone">They say that #Don Gero's Mask# can be found at #the Stock Pot Inn#.</hint>
+        <hint location="MR Gossip Stone">They say that #Bombchu (10 pieces)# can be found at #Pinnacle Rock#.</hint>
+        <hint location="RR Entrance Gossip Stone">They say that #the Couple's Mask# can be found at #the Southern Swamp#.</hint>
+        <hint location="RR Field Gossip Stone">They say that the #chest on the road to Ikana# contains #a Red Rupee#.</hint>
+        <hint location="RR Barn Gossip Stone">Also try #Ocarina of Time 3D Randomizer#!</hint>
+        <hint location="Doggy Racetrack Gossip Stone">They say that #the Swamp Spider House# is on the way of the hero.</hint>
+        <hint location="Cucco Shack Gossip Stone">They say that #the Swamp Spider House# is on the way of the hero.</hint>
+        <hint location="IC Dock Gossip Stone">They say that #the Swamp Spider House# is on the way of the hero.</hint>
+        <hint location="IC Across from Sakon's Hideout Gossip Stone">They say that #the Woodfall Temple# hoards #the Woodfall Temple Small Key#.</hint>
+        <hint location="IC Above Spirit House Gossip Stone">They say that the #Stone Tower Temple chest near Armos# contains #the Stone Tower Temple Boss Key#.</hint>
+        <hint location="Stone Tower Lower Gossip Stone">They say that #an Oceanside Skulltula Token# can be found at #the Pirates' Fortress#.</hint>
+        <hint location="Stone Tower Upper Gossip Stone">They say that #the Stone Mask# can be found at #the Goron Village#.</hint>
+        <hint location="Moon Deku Trial Gossip Stone 1">They say that #a Piece of Heart# can be found at #South Clock Town#.</hint>
+        <hint location="Moon Deku Trial Gossip Stone 2">According to all known laws of aviation there is no way a Zora should be able to fly.</hint>
+        <hint location="Moon Deku Trial Gossip Stone 3">They say that #an Empty Bottle# can be found at #Ikana Graveyard#.</hint>
+        <hint location="Moon Deku Trial Gossip Stone 4">I AM ERROR</hint>
+        <hint location="Moon Deku Trial Gossip Stone 5">They say that #a Piece of Heart# can be found at #the Goron Village#.</hint>
+        <hint location="Moon Goron Trial Gossip Stone 1">They say that #a Milk Bottle# can be found at #the Southern Swamp#.</hint>
+        <hint location="Moon Goron Trial Gossip Stone 2">They say that #an Oceanside Skulltula Token# can be found at #the Swamp Spider House#.</hint>
+        <hint location="Moon Goron Trial Gossip Stone 3">They say @ drowned.</hint>
+        <hint location="Moon Goron Trial Gossip Stone 4">They say that #a Red Rupee# can be found at #the Moon#.</hint>
+        <hint location="Moon Goron Trial Gossip Stone 5">They say that the #imprisoned monkey# has #a Piece of Heart#.</hint>
+        <hint location="Moon Zora Trial Gossip Stone 1">They say that #a Piece of Heart# can be found at #East Clock Town#.</hint>
+        <hint location="Moon Zora Trial Gossip Stone 2">They say that the #Snowhead Temple 4F Wizzrobe# protects #a progressive quiver#.</hint>
+        <hint location="Moon Zora Trial Gossip Stone 3">They say that the #fisherman# trades for a picture #a Red Rupee#.</hint>
+        <hint location="Moon Zora Trial Gossip Stone 4">The moon is haunted.</hint>
+        <hint location="Moon Zora Trial Gossip Stone 5">Making hints is hard.</hint>
+        <hint location="Moon Link Trial Gossip Stone 1">I AM ERROR</hint>
+        <hint location="Moon Link Trial Gossip Stone 2">They say that #a Red Potion Bottle# can be found at #Zora Cape#.</hint>
+        <hint location="Moon Link Trial Gossip Stone 3">They say that #a Swamp Skulltula Token# can be found at #North Clock Town#.</hint>
+        <hint location="Moon Link Trial Gossip Stone 4">They say that #an Oceanside Skulltula Token# can be found at #North Clock Town#.</hint>
+        <hint location="Moon Link Trial Gossip Stone 5">They say the golden dog is picked as the winner most often</hint>
+    </hints>
+    <h:input type="checkbox" class="collapse" checked=""/>
+    <all-locations>
+        <location name="Starting Sword" _="                                          ">Green Rupee</location>
+        <location name="Starting Shield" _="                                         ">Green Rupee</location>
+        <location name="Stone Tower Temple Upright Death Armos Room Chest" _="       ">Swamp Skulltula Token</location>
+        <location name="Ocarina of Time" _="                                         ">Ocarina of Time</location>
+        <location name="Song of Time" _="                                            ">Song of Time</location>
+        <location name="Deku Mask" _="                                               ">Deku Nuts (10)</location>
+        <location name="Song of Healing" _="                                         ">Swamp Skulltula Token</location>
+        <location name="Bombers Notebook" _="                                        ">Postman's Hat</location>
+        <location name="SCT Scrub Trade" _="                                         ">Red Rupee</location>
+        <location name="SCT Postbox" _="                                             ">Oceanside Skulltula Token</location>
+        <location name="SCT Clock Tower Entrance" _="                                ">Swamp Skulltula Token</location>
+        <location name="SCT Straw Roof Chest" _="                                    ">Purple Rupee</location>
+        <location name="SCT Final Day Chest" _="                                     ">Piece of Heart</location>
+        <location name="SCT Bank Reward 1" _="                                       ">Great Fairy's Mask</location>
+        <location name="SCT Bank Reward 2" _="                                       ">Progressive Lullaby</location>
+        <location name="SCT Bank Reward 3" _="                                       ">Purple Rupee</location>
+        <location name="LP Kafei's Pendant" _="                                      ">Goron Mask</location>
+        <location name="LP Keaton Mask" _="                                          ">Oceanside Skulltula Token</location>
+        <location name="LP Letter to Mama" _="                                       ">Oceanside Skulltula Token</location>
+        <location name="LP Bremen Mask" _="                                          ">Chateau Romani</location>
+        <location name="Laundry Pool SF" _="                                         ">Clock Town Stray Fairy</location>
+        <location name="ECT Milk Bar Madame Aroma" _="                               ">Oceanside Skulltula Token</location>
+        <location name="ECT Archery #1" _="                                          ">Piece of Heart</location>
+        <location name="ECT Archery #2" _="                                          ">Piece of Heart</location>
+        <location name="ECT Mayor Reward" _="                                        ">Song of Storms</location>
+        <location name="ECT Honey and Darling 3 Days" _="                            ">Piece of Heart</location>
+        <location name="ECT Treasure Chest Game (Goron)" _="                         ">Mountain Title Deed</location>
+        <location name="ECT Postman's Freedom" _="                                   ">Twinmold's Remains</location>
+        <location name="ECT Milk Bar Gorman" _="                                     ">Room Key</location>
+        <location name="ECT Mayor's Office Madame Aroma" _="                         ">Swamp Skulltula Token</location>
+        <location name="Bombers' Hideout Chest" _="                                  ">Oceanside Skulltula Token</location>
+        <location name="ECT Chest" _="                                               ">Piece of Heart</location>
+        <location name="ECT Postbox" _="                                             ">Oceanside Skulltula Token</location>
+        <location name="SPI Reservation" _="                                         ">Piece of Heart</location>
+        <location name="SPI Midnight Meeting" _="                                    ">Arrows (30)</location>
+        <location name="SPI Toilet Hand" _="                                         ">Oceanside Skulltula Token</location>
+        <location name="SPI Grandma Short Story" _="                                 ">Piece of Heart</location>
+        <location name="SPI Grandma Long Story" _="                                  ">Don Gero's Mask</location>
+        <location name="SPI Anju And Kafei" _="                                      ">Swamp Skulltula Token</location>
+        <location name="SPI Staff Room Chest" _="                                    ">Red Rupee</location>
+        <location name="SPI Guest Room Chest" _="                                    ">Silver Rupee</location>
+        <location name="WCT Bomb Bag Purchase" _="                       " price="000">Progressive Bomb Bag</location>
+        <location name="WCT Big Bomb Bag Purchase" _="                   " price="000">Progressive Bomb Bag</location>
+        <location name="WCT Postman's Game" _="                                      ">Mask of Truth</location>
+        <location name="WCT Rosa Sisters" _="                                        ">Oceanside Skulltula Token</location>
+        <location name="WCT Swordsman's School" _="                                  ">Empty Bottle</location>
+        <location name="WCT All-Night Mask Purchase" _="                             ">Purple Rupee</location>
+        <location name="WCT Bomb Shop Goron" _="                         " price="000">Powder Keg</location>
+        <location name="WCT Curiosity Shop Bomb Bag" _="                 " price="000">Progressive Bomb Bag</location>
+        <location name="Trading Post Item 1" _="                         " price="000">Buy Red Potion </location>
+        <location name="Trading Post Item 2" _="                         " price="000">Buy Green Potion</location>
+        <location name="Trading Post Item 3" _="                         " price="000">Buy Hero's Shield</location>
+        <location name="Trading Post Item 4" _="                         " price="000">Buy Fairy's Spirit</location>
+        <location name="Trading Post Item 5" _="                         " price="000">Buy Deku Stick (1)</location>
+        <location name="Trading Post Item 6" _="                         " price="000">Buy Arrows (30)</location>
+        <location name="Trading Post Item 7" _="                         " price="000">Buy Deku Nut (10)</location>
+        <location name="Trading Post Item 8" _="                         " price="000">Buy Magic Bean</location>
+        <location name="Bomb Shop Item 1" _="                            " price="000">Buy Bombs (10)</location>
+        <location name="Bomb Shop Item 2" _="                            " price="000">Buy Bombchu (10)</location>
+        <location name="NCT Great Fairy (Deku)" _="                                  ">Oceanside Skulltula Token</location>
+        <location name="NCT Keaton Quiz" _="                                         ">Bombs (5)</location>
+        <location name="NCT Deku Playground 3 Days Reward" _="                       ">Swamp Skulltula Token</location>
+        <location name="NCT Tree" _="                                                ">Oceanside Skulltula Token</location>
+        <location name="NCT Old Lady" _="                                            ">Red Rupee</location>
+        <location name="NCT Great Fairy (Human)" _="                                 ">Swamp Skulltula Token</location>
+        <location name="NCT Tingle Clock Town Map Buy" _="                           ">Powder Keg</location>
+        <location name="NCT Tingle Woodfall Map Buy" _="                             ">Piece of Heart</location>
+        <location name="NCT Postbox" _="                                             ">Oceanside Skulltula Token</location>
+        <location name="TF Moon's Tear" _="                                          ">Swamp Skulltula Token</location>
+        <location name="TF Gossip Stones" _="                                        ">Oceanside Skulltula Token</location>
+        <location name="TF Business Scrub" _="                                       ">Piece of Heart</location>
+        <location name="TF Peahat Grotto Chest" _="                                  ">Purple Rupee</location>
+        <location name="TF Dodongo Grotto Chest" _="                                 ">Letter to Kafei</location>
+        <location name="TF Bio Baba Grotto HP" _="                                   ">Huge Rupee</location>
+        <location name="TF Kamaro" _="                                               ">Swamp Skulltula Token</location>
+        <location name="TF Pillar Grotto Chest" _="                                  ">Heart Container</location>
+        <location name="TF Grass Grotto Chest" _="                                   ">Swamp Skulltula Token</location>
+        <location name="TF Underwater Chest" _="                                     ">Oceanside Skulltula Token</location>
+        <location name="TF Grass Chest" _="                                          ">Piece of Heart</location>
+        <location name="TF Stump Chest" _="                                          ">Swamp Skulltula Token</location>
+        <location name="TF Grotto Cow 1" _="                                         ">Milk</location>
+        <location name="TF Grotto Cow 2" _="                                         ">Milk</location>
+        <location name="Road to Southern Swamp Archery 1" _="                        ">Piece of Heart</location>
+        <location name="Road to Southern Swamp Archery 2" _="                        ">Silver Rupee</location>
+        <location name="Road to Southern Swamp Tree" _="                             ">Piece of Heart</location>
+        <location name="Road to Southern Swamp Grotto" _="                           ">Oath to Order</location>
+        <location name="Road To Southern Swamp Tingle Woodfall Map Buy" _="          ">Piece of Heart</location>
+        <location name="Road to Southern Swamp Tingle Snowhead Map Buy" _="          ">Bottle with Mystery Milk</location>
+        <location name="SS Music Statue" _="                                         ">Swamp Skulltula Token</location>
+        <location name="SS Koume" _="                                                ">Couple's Mask</location>
+        <location name="SS Kotake" _="                                               ">Blue Rupee</location>
+        <location name="SS Mystery Woods Kotake" _="                                 ">Blue Rupee</location>
+        <location name="SS Deku Scrub Merchant Trade" _="                            ">Swamp Skulltula Token</location>
+        <location name="SS Pictograph Contest Winner" _="                            ">Bottle with Milk</location>
+        <location name="SS Boat Archery" _="                                         ">Piece of Heart</location>
+        <location name="SS Tourist Center Roof" _="                                  ">Piece of Heart</location>
+        <location name="SS Near Spider House Grotto" _="                             ">Piece of Heart</location>
+        <location name="SS Mystery Woods Grotto" _="                                 ">Oceanside Skulltula Token</location>
+        <location name="SS Kotake Mushroom Sale" _="                                 ">Red Rupee</location>
+        <location name="SS Deku Scrub Merchant Purchase" _="             " price="000">Magic Bean</location>
+        <location name="SS Deku Scrub Merchant Purchase (Cleared)" _="   " price="000">Magic Bean</location>
+        <location name="SS Deku Scrub Merchant Trade (Cleared)" _="                  ">Swamp Skulltula Token</location>
+        <location name="SS Tourist Center Roof (Cleared)" _="                        ">Piece of Heart</location>
+        <location name="Potion Shop Item 1" _="                          " price="000">Buy Blue Potion</location>
+        <location name="Potion Shop Item 2" _="                          " price="000">Buy Green Potion</location>
+        <location name="Potion Shop Item 3" _="                          " price="000">Buy Red Potion </location>
+        <location name="SSH Reward" _="                                              ">Purple Rupee</location>
+        <location name="DP Bean Seller" _="                                          ">Magic Bean</location>
+        <location name="DP West Garden" _="                                          ">Garo's Mask</location>
+        <location name="DP Butler Race" _="                                          ">Clock Town Map</location>
+        <location name="DP Bean Grotto Chest" _="                                    ">Swamp Skulltula Token</location>
+        <location name="DP Imprisoned Monkey" _="                                    ">Piece of Heart</location>
+        <location name="WF Bridge Chest" _="                                         ">Swamp Skulltula Token</location>
+        <location name="WF Behind Owl Chest" _="                                     ">Piece of Heart</location>
+        <location name="WF Entrance to Woodfall Chest" _="                           ">Red Rupee</location>
+        <location name="WF Great Fairy" _="                                          ">Red Rupee</location>
+        <location name="Road to Snowhead Pillar" _="                                 ">Blue Rupee</location>
+        <location name="Road to Snowhead Grotto" _="                                 ">Piece of Heart</location>
+        <location name="SH Great Fairy" _="                                          ">Swamp Skulltula Token</location>
+        <location name="MV Razor Sword" _="                                          ">Hookshot</location>
+        <location name="MV Gilded Sword" _="                                         ">Silver Rupee</location>
+        <location name="MV Frog Choir" _="                                           ">Piece of Heart</location>
+        <location name="MV Keaton Quiz" _="                                          ">Bombs (5)</location>
+        <location name="MV Graveyard Darmani" _="                                    ">Purple Rupee</location>
+        <location name="MV Hungry Goron" _="                                         ">Special Delivery to Mama</location>
+        <location name="MV Waterfall Chest" _="                                      ">Swamp Skulltula Token</location>
+        <location name="MV Spring Water Grotto" _="                                  ">Swamp Skulltula Token</location>
+        <location name="TI Hot Spring Water Grotto Chest" _="                        ">New Wave Bossa Nova</location>
+        <location name="TI Goron Racetrack Race" _="                                 ">Swamp Skulltula Token</location>
+        <location name="TI Goron Racetrack Grotto" _="                               ">Heros Shield</location>
+        <location name="TI Underwater Ramp Chest" _="                                ">Purple Rupee</location>
+        <location name="TI Cave Chest" _="                                           ">Great Fairy's Sword</location>
+        <location name="TI Lullaby Intro" _="                                        ">Oceanside Skulltula Token</location>
+        <location name="TI Tingle Snowhead Map Buy" _="                              ">Bottle with Mystery Milk</location>
+        <location name="TI Tingle Romani Ranch Buy" _="                              ">Elegy of Emptiness</location>
+        <location name="TI Tingle Snowhead Map Buy (Spring)" _="                     ">Bottle with Mystery Milk</location>
+        <location name="TI Tingle Romani Ranch Map Buy (Spring)" _="                 ">Elegy of Emptiness</location>
+        <location name="GV Powder Keg Challenge" _="                                 ">Odolwa's Remains</location>
+        <location name="GV Scrub Purchase" _="                           " price="000">Progressive Bomb Bag</location>
+        <location name="GV Lens of Truth Chest" _="                                  ">Piece of Heart</location>
+        <location name="GV Deku Scrub Merchant Trade" _="                            ">Piece of Heart</location>
+        <location name="GV Piece of Heart" _="                                       ">Piece of Heart</location>
+        <location name="GV Goron Lullaby" _="                                        ">Stone Mask</location>
+        <location name="GV Lens Cave Invisible Chest" _="                            ">Romani Ranch Map</location>
+        <location name="GV Lens Cave Rock Chest" _="                                 ">Bremen Mask</location>
+        <location name="GV Powder Keg Challenge (Spring)" _="                        ">Odolwa's Remains</location>
+        <location name="GV Scrub Purchase (Spring)" _="                  " price="000">Progressive Bomb Bag</location>
+        <location name="GV Deku Scrub Merchant Trade (Spring)" _="                   ">Piece of Heart</location>
+        <location name="GV Piece of Heart (Spring)" _="                              ">Piece of Heart</location>
+        <location name="Goron Shop Item 1" _="                           " price="000">Buy Bombs (10)</location>
+        <location name="Goron Shop Item 2" _="                           " price="000">Buy Bombchu (10)</location>
+        <location name="Goron Shop Item 3" _="                           " price="000">Buy Red Potion </location>
+        <location name="MR Gorman's Mystery Milk Quest" _="                          ">Silver Rupee</location>
+        <location name="MR Gorman Track Race" _="                                    ">Piece of Heart</location>
+        <location name="MR Gorman Track Milk Purchase" _="               " price="000">Milk</location>
+        <location name="MR Keaton Quiz" _="                                          ">Bombs (5)</location>
+        <location name="MR Tingle Romani Ranch Map Buy" _="                          ">Elegy of Emptiness</location>
+        <location name="MR Tingle Great Bay Map Buy" _="                             ">Red Rupee</location>
+        <location name="RR Alien Defense" _="                                        ">Piece of Heart</location>
+        <location name="RR Dog Race" _="                                             ">Progressive Magic Meter</location>
+        <location name="RR Grog" _="                                                 ">Pendant of Memories</location>
+        <location name="RR Cremia Escort" _="                                        ">Lens of Truth</location>
+        <location name="RR Romani's Game" _="                                        ">Oceanside Skulltula Token</location>
+        <location name="RR Cow 1" _="                                                ">Milk</location>
+        <location name="RR Cow 2" _="                                                ">Milk</location>
+        <location name="RR Cow 3" _="                                                ">Milk</location>
+        <location name="RR Doggy Racetrack Roof Chest" _="                           ">Red Rupee</location>
+        <location name="GBC Fisherman's Game" _="                                    ">Silver Rupee</location>
+        <location name="GBC Marine Lab Fish HP" _="                                  ">Piece of Heart</location>
+        <location name="GBC Ledge" _="                                               ">Piece of Heart</location>
+        <location name="GBC Mikau" _="                                               ">Red Rupee</location>
+        <location name="GBC Marine Lab Baby Zoras" _="                               ">Blue Rupee</location>
+        <location name="GBC Grotto Chest" _="                                        ">Swamp Skulltula Token</location>
+        <location name="GBC Cow 1" _="                                               ">Milk</location>
+        <location name="GBC Cow 2" _="                                               ">Milk</location>
+        <location name="GBC Fisherman Photo" _="                                     ">Red Rupee</location>
+        <location name="GBC Tingle Great Bay Map Buy" _="                            ">Red Rupee</location>
+        <location name="GBC Tingle Stone Tower Map Buy" _="                          ">Bomber's Notebook</location>
+        <location name="OSH Reward" _="                                              ">Gibdo Mask</location>
+        <location name="OSH Chest" _="                                               ">Light Arrow</location>
+        <location name="PR Seahorses" _="                                            ">All-Night Mask</location>
+        <location name="PR Upper Chest" _="                                          ">Bombchu (10)</location>
+        <location name="PR Lower Chest" _="                                          ">Ocean Title Deed</location>
+        <location name="PR Zora Egg 1" _="                                           ">Zora Egg</location>
+        <location name="PR Zora Egg 2" _="                                           ">Zora Egg</location>
+        <location name="PR Zora Egg 3" _="                                           ">Zora Egg</location>
+        <location name="ZC Great Fairy" _="                                          ">Keaton Mask</location>
+        <location name="ZC Beaver Race 1" _="                                        ">Oceanside Skulltula Token</location>
+        <location name="ZC Beaver Race 2" _="                                        ">Swamp Skulltula Token</location>
+        <location name="ZC Like Like HP" _="                                         ">Piece of Heart</location>
+        <location name="ZC Ledge Without Tree Chest" _="                             ">Purple Rupee</location>
+        <location name="ZC Ledge With Tree Chest" _="                                ">Progressive Lullaby</location>
+        <location name="ZC Grotto Chest" _="                                         ">Bottle with Red Potion</location>
+        <location name="ZC Underwater Chest" _="                                     ">Piece of Heart</location>
+        <location name="ZH Deku Scrub Merchant Trade" _="                            ">Kamaro's Mask</location>
+        <location name="ZH Evan" _="                                                 ">Progressive Sword</location>
+        <location name="ZH Lulu's Room Ledge" _="                                    ">Deku Nuts (10)</location>
+        <location name="ZH Deku Scrub Merchant Purchase" _="             " price="000">Green Potion Refill</location>
+        <location name="Zora Shop Item 1" _="                            " price="000">Buy Hero's Shield</location>
+        <location name="Zora Shop Item 2" _="                            " price="000">Buy Arrows (10)</location>
+        <location name="Zora Shop Item 3" _="                            " price="000">Buy Red Potion </location>
+        <location name="IC Great Fairy" _="                                          ">Heart Container</location>
+        <location name="IC Poe Hut" _="                                              ">Red Rupee</location>
+        <location name="IC Ledge" _="                                                ">Piece of Heart</location>
+        <location name="IC Pamela's Father" _="                                      ">Oceanside Skulltula Token</location>
+        <location name="IC Secret Shrine Grotto" _="                                 ">Troupe Leader's Mask</location>
+        <location name="IC Deku Scrub Merchant Trade" _="                            ">Red Rupee</location>
+        <location name="IC Deku Scrub Merchant Purchase" _="             " price="000">Blue Potion Refill</location>
+        <location name="IC Tingle Stone Tower Map Buy" _="                           ">Bomber's Notebook</location>
+        <location name="IC Tingle Clock Town Map Buy" _="                            ">Powder Keg</location>
+        <location name="Road to Ikana Pillar Chest" _="                              ">Red Rupee</location>
+        <location name="Road to Ikana Grotto" _="                                    ">Deku Mask</location>
+        <location name="IG Dampe Digging" _="                                        ">Purple Rupee</location>
+        <location name="IG Iron Knuckle Chest" _="                                   ">Deku Nuts (5)</location>
+        <location name="IG Captain Keeta's Chest" _="                                ">Piece of Heart</location>
+        <location name="IG Day 1 Grave Tablet" _="                                   ">Piece of Heart</location>
+        <location name="IG Day 1 Grave Bats" _="                                     ">Empty Bottle</location>
+        <location name="IG Grotto" _="                                               ">Piece of Heart</location>
+        <location name="IST Right Chest" _="                                         ">Heart Container</location>
+        <location name="IST Center Chest" _="                                        ">Piece of Heart</location>
+        <location name="IST Left Chest" _="                                          ">Oceanside Skulltula Token</location>
+        <location name="Oath to Order" _="                                           ">Red Rupee</location>
+        <location name="Woodfall Temple Map Chest" _="                               ">Woodfall Temple Small Key</location>
+        <location name="Woodfall Temple Compass Chest" _="                           ">Oceanside Skulltula Token</location>
+        <location name="Woodfall Temple Small Key Chest" _="                         ">Piece of Heart</location>
+        <location name="Woodfall Temple Hero's Bow Chest" _="                        ">Woodfall Temple Big Key</location>
+        <location name="Woodfall Temple Boss Key Chest" _="                          ">Oceanside Skulltula Token</location>
+        <location name="Woodfall Temple Odolwa Heart Container" _="                  ">Snowhead Temple Compass</location>
+        <location name="Woodfall Temple Odolwa's Remains" _="                        ">Piece of Heart</location>
+        <location name="Deku Princess" _="                                           ">Deku Princess</location>
+        <location name="Woodfall Temple SF Entrance" _="                             ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Entrance Platform" _="                    ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Main Room Bubble" _="                     ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Main Room Switch" _="                     ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Pre-Boss Lower Right Bubble" _="          ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Pre-Boss Upper Left Bubble" _="           ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Pre-Boss Upper Right Bubble" _="          ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Pre-Boss Pillar Bubble" _="               ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Deku Baba" _="                            ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Dragonfly Room Bubble" _="                ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Skulltula" _="                            ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Dark Room" _="                            ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Jar Fairy" _="                            ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Bridge Room Beehive" _="                  ">Woodfall Stray Fairy</location>
+        <location name="Woodfall Temple SF Platform Room Beehive" _="                ">Woodfall Stray Fairy</location>
+        <location name="Snowhead Temple Map Chest" _="                               ">Piece of Heart</location>
+        <location name="Snowhead Temple Compass Chest" _="                           ">Snowhead Temple Small Key</location>
+        <location name="Snowhead Temple Fire Arrow Chest" _="                        ">Snowhead Temple Big Key</location>
+        <location name="Snowhead Temple Block Room Chest" _="                        ">Snowhead Temple Small Key</location>
+        <location name="Snowhead Temple Bridge Room Chest" _="                       ">Snowhead Temple Small Key</location>
+        <location name="Snowhead Temple Icicle Room Chest" _="                       ">Swamp Skulltula Token</location>
+        <location name="Snowhead Temple Boss Key Chest" _="                          ">Progressive Bow</location>
+        <location name="Snowhead Temple Goht Heart Container" _="                    ">Romani's Mask</location>
+        <location name="Snowhead Temple Goht's Remains" _="                          ">Stone Tower Temple Map</location>
+        <location name="Snowhead Temple SF Snow Room Bubble" _="                     ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Ceiling Bubble" _="                       ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Dinolfos 1" _="                           ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Dinolfos 2" _="                           ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Bridge Room Ledge Bubble" _="             ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Bridge Room Pillar Bubble" _="            ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Map Room Fairy" _="                       ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Map Room Ledge" _="                       ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Basement" _="                             ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Twin Block" _="                           ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Icicle Room Wall" _="                     ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Main Room Wall" _="                       ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Pillar Freezards" _="                     ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Ice Puzzle" _="                           ">Snowhead Stray Fairy</location>
+        <location name="Snowhead Temple SF Crate" _="                                ">Snowhead Stray Fairy</location>
+        <location name="Great Bay Temple Map Chest" _="                              ">Great Bay Temple Small Key</location>
+        <location name="Great Bay Temple Compass Chest" _="                          ">Great Bay Temple Compass</location>
+        <location name="Great Bay Temple Small Key Chest" _="                        ">Progressive Magic Meter</location>
+        <location name="Great Bay Temple Ice Arrow Chest" _="                        ">Stone Tower Temple Compass</location>
+        <location name="Great Bay Temple Boss Key Chest" _="                         ">Great Bay Temple Big Key</location>
+        <location name="Great Bay Temple Gyorg Heart Container" _="                  ">Woodfall Temple Compass</location>
+        <location name="Great Bay Temple Gyorg's Remains" _="                        ">Piece of Heart</location>
+        <location name="Great Bay Temple SF Skulltula" _="                           ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Water Control Room Underwater Bubble" _="">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Waterwheel Room Lower" _="               ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Waterwheel Room Upper" _="               ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Green Valve" _="                         ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Seesaw Room" _="                         ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Entrance Torches" _="                    ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Bio Babas" _="                           ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Underwater Barrel" _="                   ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Whirlpool Jar" _="                       ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Whirlpool Barrel" _="                    ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Dexihands Jar" _="                       ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Ledge Jar" _="                           ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Pre-Boss Room Bubble" _="                ">Great Bay Stray Fairy</location>
+        <location name="Great Bay Temple SF Pre-Boss Room Underwater Bubble" _="     ">Great Bay Stray Fairy</location>
+        <location name="Stone Tower Temple Map Chest" _="                            ">Stone Tower Temple Big Key</location>
+        <location name="Stone Tower Temple Compass Chest" _="                        ">Great Bay Temple Map</location>
+        <location name="Stone Tower Temple Boss Key Chest" _="                       ">Stone Tower Temple Small Key</location>
+        <location name="Stone Tower Temple Armos Room Chest" _="                     ">Stone Tower Temple Small Key</location>
+        <location name="Stone Tower Temple Death Armos Room Chest" _="               ">Swamp Skulltula Token</location>
+        <location name="Stone Tower Temple Bridge Switch Chest" _="                  ">Stone Tower Temple Small Key</location>
+        <location name="Stone Tower Temple Updraft Room Chest" _="                   ">Silver Rupee</location>
+        <location name="Stone Tower Temple Giant's Mask Chest" _="                   ">Woodfall Temple Map</location>
+        <location name="Stone Tower Temple Light Arrow Chest" _="                    ">Stone Tower Temple Small Key</location>
+        <location name="Stone Tower Temple Twinmold Heart Container" _="             ">Snowhead Temple Map</location>
+        <location name="Stone Tower Temple Twinmold's Remains" _="                   ">Sonata of Awakening</location>
+        <location name="Stone Tower Temple SF Mirror Sun Block" _="                  ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Lava Room Ledge" _="                   ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Lava Room Fire Ring" _="               ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Eyegore" _="                           ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Updraft Fire Ring" _="                 ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Mirror Sun Switch" _="                 ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Boss Warp" _="                         ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Wizzrobe" _="                          ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Death Armos" _="                       ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Updraft Frozen Eye" _="                ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Thin Bridge" _="                       ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Basement Ledge" _="                    ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Statue Eye" _="                        ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Underwater" _="                        ">Stone Tower Stray Fairy</location>
+        <location name="Stone Tower Temple SF Bridge Crystal" _="                    ">Stone Tower Stray Fairy</location>
+        <location name="Pirate's Fortress Ext Corner Chest" _="                      ">Woodfall Map</location>
+        <location name="Pirate's Fortress Ext Ledge Chest" _="                       ">Red Rupee</location>
+        <location name="Pirate's Fortress Ext Sand Chest" _="                        ">Piece of Heart</location>
+        <location name="Pirate's Fortress Sewer Cage" _="                            ">Blue Rupee</location>
+        <location name="Pirate's Fortress Sewer Cage Room Deep Chest" _="            ">Ice Arrow</location>
+        <location name="Pirate's Fortress Sewer Cage Room Shallow Chest" _="         ">Stone Tower Map</location>
+        <location name="Pirate's Fortress Sewer Maze Chest" _="                      ">Swamp Skulltula Token</location>
+        <location name="Pirate's Fortress Int Hookshot Chest" _="                    ">Oceanside Skulltula Token</location>
+        <location name="Pirate's Fortress Int Guard Room Chest" _="                  ">Deku Nuts (5)</location>
+        <location name="Pirate's Fortress Int Lower Chest" _="                       ">Oceanside Skulltula Token</location>
+        <location name="Pirate's Fortress Int Upper Chest" _="                       ">Pictograph Box</location>
+        <location name="Pirate's Fortress Int Tank Chest" _="                        ">Blue Rupee</location>
+        <location name="Pirate's Fortress Int Invisible Soldier" _="                 ">Oceanside Skulltula Token</location>
+        <location name="Pirate's Fortress Int Hookshot Room Zora Egg" _="            ">Zora Egg</location>
+        <location name="Pirate's Fortress Int Guard Room Zora Egg" _="               ">Zora Egg</location>
+        <location name="Pirate's Fortress Int Barrel Maze Zora Egg" _="              ">Zora Egg</location>
+        <location name="Pirate's Fortress Int Lava Room Zora Egg" _="                ">Zora Egg</location>
+        <location name="Beneath the Well Mirror Shield Chest" _="                    ">Oceanside Skulltula Token</location>
+        <location name="Beneath the Well Left Path Chest" _="                        ">Land Title Deed</location>
+        <location name="Beneath the Well Right Path Chest" _="                       ">Double Defense</location>
+        <location name="Beneath the Well Cow" _="                                    ">Milk</location>
+        <location name="Ikana Castle Pillar" _="                                     ">Piece of Heart</location>
+        <location name="Ikana Castle Ikana King" _="                                 ">Oceanside Skulltula Token</location>
+        <location name="Secret Shrine Dinolfos Chest" _="                            ">Snowhead Map</location>
+        <location name="Secret Shrine Final Chest" _="                               ">Piece of Heart</location>
+        <location name="Secret Shrine Garo Chest" _="                                ">Piece of Heart</location>
+        <location name="Secret Shrine Wart Chest" _="                                ">Piece of Heart</location>
+        <location name="Secret Shrine Wizzrobe Chest" _="                            ">Goht's Remains</location>
+        <location name="The Moon Deku Trial Bonus" _="                               ">Piece of Heart</location>
+        <location name="The Moon Goron Trial Bonus" _="                              ">Mask of Scents</location>
+        <location name="The Moon Zora Trial Bonus" _="                               ">Arrows (50)</location>
+        <location name="The Moon Garo Chest" _="                                     ">Red Rupee</location>
+        <location name="The Moon Iron Knuckle Chest" _="                             ">Bombs (10)</location>
+        <location name="The Moon Link Trial Bonus" _="                               ">Bombs (10)</location>
+        <location name="The Moon Majora Child" _="                                   ">Red Rupee</location>
+        <location name="SSH Main Room Near Ceiling" _="                              ">Epona's Song</location>
+        <location name="SSH Main Room Water" _="                                     ">Oceanside Skulltula Token</location>
+        <location name="SSH Main Room Lower Left Soil" _="                           ">Piece of Heart</location>
+        <location name="SSH Main Room Upper Soil" _="                                ">Great Bay Map</location>
+        <location name="SSH Main Room Lower Right Soil" _="                          ">Captain's Hat</location>
+        <location name="SSH Main Room Pillar" _="                                    ">Oceanside Skulltula Token</location>
+        <location name="SSH Main Room Upper Pillar" _="                              ">Piece of Heart</location>
+        <location name="SSH Main Room Jar" _="                                       ">Progressive Bow</location>
+        <location name="SSH Monument Room Crate 1" _="                               ">Swamp Skulltula Token</location>
+        <location name="SSH Monument Room Crate 2" _="                               ">Red Rupee</location>
+        <location name="SSH Monument Room Torch" _="                                 ">Seahorse</location>
+        <location name="SSH Monument Room On Monument" _="                           ">Spin Attack</location>
+        <location name="SSH Monument Room Lower Wall" _="                            ">Heart Container</location>
+        <location name="SSH Gold Room Near Ceiling" _="                              ">Moon's Tear</location>
+        <location name="SSH Gold Room Pillar" _="                                    ">Piece of Heart</location>
+        <location name="SSH Gold Room Beehive" _="                                   ">Progressive Sword</location>
+        <location name="SSH Gold Room Wall" _="                                      ">Gold Dust</location>
+        <location name="SSH Pot Room Jar" _="                                        ">Oceanside Skulltula Token</location>
+        <location name="SSH Pot Room Pot 1" _="                                      ">Mirror Shield</location>
+        <location name="SSH Pot Room Pot 2" _="                                      ">Red Rupee</location>
+        <location name="SSH Pot Room Behind Vines" _="                               ">Swamp Skulltula Token</location>
+        <location name="SSH Pot Room Wall" _="                                       ">Swamp Title Deed</location>
+        <location name="SSH Pot Room Beehive 1" _="                                  ">Zora Mask</location>
+        <location name="SSH Pot Room Beehive 2" _="                                  ">Progressive Wallet</location>
+        <location name="SSH Tree Room Tree 1" _="                                    ">Gyorg's Remains</location>
+        <location name="SSH Tree Room Tree 2" _="                                    ">Piece of Heart</location>
+        <location name="SSH Tree Room Tree 3" _="                                    ">Deku Nuts (10)</location>
+        <location name="SSH Tree Room Grass 1" _="                                   ">Swamp Skulltula Token</location>
+        <location name="SSH Tree Room Grass 2" _="                                   ">Fire Arrow</location>
+        <location name="SSH Tree Room Beehive" _="                                   ">Piece of Heart</location>
+        <location name="OSH Entrance Left Wall" _="                                  ">Deku Nuts (5)</location>
+        <location name="OSH Entrance Right Wall" _="                                 ">Bunny Hood</location>
+        <location name="OSH Entrance Web" _="                                        ">Giant's Mask</location>
+        <location name="OSH Library Hole Behind Picture" _="                         ">Oceanside Skulltula Token</location>
+        <location name="OSH Library Hole Behind Cabinet" _="                         ">Progressive Bow</location>
+        <location name="OSH Library On Corner Bookshelf" _="                         ">Swamp Skulltula Token</location>
+        <location name="OSH Library Ceiling Edge" _="                                ">Progressive Wallet</location>
+        <location name="OSH Library Behind Bookcase 1" _="                           ">Song of Soaring</location>
+        <location name="OSH Library Behind Bookacse 2" _="                           ">Oceanside Skulltula Token</location>
+        <location name="OSH Library  Behind Picture" _="                             ">Oceanside Skulltula Token</location>
+        <location name="OSH Second Room Ceiling Edge" _="                            ">Song of Healing</location>
+        <location name="OSH Second Room Ceiling Plank" _="                           ">Red Rupee</location>
+        <location name="OSH Second Room Jar" _="                                     ">Piece of Heart</location>
+        <location name="OSH Second Room Webbed Hole" _="                             ">Fierce Deity Mask</location>
+        <location name="OSH Second Room Webbed Pot" _="                              ">Swamp Skulltula Token</location>
+        <location name="OSH Second Room Upper Pot" _="                               ">Piece of Heart</location>
+        <location name="OSH Second Room Behind Skull 1" _="                          ">Silver Rupee</location>
+        <location name="OSH Second Room Behind Skull 2" _="                          ">Red Rupee</location>
+        <location name="OSH Second Room Lower Pot" _="                               ">Silver Rupee</location>
+        <location name="OSH Storage Room Ceiling Web" _="                            ">Purple Rupee</location>
+        <location name="OSH Storage Room Behind Crate" _="                           ">Huge Rupee</location>
+        <location name="OSH Storage Room Wall" _="                                   ">Progressive Sword</location>
+        <location name="OSH Storage Room Crate" _="                                  ">Piece of Heart</location>
+        <location name="OSH Storage Room Barrel" _="                                 ">Piece of Heart</location>
+        <location name="OSH Colored Skulls Ceiling Edge" _="                         ">Swamp Skulltula Token</location>
+        <location name="OSH Colored Skulls Chandelier 1" _="                         ">Arrows (30)</location>
+        <location name="OSH Colored Skulls Chandelier 2" _="                         ">Kafei's Mask</location>
+        <location name="OSH Colored Skulls Chandelier 3" _="                         ">Blast Mask</location>
+        <location name="OSH Colored Skulls Behind Picture" _="                       ">Arrows (50)</location>
+        <location name="OSH Colored Skulls Pot" _="                                  ">Swamp Skulltula Token</location>
+    </all-locations>
+</spoiler-log>

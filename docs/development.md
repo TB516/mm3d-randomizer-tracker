@@ -28,6 +28,7 @@ Tools are managed with [mise](https://mise.jdx.dev). Run `mise install`, then `p
   - `lib/inventory-tiles.ts` turns the inventory into the icon tiles.
   - Each blocked check shows what it needs on its row, after an em dash: item icons joined by "or" (any one unlocks it) or "and" (needed together). `lib/needed-items.ts` picks each item's icon, and items without one show their name.
 - `src/shared/` holds the tracker state type, the zone table, item names, and IPC channel names.
+- `fixtures/seeds/` holds test seeds (see Logic below).
 
 ## Assets
 
@@ -41,11 +42,7 @@ Each directory under `src/main/` is one area, and its service lives inside it. A
 
 The rules come from the MM3D Randomizer generator. When it updates, check out the new tag with its `Z3DR` submodule (`git submodule update --init`), then run `node scripts/convert-logic.mts <checkout>`. The script parses the C++ with [tree-sitter](https://tree-sitter.github.io) (its C++ grammar's WebAssembly build, so the grammar's native build stays off in `pnpm-workspace.yaml`), formats what it writes, and stops on anything it doesn't recognize. The helpers in `src/main/logic/has.ts` may need porting again.
 
-The logic test replays a seed's playthrough, so it needs a seed and the spoiler log the generator wrote with it. Neither is checked in, since both hold the whole spoiler. Without them, the test is skipped:
-
-```sh
-MM3D_TEST_SEED=path/to/code.ips MM3D_TEST_SPOILER_LOG=path/to/spoilerlog.xml pnpm test
-```
+The logic test replays each seed's playthrough from `fixtures/seeds/`. A seed's folder holds its `code.ips` and the spoiler log the generator wrote with it, renamed to `spoilerlog.xml`; the log also lists the seed's settings. Both hold the whole spoiler, so only add seeds from runs that are finished.
 
 `plan.md` is the build order. `research.md` holds the findings behind the design: the Azahar RPC protocol, memory addresses, and the seed's data layout.
 
