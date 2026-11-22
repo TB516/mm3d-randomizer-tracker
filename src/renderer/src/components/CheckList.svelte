@@ -56,6 +56,12 @@
     background: var(--blocked);
   }
 
+  /* Hollow, so it doesn't read as done or as either logic state. */
+  .unknown i {
+    background: none;
+    box-shadow: inset 0 0 0 2px var(--unknown);
+  }
+
   .done {
     color: var(--done);
   }

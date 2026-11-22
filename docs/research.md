@@ -112,9 +112,11 @@ and reading Azahar's process memory directly from Linux.
   postboxes, Kotake in the potion shop and the woods, Keaton in three places, and the winter/spring
   or poisoned/cleared versions of some Goron Village and swamp checks. `SpoilerLog_CheckMultiLocationItems`
   marks the others by a hardcoded list (same type and flag, different scenes), and
-  `SpoilerData_IsUniqueLocation` lists which copies the game skips when counting. The tracker uses
-  that list; the test seed has 301 locations and 283 after removing duplicates. (Confirmed live: buying the Great Bay map marked both the
-  Milk Road and Great Bay Coast entries at once.)
+  `SpoilerData_IsUniqueLocation` lists which copies the game skips when counting. The tracker copies
+  the groups from `SpoilerLog_CheckMultiLocationItems` instead: copies in the same zone are one
+  check, copies in different zones are separate checks, and the overall total counts each shared
+  item once. The test seed has 301 locations and 283 after removing duplicates. (Confirmed live:
+  buying the Great Bay map marked both the Milk Road and Great Bay Coast entries at once.)
 - `chestRewarded` keeps chest and Spider House token state across cycles. The Swamp Spider House uses
   `skulltulaMapSSH` order and the Ocean house uses index+1 (see `mm3dr/code/source/rnd/actors/en_si.cpp`).
 - Cross-check that confirmed the decoding: items from the collected checks add up exactly to the
@@ -126,13 +128,45 @@ and reading Azahar's process memory directly from Linux.
   `EventAccess`, `LocationAccess` and `Entrance` entries, each a short boolean lambda.
 - Helpers live in `source/logic.cpp` (~900 lines), `UpdateHelpers()` assigns derived variables in an
   order that matters and is re-run until stable.
-- Decision: write a converter that turns those files into TypeScript (checked in, rerun per randomizer
-  version), not a hand port and not compiling the C++ to WebAssembly (the files depend on the 3DS
-  library and much of the generator's global state).
-- Settings come from the seed (`gSettingsContext` in the patch; layout in the generator and mm3dr
-  `settings.h`).
-- Test: replay the seed's spheres. Every location in sphere N must be reachable with only items from
-  earlier spheres.
+- Decision: write a converter that turns the area rules into TypeScript (checked in, rerun per
+  randomizer version), not a hand port and not compiling the C++ to WebAssembly (the files depend on
+  the 3DS library and much of the generator's global state). The helpers are short and use odd C++,
+  so they're ported by hand.
+- At v1.5.1: about 260 areas, 465 check rules, 190 event rules, and 590 exit rules, every one a
+  single-line lambda. The only calls are `CanUse`, `CanPlay`, and a few count helpers. There's no time
+  of day: every rule holds on any day. The only settings the rules read are `SkipBombersMinigame` and
+  the remains required for the Moon and Majora.
+- Each item in the generator's item list sets one logic variable (for example "Bottle with Red
+  Potion" sets `WitchBottle`). The seed's table uses the same English item and location names.
+- The seed's table leaves out locations that aren't randomized (spoiler_log.cpp skips them by
+  setting, and excluded ones). The generator still puts an item at each, and counts it once the
+  location is reachable. Usually that's the vanilla item, but not always: excluded locations get
+  junk, and the starting sword's spot gets a green rupee without a starting sword.
+- `rItemOverrides` (at `0x7c833c` in a v1.5.1 seed's patched image, up to 640 8-byte entries, unused
+  ones zero) lists the item at every placed location: key `pad, scene, type, flag`, then a u16
+  get-item ID. The key type comes from the location kind (`ItemLocation::Key`); stray fairies,
+  rewards, and hint stones keep type 0. Some locations share a key, like a temple's stray fairies,
+  shop slots, cows, and Zora eggs, so the table holds one item for all of them. A few get-item IDs
+  are shared by items that set different logic variables (magic bean and bean pack, some bottles,
+  Zora eggs, and ID 0 for stray fairies and magic). For those, logic falls back to the vanilla item.
+- Settings come from `gSettingsContext`, at `0x7c387c` in a v1.5.1 seed's patched image (192 bytes;
+  layout in mm3dr `rnd/settings.h`, with u32s and one u16 aligned). Confirmed on the test seed:
+  glitchless logic at +7, no entrance shuffle at +10, remains needed for the Moon and Majora at +185
+  and +186. The generator writes the overrides, the settings, then `SpoilerData` as consecutive IPS
+  records.
+- The patch's spheres are only filled with in-game spoilers on. The spoiler log the generator writes
+  (`sdmc/MM3DR/Spoiler_Logs/<seed> (<hash>)-spoilerlog.xml`) always has the playthrough, as
+  `<sphere>` elements of `<location name>`.
+- Quirks of the v1.5.1 logic, kept as-is:
+  - The generator only recalculates helpers when it applies an item, and events are checked
+    without it. `Bugs` and `Fish` are helpers that events also set, so they end up true when either
+    their formula holds or their event happened.
+  - No item sets `BuyBombchus5/10/20`, so `HasBombchus` is never true. The Moon's Link Trial heart
+    piece room is out of logic, and with it the trial's bonus and Majora's Child.
+  - `CanUse` is false for a few masks the generator leaves out of its usable-items list, like Kamaro's
+    Mask.
+- Test: replay the spoiler log's spheres. Every location in sphere N must be reachable with only
+  items from earlier spheres. Passes for the test seed (13 spheres).
 
 ## Prototype
 

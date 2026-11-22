@@ -1,12 +1,20 @@
 import type { Inventory } from './inventory';
 import type { ZoneId } from './zones';
 
-/** One of the seed's checks. Shared-item duplicates are already left out. */
+/** One of the seed's checks. A shared item has one check per zone that gives it. */
 export type CheckState = {
   /** The check's name without its zone prefix. */
   readonly name: string;
   readonly zone: ZoneId;
   readonly collected: boolean;
+  /**
+   * Whether logic says the check can be reached with what's been found. Null until the game is
+   * read, since nothing is known about what's been found. Always true for a seed whose settings
+   * logic doesn't follow.
+   */
+  readonly inLogic: boolean | null;
+  /** Whether a check in another zone already counts this shared item toward the overall total. */
+  readonly countedElsewhere: boolean;
 };
 
 /** The seed the tracker follows. */

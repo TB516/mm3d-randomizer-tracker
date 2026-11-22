@@ -2,3 +2,6 @@ allowBuilds:
   electron: true
   # Only used for Squirrel.Windows installers.
   electron-winstaller: false
+  # The logic converter loads the C++ grammar's WebAssembly build, not the native one.
+  tree-sitter-c: false
+  tree-sitter-cpp: false

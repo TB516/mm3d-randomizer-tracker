@@ -42,4 +42,8 @@
   .blocked {
     --state: var(--blocked);
   }
+
+  .unknown {
+    --state: var(--unknown);
+  }
 </style>

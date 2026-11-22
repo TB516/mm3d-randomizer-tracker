@@ -13,6 +13,7 @@
     "format:check": "oxfmt --check",
     "typecheck": "tsc --noEmit -p tsconfig.node.json --composite false && effect-language-service diagnostics --project tsconfig.node.json && svelte-check --tsconfig ./tsconfig.web.json",
     "check": "pnpm lint && pnpm format:check && pnpm typecheck",
+    "test": "vitest run",
     "build": "pnpm typecheck && electron-vite build",
     "build:win": "pnpm build && electron-builder --win",
     "build:mac": "pnpm build && electron-builder --mac",
@@ -35,7 +36,10 @@
     "oxlint": "^1.93.0",
     "svelte": "^5.57.2",
     "svelte-check": "^4.7.6",
+    "tree-sitter-cpp": "^0.23.4",
     "typescript": "^6.0.3",
-    "vite": "^8.3.4"
+    "vite": "^8.3.4",
+    "vitest": "^5.1.1",
+    "web-tree-sitter": "^0.27.2"
   }
 }

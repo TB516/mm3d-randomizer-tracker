@@ -3,19 +3,22 @@ import { Context, Effect, FileSystem, Layer, Stream, SubscriptionRef } from 'eff
 
 import type { SeedState } from '../../shared/tracker-state';
 import { describeDefect } from '../describe-defect';
+import type { LogicSeed } from '../logic/engine';
 import { Settings } from '../settings';
 import type { InvalidIpsPatch } from './ips';
 import { loadSeed, type SeedFileUnreadable } from './load-seed';
 import type { SeedCheck } from './place-in-zone';
 import type { SpoilerDataNotFound } from './spoiler-data';
 
-/** The seed's state as the page sees it, with a loaded seed's checks attached. */
+/** The seed's state as the page sees it, with a loaded seed's checks and logic attached. */
 export type SeedStatus =
   | Exclude<SeedState, { status: 'loaded' }>
   | {
       readonly status: 'loaded';
       readonly path: string;
       readonly checks: ReadonlyArray<SeedCheck>;
+      /** Null for settings logic doesn't follow. */
+      readonly logic: LogicSeed | null;
     };
 
 /**
@@ -63,8 +66,8 @@ export class CurrentSeed extends Context.Service<
         function* (path: string) {
           yield* SubscriptionRef.set(status, { status: 'loading', path });
 
-          const checks = yield* loadSeed(path);
-          yield* SubscriptionRef.set(status, { status: 'loaded', path, checks });
+          const { checks, logic } = yield* loadSeed(path);
+          yield* SubscriptionRef.set(status, { status: 'loaded', path, checks, logic });
 
           // Only a seed that loaded is worth coming back to.
           yield* settings.rememberSeedPath(path);

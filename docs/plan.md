@@ -55,16 +55,40 @@ Check: play for a few minutes, including closing and reopening Azahar.
 
 ## 5. Logic
 
-- Read the seed's settings from the patch.
-- Converter that turns the generator's `location_access.cpp` and `logic.cpp` into checked-in
-  TypeScript. Where it lives and how it runs gets decided at this step.
-- Plain-function engine: items, settings, and rules in, reachable areas and checks out.
-- Sphere-replay test (the test runner gets set up here): every location in sphere N must be
-  reachable with only items from earlier spheres.
-- The debug page shows each check as done, available, or locked.
-- Shared-item copies (the duplicates list in `seed/spoiler-data.ts`) each have their own access
-  rule. Decide whether the list stays a skip list or becomes "one check, reachable from several
-  places", available when any copy is.
+Logic runs in the main process and only sends each check's status to the page.
+
+- **Found items** come from collected checks, as the generator counts them: the item at each
+  collected check (looked up in the seed's table, never sent to the page), the item at each
+  location the table leaves out once it's in logic, and the starting items from the seed's
+  settings. A left-out location's item comes from the seed's item overrides, or is its vanilla item
+  when the override can't say (a key several locations share, like a temple's stray fairies, or an
+  item ID several items share). The live inventory isn't used, because it drops used keys,
+  handed-over trade items, and which bottle is which.
+- **Converter:** `scripts/convert-logic.mts`, run with `node scripts/convert-logic.mts <generator
+  checkout>` (with its `Z3DR` submodule checked out). Written in Effect, it parses the C++ with
+  tree-sitter and writes checked-in, formatted TypeScript marked as generated:
+  - rules: each area's events, locations (by their seed table names), and exits, each a one-line
+    function of `has`;
+  - items: each item's name, logic variable, and get-item ID, and each location's vanilla item and
+    override key.
+- **Helpers:** the ~100 lines of `logic.cpp` (`Fighting`, `CanUse`, counts) are ported by hand next
+  to the generated files.
+- **Settings** read from `gSettingsContext`: starting items, the Bombers' minigame skip, and the
+  remains the Moon and Majora need. For a seed with anything but glitchless logic, or with dungeon
+  entrance shuffle on, every check shows as in logic for now. A message saying so is still to do.
+- **Engine:** plain functions. Found items, settings, and rules in, the checks in logic out.
+  Events and exits repeat until nothing new opens.
+- **Shared items:** the skip list in `seed/spoiler-data.ts` becomes a copy of mm3dr's `multiLocs`
+  (checked against the pinned commit). Each zone shows one row per shared item, in logic when any of
+  its copies there is, so copies in other zones get their own rows and tick off together. The
+  overall total counts each shared item once, as the game does.
+- **Test:** Vitest (`pnpm test`). Sphere replay through the real path from collected checks onward:
+  every location in sphere N must be in logic with only earlier spheres collected. The spheres come
+  from the spoiler log the generator writes, since the patch only has them with in-game spoilers on.
+  Reads both paths from environment variables and skips without them, so no seed is checked in.
+  Passes for the test seed.
+- **Page:** checks out of logic show as blocked, which the sidebar and map pins already style.
+- Check: play with the real game and see checks come into logic as items are found.
 
 ## 6. UI
 

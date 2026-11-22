@@ -43,10 +43,12 @@
     })
   );
 
-  const total = $derived(groups.reduce((sum, group) => sum + group.checks.length, 0));
-  const collected = $derived(
-    groups.reduce((sum, group) => sum + group.checks.filter((check) => check.collected).length, 0)
+  // Each shared item counts once, as the game counts it.
+  const counted = $derived(
+    groups.flatMap((group) => group.checks.filter((check) => !check.countedElsewhere))
   );
+  const total = $derived(counted.length);
+  const collected = $derived(counted.filter((check) => check.collected).length);
 
   // The middle of the land, which stays in the middle of the stage.
   const mapCenter = { x: mapCrop.x + mapCrop.width / 2, y: mapCrop.y + mapCrop.height / 2 };
@@ -186,6 +188,10 @@
 
   .pin.blocked {
     --state: var(--blocked);
+  }
+
+  .pin.unknown {
+    --state: var(--unknown);
   }
 
   .pin svg {

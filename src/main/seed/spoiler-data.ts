@@ -25,48 +25,71 @@ const sphereLocationsSize = maxLocations * 2;
 const stringTableOffset = locationsOffset + maxLocations * locationSize + sphereLocationsSize;
 
 /** Where each field this reads starts inside a 12-byte location entry. */
-const locationFields = { nameOffset: 0, scene: 5, flag: 6, overrideType: 10 } as const;
+const locationFields = {
+  nameOffset: 0,
+  itemOffset: 2,
+  scene: 5,
+  flag: 6,
+  overrideType: 10
+} as const;
 
 /** How the game decides a location was collected. Values of mm3dr's `ItemOverride_Type`. */
 const OverrideType = { BaseItem: 0, Chest: 1, Collectable: 2 } as const;
 
 /**
- * Locations that share their item with another location and get marked collected along with it,
- * as (override type, scene, flag). Mirrors `SpoilerData_IsUniqueLocation` in mm3dr's
- * `spoiler_data.cpp`, so each shared item counts as one check, as it does in game.
+ * Items the game gives at more than one location, as (override type, flag) and every scene that
+ * gives it. Getting the item at one marks every copy collected. Mirrors
+ * `SpoilerLog_CheckMultiLocationItems` in mm3dr's `spoiler_data.cpp`.
  */
-const duplicateLocations: ReadonlyArray<readonly [number, number, number]> = [
-  [OverrideType.BaseItem, 0x64, 0x59], // Koume in the woods
-  [OverrideType.BaseItem, 0x6e, 0xba], // North Clock Town postbox
-  [OverrideType.BaseItem, 0x6f, 0xba], // South Clock Town postbox
-  [OverrideType.BaseItem, 0x13, 0xb4], // Clock Town map, Ikana Tingle
-  [OverrideType.BaseItem, 0x6e, 0xb5], // Woodfall map, Clock Town Tingle
-  [OverrideType.BaseItem, 0x40, 0xb6], // Snowhead map, Woodfall Tingle
-  [OverrideType.BaseItem, 0x5e, 0xb6], // Snowhead map, spring Snowhead Tingle
-  [OverrideType.BaseItem, 0x5d, 0xb7], // Ranch map, winter Snowhead Tingle
-  [OverrideType.BaseItem, 0x5e, 0xb7], // Ranch map, spring Snowhead Tingle
-  [OverrideType.BaseItem, 0x22, 0xb8], // Great Bay map, ranch Tingle
-  [OverrideType.BaseItem, 0x37, 0xb9], // Stone Tower map, Great Bay Tingle
-  [OverrideType.BaseItem, 0x22, 0x03], // Keaton, Milk Road
-  [OverrideType.BaseItem, 0x5a, 0x03], // Keaton, Mountain Village
-  [OverrideType.BaseItem, 0x48, 0x34], // Powder Keg challenge, spring
-  [OverrideType.BaseItem, 0x48, 0x1d], // Goron Village scrub purchase, spring
-  [OverrideType.BaseItem, 0x48, 0x99], // Goron Village scrub trade, spring
-  [OverrideType.Collectable, 0x48, 0x00], // Goron Village ledge heart piece, spring
-  [OverrideType.BaseItem, 0x00, 0x35], // Swamp scrub purchase, cleared swamp
-  [OverrideType.BaseItem, 0x00, 0x98], // Swamp scrub trade, cleared swamp
-  [OverrideType.Collectable, 0x00, 0x00] // Tourist Center roof heart piece, cleared swamp
+const sharedItems: ReadonlyArray<{
+  readonly type: number;
+  readonly flag: number;
+  readonly scenes: ReadonlyArray<number>;
+}> = [
+  { type: OverrideType.BaseItem, flag: 0x59, scenes: [0x0a, 0x64] }, // Koume, potion shop and woods
+  { type: OverrideType.BaseItem, flag: 0xba, scenes: [0x6c, 0x6e, 0x6f] }, // Postman's postboxes
+  { type: OverrideType.BaseItem, flag: 0xb4, scenes: [0x13, 0x6e] }, // Tingle's Clock Town map
+  { type: OverrideType.BaseItem, flag: 0xb5, scenes: [0x40, 0x6e] }, // Tingle's Woodfall map
+  { type: OverrideType.BaseItem, flag: 0xb6, scenes: [0x40, 0x5d, 0x5e] }, // Tingle's Snowhead map
+  { type: OverrideType.BaseItem, flag: 0xb7, scenes: [0x22, 0x5d, 0x5e] }, // Tingle's Romani Ranch map
+  { type: OverrideType.BaseItem, flag: 0xb8, scenes: [0x22, 0x37] }, // Tingle's Great Bay map
+  { type: OverrideType.BaseItem, flag: 0xb9, scenes: [0x13, 0x37] }, // Tingle's Stone Tower map
+  { type: OverrideType.BaseItem, flag: 0x03, scenes: [0x22, 0x5a, 0x6e] }, // Keaton quiz
+  { type: OverrideType.BaseItem, flag: 0x34, scenes: [0x48, 0x4d] }, // Powder Keg challenge, both seasons
+  { type: OverrideType.BaseItem, flag: 0x1d, scenes: [0x48, 0x4d] }, // Goron Village scrub purchase
+  { type: OverrideType.BaseItem, flag: 0x99, scenes: [0x48, 0x4d] }, // Goron Village scrub trade
+  { type: OverrideType.Collectable, flag: 0x00, scenes: [0x48, 0x4d] }, // Goron Village ledge heart piece
+  { type: OverrideType.BaseItem, flag: 0x35, scenes: [0x00, 0x45] }, // Swamp scrub purchase, both swamps
+  { type: OverrideType.BaseItem, flag: 0x98, scenes: [0x00, 0x45] }, // Swamp scrub trade
+  { type: OverrideType.Collectable, flag: 0x00, scenes: [0x00, 0x45] }, // Tourist Center roof heart piece
+  { type: OverrideType.Chest, flag: 0x05, scenes: [0x16, 0x18] } // Stone Tower Temple chest, both ways up
 ];
 
-/** A check in the seed. The item placed there is deliberately left out. */
+/** A check in the seed. */
 export type SeedLocation = {
   /** Position in the seed's location table, which the game's collected flags also use. */
   readonly index: number;
   readonly name: string;
+  /** The item placed here. Logic reads it in the main process; it never goes to the page. */
+  readonly item: string;
+  /** Which of `sharedItems` this location gives a copy of, if any. */
+  readonly sharedItem: number | null;
 };
 
-/** Location names are single-byte text. */
+/** Names are single-byte text. */
 const latin1 = new TextDecoder('latin1');
+
+/**
+ * Reads a zero-terminated name from the string table.
+ *
+ * @param image - The patched image.
+ * @param start - Where the name starts.
+ * @returns The name, or null if it never ends.
+ */
+const readName = (image: Uint8Array, start: number) => {
+  const end = image.indexOf(0, start);
+  return end === -1 ? null : latin1.decode(image.subarray(start, end));
+};
 
 /**
  * Finds where the string table starts.
@@ -83,7 +106,7 @@ const findStringTable = (image: Uint8Array) => {
 };
 
 /**
- * Reads the seed's checks from a patched image, leaving out shared-item duplicates.
+ * Reads the seed's checks from a patched image.
  *
  * @param image - The output of `applyIpsPatch` for the seed's `code.ips`.
  * @returns The checks in location-table order, each with its table index.
@@ -106,19 +129,17 @@ export const readLocations = Effect.fn('readLocations')(function* (image: Uint8A
     const flag = view.getUint8(entry + locationFields.flag);
     const overrideType = view.getUint8(entry + locationFields.overrideType);
 
-    const isDuplicate = duplicateLocations.some(
-      ([duplicateType, duplicateScene, duplicateFlag]) =>
-        overrideType === duplicateType && scene === duplicateScene && flag === duplicateFlag
+    const sharedItem = sharedItems.findIndex(
+      (shared) =>
+        shared.type === overrideType && shared.flag === flag && shared.scenes.includes(scene)
     );
-    if (isDuplicate) continue;
 
-    // Names are zero-terminated strings, found by their offset into the string table.
-    const nameStart = strings + view.getUint16(entry + locationFields.nameOffset, true);
-    const nameEnd = image.indexOf(0, nameStart);
-    if (nameEnd === -1) return yield* new SpoilerDataNotFound();
+    // Names are found by their offset into the string table.
+    const name = readName(image, strings + view.getUint16(entry + locationFields.nameOffset, true));
+    const item = readName(image, strings + view.getUint16(entry + locationFields.itemOffset, true));
+    if (name === null || item === null) return yield* new SpoilerDataNotFound();
 
-    const name = latin1.decode(image.subarray(nameStart, nameEnd));
-    locations.push({ index, name });
+    locations.push({ index, name, item, sharedItem: sharedItem === -1 ? null : sharedItem });
   }
 
   return locations;

@@ -9,10 +9,11 @@
   --dim: #9a95c2;
   --moon: #f4c35a;
 
-  /* Check states. Logic will add blocked; until then everything left is available. */
+  /* Check states: collected, in logic, out of logic, and not known until the game is read. */
   --done: #6f6b8f;
   --available: #6fd38a;
   --blocked: #ef6b6b;
+  --unknown: var(--dim);
   /* The unlit part of a progress ring. */
   --ring-track: #57537a;
 
