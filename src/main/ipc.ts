@@ -66,4 +66,11 @@ export const setupIpc = (
   ipcMain.handle(channels.restartTracking, () =>
     runtime.runPromise(GameConnection.use((game) => game.restart))
   );
+
+  // A question about the current state, not a command, so it answers directly.
+  ipcMain.handle(channels.findChecksNeeds, (_event, ids: unknown) =>
+    Array.isArray(ids) && ids.every((id) => typeof id === 'number')
+      ? runtime.runPromise(Tracker.use((tracker) => tracker.findNeeds(ids)))
+      : {}
+  );
 };

@@ -2,7 +2,7 @@ import type { Inventory } from '../../../shared/inventory';
 import type { BossRemains, InventoryItem, Song, Temple } from '../../../shared/items';
 
 /** Icon URLs keyed by file name, such as `deku-mask`. */
-const icons = Object.fromEntries(
+export const icons = Object.fromEntries(
   Object.entries(
     import.meta.glob<string>('../assets/items/*.png', { eager: true, import: 'default' })
   ).map(([path, url]) => [path.slice(path.lastIndexOf('/') + 1, -'.png'.length), url])

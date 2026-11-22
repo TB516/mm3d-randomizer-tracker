@@ -11,7 +11,11 @@
   let tracker = $state<TrackerState>();
   let selected = $state<ZoneId>('southClockTown');
 
-  $effect(() => window.api.watchTracker((next) => (tracker = next)));
+  $effect(() =>
+    window.api.watchTracker((next) => {
+      tracker = next;
+    })
+  );
 
   const groups = $derived(groupByZone(tracker?.checks ?? []));
   const selectedGroup = $derived(groups.find((group) => group.zone.id === selected));

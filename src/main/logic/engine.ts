@@ -117,9 +117,14 @@ const areaByKey = new Map<string, Area>(Object.entries(areas));
  *
  * @param seed - What logic needs from the seed.
  * @param collected - Table indexes of the checks the player has collected.
+ * @param extraItems - Items to count as found on top of those, to see what they would open.
  * @returns The names of every location in logic.
  */
-export const findLocationsInLogic = (seed: LogicSeed, collected: Iterable<number>) => {
+export const findLocationsInLogic = (
+  seed: LogicSeed,
+  collected: Iterable<number>,
+  extraItems: Iterable<ItemKey> = []
+) => {
   const counts = new Map<LogicVariable, number>();
   const give = (item: ItemKey) => {
     const { variable } = items[item];
@@ -131,6 +136,7 @@ export const findLocationsInLogic = (seed: LogicSeed, collected: Iterable<number
     const item = seed.checkItems.get(index);
     if (item) give(item);
   }
+  for (const item of extraItems) give(item);
 
   const reached = new Set(['ROOT']);
   const inLogic = new Set<string>();

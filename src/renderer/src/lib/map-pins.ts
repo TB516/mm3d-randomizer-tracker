@@ -44,7 +44,7 @@ export const mapPins: Partial<Record<ZoneId, readonly [x: number, y: number]>> =
   ikanaCanyon: [935, 432],
   beneathTheWell: [1000, 404],
   ikanaCastle: [985, 450],
-  secretShrine: [1048, 392],
+  secretShrine: [937, 378],
   stoneTower: [1080, 440],
   stoneTowerTemple: [1117, 385],
 

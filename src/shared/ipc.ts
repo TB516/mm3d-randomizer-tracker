@@ -2,5 +2,6 @@
 export const channels = {
   watchTracker: 'watch-tracker',
   chooseSeed: 'choose-seed',
-  restartTracking: 'restart-tracking'
+  restartTracking: 'restart-tracking',
+  findChecksNeeds: 'find-checks-needs'
 } as const;

@@ -3,6 +3,8 @@ import type { ZoneId } from './zones';
 
 /** One of the seed's checks. A shared item has one check per zone that gives it. */
 export type CheckState = {
+  /** Identifies the check to the main process, such as when asking what it needs. */
+  readonly id: number;
   /** The check's name without its zone prefix. */
   readonly name: string;
   readonly zone: ZoneId;
@@ -16,6 +18,27 @@ export type CheckState = {
   /** Whether a check in another zone already counts this shared item toward the overall total. */
   readonly countedElsewhere: boolean;
 };
+
+/** An item that would help bring a check into logic. */
+export type NeededItem = {
+  /** The generator's name for the item, such as `HOOKSHOT`, which picks its icon. */
+  readonly key: string;
+  readonly name: string;
+  /** How many are needed, such as Skulltula tokens. Always 1 for an item that works alone. */
+  readonly count: number;
+};
+
+/** What a check out of logic needs. Only items the player hasn't found yet are listed. */
+export type CheckNeeds =
+  /** Each of these brings the check into logic alone. */
+  | { readonly kind: 'anyOf'; readonly items: ReadonlyArray<NeededItem> }
+  /** No single item does, but these together do. There can be other ways too. */
+  | { readonly kind: 'allOf'; readonly items: ReadonlyArray<NeededItem> }
+  /** Logic can't reach the check even with every item. */
+  | { readonly kind: 'unreachable' };
+
+/** The needs of checks out of logic, by their `id`. */
+export type ChecksNeeds = Readonly<Record<number, CheckNeeds>>;
 
 /** The seed the tracker follows. */
 export type SeedState =

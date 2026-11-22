@@ -88,6 +88,9 @@ Logic runs in the main process and only sends each check's status to the page.
   Reads both paths from environment variables and skips without them, so no seed is checked in.
   Passes for the test seed.
 - **Page:** checks out of logic show as blocked, which the sidebar and map pins already style.
+  Each blocked check shows what it needs: the items that each unlock it, or one set of items that
+  does it together. Only items the seed has and the player hasn't found count, so it never
+  points at where anything is.
 - Check: play with the real game and see checks come into logic as items are found.
 
 ## 6. UI
@@ -96,11 +99,15 @@ Design the real page and replace the debug page: area list, check states, item g
 picker, and status messages.
 
 Done: a map view (a pin per zone on the official map of Termina), the icon inventory, the seed
-picker, and status banners. Still to do:
+picker, and status banners. Still to do, in order:
 
-- Show where the player is (needs the current scene from memory), and have the selected zone follow
-  it until another zone is picked.
+- A route: an ordered list of checks to do next, which tick off as they're collected, saved per
+  seed.
+- A reminder of items the Song of Time takes away (like the seahorse and gold dust), and which
+  check to go back to for each. The full list comes from the randomizer's code.
 - A narrow-window layout (a single column of regions that expand), and an items-only window for
   OBS. A three-column list view was tried and dropped: it repeated the map view's sidebar.
 - Remember the window's size and position between launches, in `settings.json` next to the seed
   path. For now a new window opens maximized.
+- Maybe last: show where the player is (needs the current scene from memory), and have the selected
+  zone follow it until another zone is picked.
