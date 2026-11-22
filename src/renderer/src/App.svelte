@@ -3,19 +3,26 @@
   import type { ZoneId } from '../../shared/zones';
   import Inventory from './components/Inventory.svelte';
   import MapView from './components/MapView.svelte';
+  import RoutePanel from './components/RoutePanel.svelte';
   import StatusBanner from './components/StatusBanner.svelte';
   import TopBar from './components/TopBar.svelte';
   import ZoneChecks from './components/ZoneChecks.svelte';
   import { groupByZone } from './lib/checks';
+  import { Route, setRoute } from './lib/route.svelte';
 
   let tracker = $state<TrackerState>();
-  let selected = $state<ZoneId>('southClockTown');
+  /** The zone whose checks show beside the map. With none, the route shows instead. */
+  let selected = $state<ZoneId | null>(null);
 
   $effect(() =>
     window.api.watchTracker((next) => {
       tracker = next;
     })
   );
+
+  const route = setRoute(new Route(() => tracker?.checks ?? []));
+  const seedPath = $derived(tracker?.seed.status === 'loaded' ? tracker.seed.path : null);
+  $effect(() => route.open(seedPath));
 
   const groups = $derived(groupByZone(tracker?.checks ?? []));
   const selectedGroup = $derived(groups.find((group) => group.zone.id === selected));
@@ -47,7 +54,10 @@
           {neighbors}
           inventory={tracker?.inventory ?? null}
           onselect={(zone) => (selected = zone)}
+          onclose={() => (selected = null)}
         />
+      {:else if groups.length > 0}
+        <RoutePanel onselect={(zone) => (selected = zone)} />
       {:else}
         <p class="empty">Each area's checks show here once a seed is loaded.</p>
       {/if}

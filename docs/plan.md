@@ -98,10 +98,12 @@ Design the real page and replace the debug page: area list, check states, item g
 picker, and status messages.
 
 Done: a map view (a pin per zone on the official map of Termina), the icon inventory, the seed
-picker, and status banners. Still to do, in order:
+picker, status banners, and a route (bookmarked checks in order, saved per seed). Still to do, in
+order:
 
-- A route: an ordered list of checks to do next, which tick off as they're collected, saved per
-  seed.
+- Bottles don't show in the inventory even when the save has them. Find out why.
+- Title deeds traded away for their quests show as never found. Decide whether to keep showing
+  them as found.
 - A reminder of items the Song of Time takes away (like the seahorse and gold dust), and which
   check to go back to for each. The full list comes from the randomizer's code.
 - When the run is in go mode, meaning everything needed to finish it is in logic, say so.

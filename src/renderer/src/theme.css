@@ -16,6 +16,8 @@
   --unknown: var(--dim);
   /* The unlit part of a progress ring. */
   --ring-track: #57537a;
+  /* A faint lift under a row the pointer is on, for rows with actions that show on hover. */
+  --row-hover: rgba(255, 255, 255, 0.035);
 
   --font-body: system-ui, sans-serif;
 

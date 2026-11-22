@@ -27,6 +27,7 @@ Tools are managed with [mise](https://mise.jdx.dev). Run `mise install`, then `p
   - `lib/map-pins.ts` places each zone's pin, in the map image's pixels. The Moon has no place on the map, so its pin sits in the sky above the mountains.
   - `lib/inventory-tiles.ts` turns the inventory into the icon tiles.
   - Each blocked check shows what it needs on its row, after an em dash: item icons joined by "or" (any one unlocks it) or "and" (needed together). `lib/needed-items.ts` picks each item's icon, and items without one show their name.
+  - With no zone selected, the column shows the route instead: checks bookmarked from the zones' lists, in order, grouped wherever the route moves to a new zone under that zone's name, which opens it. Clicking the map away from the pins, clicking a selected pin again, the zone's back button, or Escape returns to it. `lib/route.svelte.ts` keeps the route, saved per seed in the page's `localStorage` under the seed's path, since check IDs only mean something within one seed. Collected stops move to a Completed list until they're cleared. `lib/check-needs.svelte.ts` asks for blocked checks' needs for both the zone list and the route.
 - `src/shared/` holds the tracker state type, the zone table, item names, and IPC channel names.
 - `fixtures/seeds/` holds test seeds (see Logic below).
 

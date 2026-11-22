@@ -1,9 +1,14 @@
 <script lang="ts">
-  import type { CheckState, ChecksNeeds } from '../../../shared/tracker-state';
+  import type { CheckState } from '../../../shared/tracker-state';
+  import { watchNeeds } from '../lib/check-needs.svelte';
   import { statusOf } from '../lib/checks';
-  import { neededItemIcon } from '../lib/needed-items';
+  import { getRoute } from '../lib/route.svelte';
+  import BookmarkIcon from './BookmarkIcon.svelte';
+  import NeededItems from './NeededItems.svelte';
 
   let { checks }: { checks: ReadonlyArray<CheckState> } = $props();
+
+  const route = getRoute();
 
   // What's left comes first, so it's never buried under what's done.
   const sorted = $derived(
@@ -12,57 +17,40 @@
       .toSorted((a, b) => Number(a.status === 'done') - Number(b.status === 'done'))
   );
 
-  /** What the blocked checks need, by ID. Kept until new answers arrive, so rows don't flicker. */
-  let needs = $state<ChecksNeeds>({});
-
-  const blockedIds = $derived(
+  const needs = watchNeeds(() =>
     checks.filter((check) => statusOf(check) === 'blocked').map((check) => check.id)
   );
-
-  // Asks again whenever the state changes, since a new item can change what a check needs.
-  $effect(() => {
-    const ids = blockedIds;
-    if (ids.length === 0) return;
-
-    let current = true;
-    void window.api.findChecksNeeds(ids).then((result) => {
-      if (current) needs = result;
-    });
-
-    return () => {
-      current = false;
-    };
-  });
 </script>
 
 <ul>
   {#each sorted as { check, status }, index (index)}
-    {@const shown = status === 'blocked' ? needs[check.id] : undefined}
-    <li class={status}>
+    {@const shown = status === 'blocked' ? needs.current[check.id] : undefined}
+    {@const number = route.numberOf(check.id)}
+    <!-- A check left can be clicked anywhere on its row to bookmark it. The bookmark button is
+         the keyboard's way, and its clicks reach the row too. -->
+    <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
+    <li class={status} onclick={status === 'done' ? undefined : () => route.toggle(check.id)}>
       {#if status === 'done'}
         <svg viewBox="0 0 16 16" aria-label="Done"><path d="M3.5 8.5 6.5 11.5 12.5 4.5" /></svg>
       {:else}
         <i aria-hidden="true"></i>
       {/if}
 
-      {check.name}
+      <span class="name">
+        {check.name}
+        {#if shown}<NeededItems needs={shown} />{/if}
+      </span>
 
-      {#if shown}
-        <span class="needs">
-          <span class="dash" aria-hidden="true">—</span>
-          {#if shown.kind === 'unreachable'}
-            <span class="word">not in logic with any item</span>
-          {:else}
-            {#each shown.items as item, at (item.key)}
-              {#if at > 0}<span class="word">{shown.kind === 'anyOf' ? 'or' : 'and'}</span>{/if}
-              {@const icon = neededItemIcon(item.key)}
-              <span class="item" title={item.name}>
-                {#if icon}<img src={icon} alt={item.name} />{:else}{item.name}{/if}
-                {#if item.count > 1}<span class="count">×{item.count}</span>{/if}
-              </span>
-            {/each}
-          {/if}
-        </span>
+      <!-- Bookmarked checks show their place in the route. The rest show the bookmark on hover. -->
+      {#if status !== 'done'}
+        <button
+          class="mark"
+          class:on={number}
+          title={number ? 'Remove from route' : 'Add to route'}
+          aria-label={number ? `Stop ${number} on the route. Remove it` : 'Add to route'}
+        >
+          <BookmarkIcon filled={Boolean(number)} />{number}
+        </button>
       {/if}
     </li>
   {/each}
@@ -76,11 +64,20 @@
 
   li {
     display: flex;
-    flex-wrap: wrap;
     align-items: baseline;
     column-gap: 9px;
-    padding: 3px 0;
+    margin: 0 -6px;
+    padding: 3px 6px;
+    border-radius: 6px;
     break-inside: avoid;
+  }
+
+  li:not(.done) {
+    cursor: pointer;
+  }
+
+  li:not(.done):hover {
+    background: var(--row-hover);
   }
 
   i,
@@ -118,43 +115,62 @@
     stroke-linejoin: round;
   }
 
-  /* What the check needs, on its row after an em dash: items joined by "or" or "and". */
-  .needs {
+  .name {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .name > :global(.needs) {
+    margin-left: 6px;
+  }
+
+  .mark {
+    flex: none;
+    align-self: center;
     display: inline-flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: 2px 5px;
+    justify-content: center;
+    gap: 3px;
+    min-width: 26px;
+    height: 20px;
+    padding: 0 4px;
+    border: 0;
+    border-radius: 99px;
+    background: none;
     color: var(--dim);
-    font-size: 12px;
+    opacity: 0;
   }
 
-  .dash {
-    margin-right: 2px;
-    font-size: 14px;
+  li:hover .mark,
+  .mark:focus-visible {
+    opacity: 1;
   }
 
-  .word {
-    padding: 0 1px;
-  }
-
-  .item {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
+  /* The whole row is the button, so hovering it lights the bookmark as if hovering that. */
+  li:hover .mark {
+    background: var(--surface-raised);
     color: var(--ink);
   }
 
-  .item img {
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
+  /* A moon badge with the check's place in the route. */
+  .mark.on {
+    padding: 0 7px 0 5px;
+    background: rgba(244, 195, 90, 0.14);
+    color: var(--moon);
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    opacity: 1;
   }
 
-  .count {
-    color: var(--dim);
-    font-size: 11px;
-    font-variant-numeric: tabular-nums;
+  li:hover .mark.on {
+    background: rgba(244, 195, 90, 0.24);
+    color: var(--moon);
+  }
+
+  .mark.on :global(svg) {
+    width: 11px;
+    height: 11px;
   }
 
   /* A gap between the last check left and the first one done. */

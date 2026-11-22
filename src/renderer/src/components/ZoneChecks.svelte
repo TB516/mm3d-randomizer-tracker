@@ -12,7 +12,8 @@
     group,
     neighbors,
     inventory,
-    onselect
+    onselect,
+    onclose
   }: {
     group: ZoneGroup;
     /** The other zones in the same region, listed below for quick switching. */
@@ -20,6 +21,8 @@
     /** For a temple's keys, fairies, and dungeon items. Null until tracking. */
     inventory: Inventory | null;
     onselect: (zone: ZoneGroup['zone']['id']) => void;
+    /** Goes back to the route. */
+    onclose: () => void;
   } = $props();
 
   /** How much bigger the header's view of the map is than the map image itself. */
@@ -44,6 +47,11 @@
 
 <section class="zone" aria-label={group.zone.name}>
   <header>
+    <button class="back" onclick={onclose}>
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8 10 12.5" /></svg>
+      Route
+    </button>
+
     <!-- A close-up of the zone's spot on the map, centered on its pin. -->
     {#if pin}
       <div class="view" aria-hidden="true" style:--x={view?.x} style:--y={view?.y}>
@@ -189,15 +197,56 @@
     stroke-linejoin: round;
   }
 
+  header {
+    position: relative;
+  }
+
+  /* Over the close-up's corner, back to the route. */
+  .back {
+    position: absolute;
+    z-index: 2;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 10px 4px 6px;
+    border: 0;
+    border-radius: 99px;
+    background: rgba(21, 20, 44, 0.85);
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .back:hover {
+    background: var(--surface-raised);
+  }
+
+  .back:hover svg {
+    stroke: var(--moon);
+  }
+
+  .back svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: var(--dim);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
   .title {
     position: relative;
     margin-top: -34px;
     padding: 0 20px;
   }
 
+  /* Zones without a close-up leave room for the back button above their name. */
   .title.plain {
     margin-top: 0;
-    padding-top: 18px;
+    padding-top: 50px;
   }
 
   .region {
@@ -311,7 +360,7 @@
   }
 
   .zone :global(li) {
-    padding: 1px 0;
+    padding-block: 1px;
   }
 
   /* The Spider Houses split into two columns once the panel is wide enough that their names don't

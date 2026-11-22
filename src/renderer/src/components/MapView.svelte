@@ -17,7 +17,8 @@
   }: {
     groups: ReadonlyArray<ZoneGroup>;
     inventory: Inventory | null;
-    selected: ZoneId;
+    /** Null when no zone is open. Clicking the open zone's pin again closes it. */
+    selected: ZoneId | null;
     /** A message to float over the top of the map, such as why tracking is waiting. */
     notice?: Snippet;
   } = $props();
@@ -55,9 +56,26 @@
   const art = place(0, 0);
 </script>
 
+<!-- Clicking the map away from its pins and cards, or pressing Escape, closes the open zone. -->
+<svelte:window
+  onkeydown={(event) => {
+    if (event.key === 'Escape') selected = null;
+  }}
+/>
+
 <div class="stage">
-  <!-- One pixel of the map image is sized so the land (the crop) just fits. -->
-  <div class="frame" style:--scale="min(100cqw / {mapCrop.width}, 100cqh / {mapCrop.height})">
+  <!-- One pixel of the map image is sized so the land (the crop) just fits. Escape above is the
+       keyboard's way to do what clicking the map does. -->
+  <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+  <div
+    class="frame"
+    style:--scale="min(100cqw / {mapCrop.width}, 100cqh / {mapCrop.height})"
+    onclick={(event) => {
+      if (event.target instanceof Element && !event.target.closest('.pin, .card, .notice')) {
+        selected = null;
+      }
+    }}
+  >
     <img
       class="art"
       src={termina}
@@ -76,7 +94,7 @@
         style:--left="{(summary.left / summary.total) * 100}%"
         aria-label="{group.zone.name}, {summary.left} left"
         aria-pressed={group.zone.id === selected}
-        onclick={() => (selected = group.zone.id)}
+        onclick={() => (selected = group.zone.id === selected ? null : group.zone.id)}
       >
         {#if summary.left > 0}
           {summary.left}
