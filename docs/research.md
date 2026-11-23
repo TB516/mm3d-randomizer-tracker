@@ -87,7 +87,10 @@ and reading Azahar's process memory directly from Linux.
   `collectedTradeItems` has a fixed slot per trade item: Moon's Tear, the four title deeds, Room
   Key, Letter to Kafei, Pendant of Memories, Letter to Mama. A slot holds that item's ID while the
   player has it and `0xFF` once it's traded away (`SaveFile_InitExtSaveData` in mm3dr's
-  `savefile.cpp`). The item screen shows only one trade item per slot, so the tracker reads these.
+  `savefile.cpp`). The item screen shows only one trade item per slot, so the tracker reads these
+  too. The two can disagree: after the Moon's Tear was traded and found again, and the Song of Time
+  played, the list was empty while the item screen held the Moon's Tear and the Pendant of
+  Memories. So the tracker counts a trade item as held if either has it.
 
   These hand-counted offsets are the ones the tracker uses. They're confirmed against the live game
   and the saved `0.bin`, so they aren't generated from the headers.

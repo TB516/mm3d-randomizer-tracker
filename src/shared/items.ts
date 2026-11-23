@@ -103,6 +103,22 @@ export const bossRemains = ['Odolwa', 'Goht', 'Gyorg', 'Twinmold'] as const;
 
 export type BossRemains = (typeof bossRemains)[number];
 
+/**
+ * The trade items, in the order of the randomizer's trade slots: Moon's Tear, the four title deeds,
+ * Room Key, Letter to Kafei, Pendant of Memories, Letter to Mama.
+ */
+export const tradeItems = [
+  'MoonTear',
+  'LandTitleDeed',
+  'SwampTitleDeed',
+  'MountainTitleDeed',
+  'OceanTitleDeed',
+  'RoomKey',
+  'LetterToKafei',
+  'PendantOfMemories',
+  'LetterToMama'
+] as const satisfies ReadonlyArray<InventoryItem>;
+
 /** Swords in upgrade order. */
 export const swords = ['KokiriSword', 'RazorSword', 'GildedSword'] as const;
 

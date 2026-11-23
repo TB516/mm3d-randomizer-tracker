@@ -1,6 +1,6 @@
 import { Effect, Schema } from 'effect';
 
-import { inventoryItems, type InventoryItem } from '../../shared/items';
+import { inventoryItems, tradeItems } from '../../shared/items';
 import { AzaharRpc } from '../azahar/rpc';
 
 /** No randomizer data in memory yet, usually because no save file is loaded. */
@@ -24,22 +24,6 @@ const offsets = {
 
 /** One byte per seed location, the same 512 slots as the seed's location table. */
 const itemCollectedSize = 512;
-
-/**
- * The trade items the player holds, one slot each in this order. A slot holds its item's ID while
- * the player has it, and is emptied when it's traded away (mm3dr's `SaveFile_InitExtSaveData`).
- */
-const tradeItems: ReadonlyArray<InventoryItem> = [
-  'MoonTear',
-  'LandTitleDeed',
-  'SwampTitleDeed',
-  'MountainTitleDeed',
-  'OceanTitleDeed',
-  'RoomKey',
-  'LetterToKafei',
-  'PendantOfMemories',
-  'LetterToMama'
-];
 
 /** What a trade slot holds when the player doesn't have its item: `game::ItemId::None`. */
 const emptyTradeSlot = 0xff;
@@ -130,8 +114,8 @@ const readTradeItems = (block: Uint8Array) =>
   );
 
 /**
- * Reads which seed locations are collected, and the trade items the player holds. The game's own
- * item screen shows only one trade item per slot, so these come from the randomizer's list.
+ * Reads which seed locations are collected, and the trade items in the randomizer's list. The game's
+ * own item screen shows only one trade item per slot, so the randomizer keeps this list too.
  *
  * @param address - The randomizer data's address, from `findExtSaveData`.
  * @returns One byte per seed location, 1 once collected, and the trade items held. Fails with
