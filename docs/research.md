@@ -19,7 +19,10 @@ against a live game unless marked otherwise.
   `<azahar-data>/sdmc/luma/titles/0004000000125500/`, which Azahar doesn't read.
 - Save files under `<azahar-data>/sdmc/Nintendo 3DS/<zeros>/<zeros>/`:
   - game save: `title/00040000/00125500/data/00000001/save0.bin`
-  - randomizer data: `extdata/00000000/00125500/user/0.bin` (4296 bytes)
+  - randomizer data: `extdata/00000000/00125500/user/<slot>.bin` (4296 bytes), one per save slot
+    (`0.bin` for the first). The game picks the file by the slot it loaded (`save_idx`, in
+    `SaveFile_LoadExtSaveData`). Copying a file in the game's file select copies only the game
+    save, so the copy starts with no checks collected.
 - Settings: Linkus-ish preset. Shopsanity is off (shop items, bomb bags, bean seller and the swamp
   scrub's shop are vanilla, not checks).
 
@@ -50,8 +53,9 @@ and reading Azahar's process memory directly from Linux.
 - Game save data (`SaveData`, 0x1A88 bytes) at **`0x7751E0`** (`CommonData` at `0x7751D8`, `save` at
   +8). Same layout as `save0.bin` from file offset 8.
   - `PlayerData` at +0x118: max health u16 at +0x1A (16 per heart), rupees u16 at +0x20.
-  - Sword/shield u16 at +0x172. `InventoryData` at +0x174: items[24], masks[24], bottles[7] (each slot holds its bottle's contents, `0xFF` when there's no bottle), ...; count register
-    at +0x78, collect register (remains, songs, the Goron Lullaby intro, heart pieces) at +0x7C.
+  - Sword/shield u16 at +0x172. `InventoryData` at +0x174: items[24], masks[24], bottles[7] (each
+    slot holds its bottle's contents, `0xFF` when there's no bottle), ...; count register at +0x78,
+    collect register (remains, songs, the Goron Lullaby intro, heart pieces) at +0x7C.
   - Temple items, one byte per temple in the order Woodfall, Snowhead, Great Bay, Stone Tower, at
     `InventoryData` +0x80 (bits: boss key 0, compass 1, map 2), small keys at +0x8A, and stray
     fairies at +0x94. The game starts keys at `0xFF`, which the randomizer sets to 0 on a new file.
@@ -85,15 +89,16 @@ and reading Azahar's process memory directly from Linux.
   | dungeonFairyBitfields | 4280   | u32[4]                                          |
 
   `collectedTradeItems` has a fixed slot per trade item: Moon's Tear, the four title deeds, Room
-  Key, Letter to Kafei, Pendant of Memories, Letter to Mama. A slot holds that item's ID while the
-  player has it and `0xFF` once it's traded away (`SaveFile_InitExtSaveData` in mm3dr's
-  `savefile.cpp`). The item screen shows only one trade item per slot, so the tracker reads these
-  too. The two can disagree: after the Moon's Tear was traded and found again, and the Song of Time
-  played, the list was empty while the item screen held the Moon's Tear and the Pendant of
-  Memories. So the tracker counts a trade item as held if either has it.
+  Key, Letter to Kafei, Pendant of Memories, Letter to Mama. Getting one sets its slot to its ID
+  (`ItemEffect_GiveTradeItem`). L and R on the pause screen cycle item slots 5 (Moon's Tear and
+  deeds) and 17 (Letter to Kafei and Pendant) through this list, and giving one of those away sets
+  its slot back to `0xFF` (`SaveFile_RemoveTradeItemFromSlot`, hooked at `0x1AFE94`). Item slot 11
+  (Room Key and Letter to Mama) isn't cycled or cleared, so a Letter to Mama given away stays on
+  the list while the slot is empty, as seen live. Upstream changed trade items to stay after being
+  given (mm3dr #169), after v1.5.1.
 
   These hand-counted offsets are the ones the tracker uses. They're confirmed against the live game
-  and the saved `0.bin`, so they aren't generated from the headers.
+  and the saved file, so they aren't generated from the headers.
 
 ## Seed data in `code.ips`
 
@@ -104,8 +109,9 @@ and reading Azahar's process memory directly from Linux.
 - `SpoilerItemLocation` (12 bytes): u16 location string offset, u16 item string offset, then u8
   CollectionCheckType, scene, flag, group, CollectType, RevealType, OverrideType, Collected.
 - After the locations: `u16 SphereItemLocations[512]`, then `char StringData[16384]`.
-- The spheres are the generator's playthrough order and are the planned logic test.
-- The table also names the item at each check. The tracker must not show items (spoilers).
+- The spheres are the generator's playthrough order, filled only with in-game spoilers on.
+- The table also names the item at each check. The tracker never shows the item at a check that
+  isn't collected yet (spoilers).
 
 ## How "collected" works
 
@@ -125,7 +131,7 @@ and reading Azahar's process memory directly from Linux.
 - Cross-check that confirmed the decoding: items from the collected checks add up exactly to the
   save's token counts (14 swamp, 13 ocean) and hearts (10 plus 1 piece).
 
-## Logic plan
+## Generator logic
 
 - Rules live in `MM3D_Randomizer/source/location_access.cpp` (~4,500 lines at v1.5.1): areas with
   `EventAccess`, `LocationAccess` and `Entrance` entries, each a short boolean lambda.
@@ -171,14 +177,8 @@ and reading Azahar's process memory directly from Linux.
 - Test: replay the spoiler log's spheres. Every location in sphere N must be reachable with only
   items from earlier spheres. Passes for the test seed (13 spheres).
 
-## Prototype
+## Why convert the generator's logic
 
-`docs/prototype/live_test.py` is the working read-only RPC test (Python, standard library only):
-selects the MM3D process, reads the save data, finds `ExtSaveData` by search, and prints each check
-the moment it's collected. Run with `python3 -I docs/prototype/live_test.py <path to code.ips>`.
-
-## Tracker this replaces
-
-`tacoman369.github.io` (MM3D tracker). Its logic is hand-maintained and drifted from the randomizer
-(for example, it requires a ranged attack for the Swamp Spider House). Its area and check names are
-in `scripts/checks.js` if a familiar naming scheme helps.
+Existing MM3D trackers keep their logic by hand, which drifts from what the randomizer actually
+does as it updates. This tracker converts the generator's own rules instead, so it matches the
+randomizer version it targets.

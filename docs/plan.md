@@ -101,8 +101,26 @@ Done: a map view (a pin per zone on the official map of Termina), the icon inven
 picker, status banners, and a route (bookmarked checks in order, saved per seed). Still to do, in
 order:
 
-- Title deeds traded away for their quests show as never found. Decide whether to keep showing
-  them as found.
+- The inventory shows what's been found, matching what logic counts. The game's own menus show
+  what's held right now. A tile lights up if a collected check or a starting item gave it, or if
+  it's in the save now (for items left in their normal place, like the bomb shop's bomb bag, and
+  sticks or nuts dropped by enemies). This replaces the traded-away badge and the trade item rules.
+  - Swords, shields, quivers, bomb bags, wallets, and magic show the highest level found or held.
+  - Small keys show keys found, not keys left.
+  - Hearts, heart pieces, double defense, Skulltula tokens, bottles, and stray fairies stay as the
+    save has them. To check in game: whether turning stray fairies in at a fountain empties the
+    count.
+  - Hovering a tile says where it came from: "Found at <check>, <zone>", "Starting item", or "In
+    your inventory". Clicking one found at a check opens that check's zone with the check lit up.
+- Completed checks show the item they gave as an icon, named on hover, in the zone list and the
+  route's Completed section. Bottles show their contents. A check's item is only sent to the page
+  once it's collected.
+  - New icons from Zelda Wiki's MM3D and OoT3D sprites: bottle contents, rupees, the recovery
+    heart, the magic jar, bomb bags, quivers, and the fishing pass. Mystery Milk uses the milk icon.
+    Purple, silver, and huge rupees are the red rupee recolored, double defense is the heart
+    container with the hearts counter's outline, and ice traps use the OoT3D Blue Fire. Spin attack
+    gets a custom icon. The generator's Hint and Majora's Mask are event items, never a check's
+    reward, so they need none.
 - A reminder of items the Song of Time takes away (like the seahorse and gold dust), and which
   check to go back to for each. The full list comes from the randomizer's code.
 - When the run is in go mode, meaning everything needed to finish it is in logic, say so.
@@ -112,3 +130,6 @@ order:
   path. For now a new window opens maximized.
 - Maybe last: show where the player is (needs the current scene from memory), and have the selected
   zone follow it until another zone is picked.
+- Seeds logic doesn't follow (anything but glitchless logic, or dungeon entrance shuffle) show
+  every check as in logic. Decide what the tracker should do for them. The seed still lists each
+  check's item, so completed-check icons can work there too.
