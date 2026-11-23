@@ -1,11 +1,10 @@
 import { Context, Effect, FiberHandle, Layer, Option, Stream } from 'effect';
 
-import { type TradeItem, tradeItems } from '../shared/items';
 import type { CheckNeeds, ChecksNeeds, TrackerState } from '../shared/tracker-state';
+import { addFoundItems, type FoundItem } from './found-items';
 import { GameConnection, type GameStatus } from './game/connection';
 import { findChecksNeeds } from './logic/check-needs';
-import { findLocationsInLogic, type LogicSeed } from './logic/engine';
-import type { ItemKey } from './logic/generated/items';
+import { findItemKey, findLocationsInLogic, type LogicSeed } from './logic/engine';
 import { CurrentSeed, type SeedStatus } from './seed/current-seed';
 import type { SeedCheck } from './seed/place-in-zone';
 
@@ -28,34 +27,28 @@ const findCollected = (checks: ReadonlyArray<SeedCheck>, game: GameStatus) => {
   return { collected, indexes };
 };
 
-/** The generator's keys for the trade items. */
-const tradeItemKeys: Readonly<Record<TradeItem, ItemKey>> = {
-  MoonTear: 'MOONS_TEAR',
-  LandTitleDeed: 'LAND_TITLE',
-  SwampTitleDeed: 'SWAMP_TITLE',
-  MountainTitleDeed: 'MOUNTAIN_TITLE',
-  OceanTitleDeed: 'OCEAN_TITLE',
-  RoomKey: 'ROOM_KEY',
-  LetterToKafei: 'LETTER_KAFEI',
-  PendantOfMemories: 'PENDANT_MEMORIES',
-  LetterToMama: 'LETTER_MAMA'
-};
-
 /**
- * Finds the trade items the player has found, so ones traded away can still show as found. Only
- * collected checks count, so this never tells the player anything they haven't picked up.
+ * Lists the items found at collected checks and the starting items. Only collected checks count,
+ * so this never tells the player anything they haven't picked up.
  *
- * @param logic - What logic knows about the seed, including what each check holds.
- * @param collected - Table indexes of the collected checks.
- * @returns The trade items found, held or not.
+ * @param checks - The seed's checks.
+ * @param collected - Whether each check is collected.
+ * @param logic - What logic knows about the seed, for the starting items. Null when logic isn't
+ *   followed, which leaves them out for now.
+ * @returns Each item found, and where.
  */
-const findTradeItemsFound = (logic: LogicSeed, collected: ReadonlyArray<number>) => {
-  const found = new Set([
-    ...logic.startingItems,
-    ...collected.flatMap((index) => logic.checkItems.get(index) ?? [])
-  ]);
-  return tradeItems.filter((item) => found.has(tradeItemKeys[item]));
-};
+const findFoundItems = (
+  checks: ReadonlyArray<SeedCheck>,
+  collected: ReadonlyArray<boolean>,
+  logic: LogicSeed | null
+): ReadonlyArray<FoundItem> => [
+  ...(logic?.startingItems ?? []).map((key) => ({ key, source: 'starting' as const })),
+  // A shared item counts once, at the check the overall total counts it at.
+  ...checks.flatMap((check, at) => {
+    const key = findItemKey(check.item);
+    return collected[at] && !check.countedElsewhere && key ? [{ key, source: at }] : [];
+  })
+];
 
 /**
  * Combines the seed and the game into what the page shows.
@@ -71,6 +64,8 @@ const toTrackerState = (seed: SeedStatus, game: GameStatus): TrackerState => {
 
   const { collected, indexes } = findCollected(checks, game);
   const locationsInLogic = snapshot && logic ? findLocationsInLogic(logic, indexes) : null;
+  const shown =
+    snapshot && addFoundItems(snapshot.inventory, findFoundItems(checks, collected, logic));
 
   /**
    * Works out whether logic can reach a check.
@@ -98,10 +93,12 @@ const toTrackerState = (seed: SeedStatus, game: GameStatus): TrackerState => {
       zone: check.zone,
       collected: collected[at] ?? false,
       inLogic: inLogic(check),
-      countedElsewhere: check.countedElsewhere
+      countedElsewhere: check.countedElsewhere,
+      // Only a collected check says what it gave, so the page never learns an item early.
+      item: collected[at] ? { key: findItemKey(check.item), name: check.item } : null
     })),
-    inventory: snapshot?.inventory ?? null,
-    tradeItemsFound: snapshot && logic ? findTradeItemsFound(logic, indexes) : []
+    inventory: shown?.inventory ?? null,
+    foundAt: shown?.sources ?? {}
   };
 };
 

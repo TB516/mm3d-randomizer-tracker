@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { CheckNeeds } from '../../../shared/tracker-state';
-  import { neededItemIcon } from '../lib/needed-items';
+  import ItemIcon from './ItemIcon.svelte';
 
   let { needs }: { needs: CheckNeeds } = $props();
 </script>
@@ -13,9 +13,8 @@
   {:else}
     {#each needs.items as item, at (item.key)}
       {#if at > 0}<span class="word">{needs.kind === 'anyOf' ? 'or' : 'and'}</span>{/if}
-      {@const icon = neededItemIcon(item.key)}
-      <span class="item" title={item.name}>
-        {#if icon}<img src={icon} alt={item.name} />{:else}{item.name}{/if}
+      <span class="item">
+        <ItemIcon key={item.key} name={item.name} />
         {#if item.count > 1}<span class="count">×{item.count}</span>{/if}
       </span>
     {/each}
@@ -48,10 +47,7 @@
     color: var(--ink);
   }
 
-  .item img {
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
+  .item :global(img) {
     filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
   }
 

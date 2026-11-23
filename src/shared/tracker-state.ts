@@ -1,6 +1,16 @@
-import type { Inventory } from './inventory';
-import type { TradeItem } from './items';
+import type { DungeonPart, Inventory, Upgrade } from './inventory';
+import type { BossRemains, InventoryItem, Song, Temple } from './items';
 import type { ZoneId } from './zones';
+
+/** An item, as the page shows it. */
+export type ItemInfo = {
+  /**
+   * The generator's name for the item, such as `HOOKSHOT`, which picks its icon. Null for an item
+   * the generator's item list doesn't have, which shows by name.
+   */
+  readonly key: string | null;
+  readonly name: string;
+};
 
 /** One of the seed's checks. A shared item has one check per zone that gives it. */
 export type CheckState = {
@@ -18,7 +28,27 @@ export type CheckState = {
   readonly inLogic: boolean | null;
   /** Whether a check in another zone already counts this shared item toward the overall total. */
   readonly countedElsewhere: boolean;
+  /** The item the check gave. Null until it's collected, so nothing is spoiled. */
+  readonly item: ItemInfo | null;
 };
+
+/** Where an item was found: a check's `id`, or `starting` for a starting item. */
+export type ItemSource = number | 'starting';
+
+/**
+ * Something the inventory shows, which can be found: an item, song, or boss remains by name, the
+ * Bombers' Notebook, an upgrade, or a temple's dungeon part such as `Woodfall.smallKey`.
+ */
+export type SourceId =
+  | InventoryItem
+  | Song
+  | BossRemains
+  | 'BombersNotebook'
+  | Upgrade
+  | `${Temple}.${DungeonPart}`;
+
+/** Where each found part of the inventory came from. Parts only held, never found, aren't here. */
+export type ItemSources = Readonly<Partial<Record<SourceId, ReadonlyArray<ItemSource>>>>;
 
 /** An item that would help bring a check into logic. */
 export type NeededItem = {
@@ -63,11 +93,11 @@ export type TrackerState = {
   readonly game: GameState;
   /** The seed's checks. Empty without a loaded seed, and all uncollected until tracking. */
   readonly checks: ReadonlyArray<CheckState>;
-  /** Null until tracking. */
-  readonly inventory: Inventory | null;
   /**
-   * Trade items the player has found, from collected checks and starting items, whether or not
-   * they still have them. Empty until tracking, and for seeds whose settings logic doesn't follow.
+   * Everything found at collected checks or as a starting item, plus everything held now, so found
+   * items stay after they're traded away or used up. Null until tracking.
    */
-  readonly tradeItemsFound: ReadonlyArray<TradeItem>;
+  readonly inventory: Inventory | null;
+  /** Where the found parts of the inventory came from. Empty until tracking. */
+  readonly foundAt: ItemSources;
 };

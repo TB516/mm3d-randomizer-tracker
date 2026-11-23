@@ -177,8 +177,7 @@ export const decodeInventory = (
 
   return {
     items,
-    // The randomizer drops an item from its list when it's traded, but one got again after that
-    // only lands on the item screen, so the two can disagree. Either one means it's held.
+    // The item screen shows one trade item per slot, and the randomizer's list has the rest.
     tradeItems: tradeItems.filter(
       (item) => listedTradeItems.includes(item) || items.includes(item)
     ),

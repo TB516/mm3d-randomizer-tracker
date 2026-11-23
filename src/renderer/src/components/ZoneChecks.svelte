@@ -12,6 +12,7 @@
     group,
     neighbors,
     inventory,
+    lit,
     onselect,
     onclose
   }: {
@@ -20,6 +21,8 @@
     neighbors: ReadonlyArray<ZoneGroup>;
     /** For a temple's keys, fairies, and dungeon items. Null until tracking. */
     inventory: Inventory | null;
+    /** A check to light up, after clicking an inventory tile found there. */
+    lit: number | null;
     onselect: (zone: ZoneGroup['zone']['id']) => void;
     /** Goes back to the route. */
     onclose: () => void;
@@ -111,7 +114,7 @@
   </header>
 
   <div class="checks" class:long={group.checks.length > 16}>
-    <CheckList checks={group.checks} />
+    <CheckList checks={group.checks} {lit} />
   </div>
 
   {#if neighbors.length > 0}

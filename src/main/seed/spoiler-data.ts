@@ -70,7 +70,7 @@ export type SeedLocation = {
   /** Position in the seed's location table, which the game's collected flags also use. */
   readonly index: number;
   readonly name: string;
-  /** The item placed here. Logic reads it in the main process; it never goes to the page. */
+  /** The item placed here. The page only gets it once the location's check is collected. */
   readonly item: string;
   /** Which of `sharedItems` this location gives a copy of, if any. */
   readonly sharedItem: number | null;

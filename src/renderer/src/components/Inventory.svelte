@@ -1,19 +1,11 @@
 <script lang="ts">
   import type { Inventory } from '../../../shared/inventory';
-  import type { TradeItem } from '../../../shared/items';
   import { inventoryTiles } from '../lib/inventory-tiles';
   import ItemTile from './ItemTile.svelte';
 
-  let {
-    inventory,
-    tradeItemsFound
-  }: {
-    inventory: Inventory | null;
-    /** Trade items found, held or not, so ones traded away show as such. */
-    tradeItemsFound: ReadonlyArray<TradeItem>;
-  } = $props();
+  let { inventory }: { inventory: Inventory | null } = $props();
 
-  const tiles = $derived(inventoryTiles(inventory, tradeItemsFound));
+  const tiles = $derived(inventoryTiles(inventory));
 </script>
 
 <section class="inventory" aria-label="Inventory">

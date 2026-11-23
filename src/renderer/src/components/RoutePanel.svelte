@@ -4,6 +4,7 @@
   import { statusOf, zoneById } from '../lib/checks';
   import { getRoute } from '../lib/route.svelte';
   import BookmarkIcon from './BookmarkIcon.svelte';
+  import ItemIcon from './ItemIcon.svelte';
   import NeededItems from './NeededItems.svelte';
 
   let { onselect }: { onselect: (zone: ZoneId) => void } = $props();
@@ -128,7 +129,8 @@
           <li>
             <svg viewBox="0 0 16 16" aria-label="Done"><path d="M3.5 8.5 6.5 11.5 12.5 4.5" /></svg>
             {check.name}
-            <span>{zoneById(check.zone).name}</span>
+            <span class="zone">{zoneById(check.zone).name}</span>
+            {#if check.item}<span class="got"><ItemIcon {...check.item} /></span>{/if}
           </li>
         {/each}
       </ul>
@@ -407,8 +409,14 @@
     transform: translateY(1px);
   }
 
-  .completed li span {
+  .completed .zone {
     margin-left: auto;
     font-size: 12px;
+  }
+
+  .completed .got {
+    flex: none;
+    align-self: center;
+    display: flex;
   }
 </style>

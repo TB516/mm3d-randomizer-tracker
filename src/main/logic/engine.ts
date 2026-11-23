@@ -43,6 +43,14 @@ for (const key of itemKeys) {
 }
 
 /**
+ * Finds the generator's key for an item by its name in the seed.
+ *
+ * @param name - The item's name, such as "Hookshot".
+ * @returns The first key with that name, or null for a name the generator doesn't have.
+ */
+export const findItemKey = (name: string) => itemKeysByName.get(name)?.[0] ?? null;
+
+/**
  * Works out the item at every location logic can count: the seed's checks by their item names,
  * and every other location from the seed's item overrides.
  *

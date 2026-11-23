@@ -1,5 +1,11 @@
 import type { BossRemains, InventoryItem, Shield, Song, Sword, Temple } from './items';
 
+/** A temple's own items that a check can give. */
+export type DungeonPart = 'smallKey' | 'bossKey' | 'map' | 'compass';
+
+/** Items with levels, like the sword or the wallet. */
+export type Upgrade = 'sword' | 'shield' | 'quiver' | 'bombBag' | 'wallet' | 'magic';
+
 /** One temple's own items. */
 export type DungeonItems = {
   /** Keys held now. Opening a locked door uses one up. */

@@ -15,6 +15,8 @@ export type SeedCheck = {
   readonly zone: ZoneId;
   /** Whether a check in another zone already counts this shared item toward the overall total. */
   readonly countedElsewhere: boolean;
+  /** The item placed here, by its name in the seed. Copies of a shared item all hold it. */
+  readonly item: string;
 };
 
 /** Every zone prefix, longest first, so `Woodfall Temple` wins over a shorter prefix. */
@@ -60,7 +62,8 @@ export const placeChecks = (locations: ReadonlyArray<SeedLocation>) => {
         locations: [location.name],
         name,
         zone,
-        countedElsewhere: false
+        countedElsewhere: false,
+        item: location.item
       });
       continue;
     }
@@ -79,7 +82,8 @@ export const placeChecks = (locations: ReadonlyArray<SeedLocation>) => {
       locations: [location.name],
       name,
       zone,
-      countedElsewhere: countedItems.has(sharedItem)
+      countedElsewhere: countedItems.has(sharedItem),
+      item: location.item
     };
     countedItems.add(sharedItem);
     sharedChecks.set(key, check);

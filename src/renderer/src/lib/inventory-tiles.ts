@@ -1,5 +1,6 @@
 import type { Inventory } from '../../../shared/inventory';
 import type { BossRemains, InventoryItem, Song, Temple } from '../../../shared/items';
+import type { SourceId } from '../../../shared/tracker-state';
 
 /** Icon URLs keyed by file name, such as `deku-mask`. */
 export const icons = Object.fromEntries(
@@ -17,6 +18,8 @@ export type Tile = {
   readonly badge?: string;
   /** A CSS filter that recolors the icon, such as a temple's stray fairy color. */
   readonly tint?: string;
+  /** What the tile shows, to look up where it was found. None for tiles only the save fills. */
+  readonly sourceId?: SourceId;
 };
 
 /** Ammo each upgrade level holds, from the in-game shops and upgrades. Level 0 is none. */
@@ -119,13 +122,21 @@ const shieldTiles = {
  * @param icon - The icon's file name.
  * @param name - What the tile is called when hovered.
  * @param has - Whether the player has it.
+ * @param sourceId - What it shows, to look up where it was found, if a check can give it.
  * @param badge - A number for the corner, if any.
  * @returns The tile.
  */
-const tile = (icon: string, name: string, has: boolean, badge?: string): Tile => ({
+const tile = (
+  icon: string,
+  name: string,
+  has: boolean,
+  sourceId?: SourceId,
+  badge?: string
+): Tile => ({
   icon: icons[icon] ?? '',
   name,
   has,
+  ...(sourceId ? { sourceId } : {}),
   ...(badge ? { badge } : {})
 });
 
@@ -159,13 +170,25 @@ export const dungeonTiles = (inventory: Inventory | null, temple: Temple) => {
 
   return {
     items: [
-      tile('small-key', 'Small Keys', keys > 0, keys ? String(keys) : undefined),
-      tile('boss-key', 'Boss Key', items?.bossKey ?? false),
-      tile('dungeon-map', 'Map', items?.map ?? false),
-      tile('compass', 'Compass', items?.compass ?? false)
+      tile(
+        'small-key',
+        'Small Keys',
+        keys > 0,
+        `${temple}.smallKey`,
+        keys ? String(keys) : undefined
+      ),
+      tile('boss-key', 'Boss Key', items?.bossKey ?? false, `${temple}.bossKey`),
+      tile('dungeon-map', 'Map', items?.map ?? false, `${temple}.map`),
+      tile('compass', 'Compass', items?.compass ?? false, `${temple}.compass`)
     ],
     fairies: {
-      ...tile('stray-fairy', 'Stray Fairies', fairies > 0, `${fairies}/${fairiesPerTemple}`),
+      ...tile(
+        'stray-fairy',
+        'Stray Fairies',
+        fairies > 0,
+        undefined,
+        `${fairies}/${fairiesPerTemple}`
+      ),
       ...(tint ? { tint } : {})
     }
   };
@@ -174,14 +197,10 @@ export const dungeonTiles = (inventory: Inventory | null, temple: Temple) => {
 /**
  * Lays out the inventory panel. Without an inventory, everything shows as missing.
  *
- * @param inventory - What the player has, or null before tracking starts.
- * @param tradeItemsFound - Trade items found, held or not, so ones traded away show as such.
+ * @param inventory - What the player has found or holds, or null before tracking starts.
  * @returns The tiles for each section, plus the counters.
  */
-export const inventoryTiles = (
-  inventory: Inventory | null,
-  tradeItemsFound: ReadonlyArray<InventoryItem> = []
-) => {
+export const inventoryTiles = (inventory: Inventory | null) => {
   const items = inventory?.items ?? [];
   const has = (item: InventoryItem) => items.includes(item);
 
@@ -197,35 +216,38 @@ export const inventoryTiles = (
 
   return {
     items: [
-      tile(swordIcon, swordName, sword !== null),
-      tile(shieldIcon, shieldName, shield !== null),
-      tile('bow', "Hero's Bow", has('Arrow'), quiver ? String(quiver) : undefined),
-      tile('bomb', 'Bombs', has('Bomb'), bombBag ? String(bombBag) : undefined),
-      ...itemTiles.map(([icon, name, item]) => tile(icon, name, has(item))),
-      tile('bottle', 'Bottles', bottles > 0, bottles > 1 ? String(bottles) : undefined),
-      tile('magic-bean', 'Magic Beans', has('MagicBean')),
-      tile('bombers-notebook', "Bombers' Notebook", inventory?.bombersNotebook ?? false)
+      tile(swordIcon, swordName, sword !== null, 'sword'),
+      tile(shieldIcon, shieldName, shield !== null, 'shield'),
+      tile('bow', "Hero's Bow", has('Arrow'), 'quiver', quiver ? String(quiver) : undefined),
+      tile('bomb', 'Bombs', has('Bomb'), 'bombBag', bombBag ? String(bombBag) : undefined),
+      ...itemTiles.map(([icon, name, item]) => tile(icon, name, has(item), item)),
+      tile('bottle', 'Bottles', bottles > 0, undefined, bottles > 1 ? String(bottles) : undefined),
+      tile('magic-bean', 'Magic Beans', has('MagicBean'), 'MagicBean'),
+      tile(
+        'bombers-notebook',
+        "Bombers' Notebook",
+        inventory?.bombersNotebook ?? false,
+        'BombersNotebook'
+      )
     ],
-    trade: tradeTiles.map(([icon, name, item]) => {
-      const has = inventory?.tradeItems.includes(item) ?? false;
-      // Found but no longer held: faded like a missing item, with a check in the corner.
-      const traded = !has && tradeItemsFound.includes(item);
-
-      return traded ? tile(icon, `${name} (traded away)`, false, '✓') : tile(icon, name, has);
-    }),
+    trade: tradeTiles.map(([icon, name, item]) =>
+      tile(icon, name, inventory?.tradeItems.includes(item) ?? false, item)
+    ),
     masks: maskTiles.map(([icon, name, item]) =>
-      tile(icon, name, inventory?.masks.includes(item) ?? false)
+      tile(icon, name, inventory?.masks.includes(item) ?? false, item)
     ),
     songs: songTiles.map(([icon, name, song]) => {
       const has = inventory?.songs.includes(song) ?? false;
       // The randomizer gives the Lullaby in two halves, and only the full song is playable.
       const introOnly = song === 'GoronLullaby' && !has && (inventory?.lullabyIntro ?? false);
 
-      return introOnly ? tile(icon, `${name} (intro only)`, false, '1/2') : tile(icon, name, has);
+      return introOnly
+        ? tile(icon, `${name} (intro only)`, false, song, '1/2')
+        : tile(icon, name, has, song);
     }),
-    ocarina: tile('ocarina', 'Ocarina of Time', has('Ocarina')),
+    ocarina: tile('ocarina', 'Ocarina of Time', has('Ocarina'), 'Ocarina'),
     remains: remainsTiles.map(([icon, name, remains]) =>
-      tile(icon, name, inventory?.bossRemains.includes(remains) ?? false)
+      tile(icon, name, inventory?.bossRemains.includes(remains) ?? false, remains)
     ),
     counters: inventory && {
       hearts: inventory.maxHearts,

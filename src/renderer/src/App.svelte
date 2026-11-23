@@ -8,11 +8,14 @@
   import TopBar from './components/TopBar.svelte';
   import ZoneChecks from './components/ZoneChecks.svelte';
   import { groupByZone } from './lib/checks';
+  import { FoundItems, setFoundItems } from './lib/found-items';
   import { Route, setRoute } from './lib/route.svelte';
 
   let tracker = $state<TrackerState>();
   /** The zone whose checks show beside the map. With none, the route shows instead. */
   let selected = $state<ZoneId | null>(null);
+  /** A check lit up in the selected zone, after clicking an inventory tile found there. */
+  let lit = $state<number | null>(null);
 
   $effect(() =>
     window.api.watchTracker((next) => {
@@ -21,6 +24,21 @@
   );
 
   const route = setRoute(new Route(() => tracker?.checks ?? []));
+  setFoundItems(
+    new FoundItems(
+      () => tracker?.foundAt ?? {},
+      () => tracker?.checks ?? [],
+      (check) => {
+        selected = check.zone;
+        lit = check.id;
+      }
+    )
+  );
+
+  // Lighting up a check lasts until another zone is picked.
+  $effect(() => {
+    if (selected !== tracker?.checks[lit ?? -1]?.zone) lit = null;
+  });
   const seedPath = $derived(tracker?.seed.status === 'loaded' ? tracker.seed.path : null);
   $effect(() => route.open(seedPath));
 
@@ -45,10 +63,7 @@
         {/snippet}
       </MapView>
       <div class="panel">
-        <Inventory
-          inventory={tracker?.inventory ?? null}
-          tradeItemsFound={tracker?.tradeItemsFound ?? []}
-        />
+        <Inventory inventory={tracker?.inventory ?? null} />
       </div>
     </main>
 
@@ -58,6 +73,7 @@
           group={selectedGroup}
           {neighbors}
           inventory={tracker?.inventory ?? null}
+          {lit}
           onselect={(zone) => (selected = zone)}
           onclose={() => (selected = null)}
         />
