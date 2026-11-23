@@ -175,9 +175,13 @@ export const dungeonTiles = (inventory: Inventory | null, temple: Temple) => {
  * Lays out the inventory panel. Without an inventory, everything shows as missing.
  *
  * @param inventory - What the player has, or null before tracking starts.
+ * @param tradeItemsFound - Trade items found, held or not, so ones traded away show as such.
  * @returns The tiles for each section, plus the counters.
  */
-export const inventoryTiles = (inventory: Inventory | null) => {
+export const inventoryTiles = (
+  inventory: Inventory | null,
+  tradeItemsFound: ReadonlyArray<InventoryItem> = []
+) => {
   const items = inventory?.items ?? [];
   const has = (item: InventoryItem) => items.includes(item);
 
@@ -202,9 +206,13 @@ export const inventoryTiles = (inventory: Inventory | null) => {
       tile('magic-bean', 'Magic Beans', has('MagicBean')),
       tile('bombers-notebook', "Bombers' Notebook", inventory?.bombersNotebook ?? false)
     ],
-    trade: tradeTiles.map(([icon, name, item]) =>
-      tile(icon, name, inventory?.tradeItems.includes(item) ?? false)
-    ),
+    trade: tradeTiles.map(([icon, name, item]) => {
+      const has = inventory?.tradeItems.includes(item) ?? false;
+      // Found but no longer held: faded like a missing item, with a check in the corner.
+      const traded = !has && tradeItemsFound.includes(item);
+
+      return traded ? tile(icon, `${name} (traded away)`, false, '✓') : tile(icon, name, has);
+    }),
     masks: maskTiles.map(([icon, name, item]) =>
       tile(icon, name, inventory?.masks.includes(item) ?? false)
     ),

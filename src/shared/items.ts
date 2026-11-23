@@ -119,6 +119,8 @@ export const tradeItems = [
   'LetterToMama'
 ] as const satisfies ReadonlyArray<InventoryItem>;
 
+export type TradeItem = (typeof tradeItems)[number];
+
 /** Swords in upgrade order. */
 export const swords = ['KokiriSword', 'RazorSword', 'GildedSword'] as const;
 

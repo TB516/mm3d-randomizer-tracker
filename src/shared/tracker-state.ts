@@ -1,4 +1,5 @@
 import type { Inventory } from './inventory';
+import type { TradeItem } from './items';
 import type { ZoneId } from './zones';
 
 /** One of the seed's checks. A shared item has one check per zone that gives it. */
@@ -64,4 +65,9 @@ export type TrackerState = {
   readonly checks: ReadonlyArray<CheckState>;
   /** Null until tracking. */
   readonly inventory: Inventory | null;
+  /**
+   * Trade items the player has found, from collected checks and starting items, whether or not
+   * they still have them. Empty until tracking, and for seeds whose settings logic doesn't follow.
+   */
+  readonly tradeItemsFound: ReadonlyArray<TradeItem>;
 };

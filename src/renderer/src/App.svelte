@@ -44,7 +44,12 @@
           {#if tracker}<StatusBanner state={tracker} />{/if}
         {/snippet}
       </MapView>
-      <div class="panel"><Inventory inventory={tracker?.inventory ?? null} /></div>
+      <div class="panel">
+        <Inventory
+          inventory={tracker?.inventory ?? null}
+          tradeItemsFound={tracker?.tradeItemsFound ?? []}
+        />
+      </div>
     </main>
 
     <aside class="panel">

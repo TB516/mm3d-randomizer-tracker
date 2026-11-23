@@ -46,6 +46,21 @@ const bottleSlotCount = 7;
 /** Max health is stored in sixteenths of a heart. */
 const healthPerHeart = 16;
 
+/**
+ * Trade items the pause screen cycles through from the randomizer's list with L and R: those in the
+ * title deed slot and the Letter to Kafei slot. Giving one away clears it from the list. The Room
+ * Key and Letter to Mama share a slot it doesn't cycle or clear, so only the item screen counts.
+ */
+const cycledTradeItems: ReadonlyArray<InventoryItem> = [
+  'MoonTear',
+  'LandTitleDeed',
+  'SwampTitleDeed',
+  'MountainTitleDeed',
+  'OceanTitleDeed',
+  'LetterToKafei',
+  'PendantOfMemories'
+];
+
 /** A value packed into part of an integer: its lowest bit, and how many bits wide it is. */
 type BitField = { readonly start: number; readonly length: number };
 
@@ -177,10 +192,12 @@ export const decodeInventory = (
 
   return {
     items,
-    // The randomizer drops an item from its list when it's traded, but one got again after that
-    // only lands on the item screen, so the two can disagree. Either one means it's held.
+    // The item screen and the randomizer's list can disagree: an item got again after a trade only
+    // lands on the item screen. Either one means it's held, except for the slot the randomizer
+    // doesn't cycle, which it also doesn't clear when that item's given away.
     tradeItems: tradeItems.filter(
-      (item) => listedTradeItems.includes(item) || items.includes(item)
+      (item) =>
+        items.includes(item) || (cycledTradeItems.includes(item) && listedTradeItems.includes(item))
     ),
     masks: readSlots(save, offsets.masks),
     bottles: readSlots(save, offsets.bottles, bottleSlotCount),

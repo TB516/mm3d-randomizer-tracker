@@ -90,7 +90,12 @@ and reading Azahar's process memory directly from Linux.
   `savefile.cpp`). The item screen shows only one trade item per slot, so the tracker reads these
   too. The two can disagree: after the Moon's Tear was traded and found again, and the Song of Time
   played, the list was empty while the item screen held the Moon's Tear and the Pendant of
-  Memories. So the tracker counts a trade item as held if either has it.
+  Memories. So the tracker counts a trade item as held if either has it, except the Room Key and
+  Letter to Mama. Their slot (item slot 11) isn't cycled from the list, and the randomizer only
+  clears list entries for items given from slots 5 and 17 (`SaveFile_RemoveTradeItemFromSlot`,
+  hooked at `0x1AFE94`), so a Letter to Mama given away stays on the list. For those two only the
+  item screen counts. Upstream changed trade items to stay after being given (mm3dr #169), after
+  v1.5.1.
 
   These hand-counted offsets are the ones the tracker uses. They're confirmed against the live game
   and the saved `0.bin`, so they aren't generated from the headers.

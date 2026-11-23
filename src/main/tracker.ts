@@ -1,9 +1,11 @@
 import { Context, Effect, FiberHandle, Layer, Option, Stream } from 'effect';
 
+import { type TradeItem, tradeItems } from '../shared/items';
 import type { CheckNeeds, ChecksNeeds, TrackerState } from '../shared/tracker-state';
 import { GameConnection, type GameStatus } from './game/connection';
 import { findChecksNeeds } from './logic/check-needs';
-import { findLocationsInLogic } from './logic/engine';
+import { findLocationsInLogic, type LogicSeed } from './logic/engine';
+import type { ItemKey } from './logic/generated/items';
 import { CurrentSeed, type SeedStatus } from './seed/current-seed';
 import type { SeedCheck } from './seed/place-in-zone';
 
@@ -24,6 +26,35 @@ const findCollected = (checks: ReadonlyArray<SeedCheck>, game: GameStatus) => {
   const indexes = checks.flatMap((check, at) => (collected[at] ? check.indexes : []));
 
   return { collected, indexes };
+};
+
+/** The generator's keys for the trade items. */
+const tradeItemKeys: Readonly<Record<TradeItem, ItemKey>> = {
+  MoonTear: 'MOONS_TEAR',
+  LandTitleDeed: 'LAND_TITLE',
+  SwampTitleDeed: 'SWAMP_TITLE',
+  MountainTitleDeed: 'MOUNTAIN_TITLE',
+  OceanTitleDeed: 'OCEAN_TITLE',
+  RoomKey: 'ROOM_KEY',
+  LetterToKafei: 'LETTER_KAFEI',
+  PendantOfMemories: 'PENDANT_MEMORIES',
+  LetterToMama: 'LETTER_MAMA'
+};
+
+/**
+ * Finds the trade items the player has found, so ones traded away can still show as found. Only
+ * collected checks count, so this never tells the player anything they haven't picked up.
+ *
+ * @param logic - What logic knows about the seed, including what each check holds.
+ * @param collected - Table indexes of the collected checks.
+ * @returns The trade items found, held or not.
+ */
+const findTradeItemsFound = (logic: LogicSeed, collected: ReadonlyArray<number>) => {
+  const found = new Set([
+    ...logic.startingItems,
+    ...collected.flatMap((index) => logic.checkItems.get(index) ?? [])
+  ]);
+  return tradeItems.filter((item) => found.has(tradeItemKeys[item]));
 };
 
 /**
@@ -69,7 +100,8 @@ const toTrackerState = (seed: SeedStatus, game: GameStatus): TrackerState => {
       inLogic: inLogic(check),
       countedElsewhere: check.countedElsewhere
     })),
-    inventory: snapshot?.inventory ?? null
+    inventory: snapshot?.inventory ?? null,
+    tradeItemsFound: snapshot && logic ? findTradeItemsFound(logic, indexes) : []
   };
 };
 
