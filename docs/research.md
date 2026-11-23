@@ -50,7 +50,7 @@ and reading Azahar's process memory directly from Linux.
 - Game save data (`SaveData`, 0x1A88 bytes) at **`0x7751E0`** (`CommonData` at `0x7751D8`, `save` at
   +8). Same layout as `save0.bin` from file offset 8.
   - `PlayerData` at +0x118: max health u16 at +0x1A (16 per heart), rupees u16 at +0x20.
-  - Sword/shield u16 at +0x172. `InventoryData` at +0x174: items[24], masks[24], ...; count register
+  - Sword/shield u16 at +0x172. `InventoryData` at +0x174: items[24], masks[24], bottles[7] (each slot holds its bottle's contents, `0xFF` when there's no bottle), ...; count register
     at +0x78, collect register (remains, songs, the Goron Lullaby intro, heart pieces) at +0x7C.
   - Temple items, one byte per temple in the order Woodfall, Snowhead, Great Bay, Stone Tower, at
     `InventoryData` +0x80 (bits: boss key 0, compass 1, map 2), small keys at +0x8A, and stray

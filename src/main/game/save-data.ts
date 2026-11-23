@@ -28,6 +28,7 @@ const offsets = {
   swordShield: 0x172,
   items: inventory,
   masks: inventory + 0x18,
+  bottles: inventory + 0x30,
   upgrades: inventory + 0x78,
   collectRegister: inventory + 0x7c,
   // One byte per temple each, in `temples` order.
@@ -39,6 +40,8 @@ const offsets = {
 
 /** Item IDs per screen. Each slot is one byte. */
 const slotCount = 24;
+/** Bottle slots, kept apart from the item screen. Each holds what's in the bottle. */
+const bottleSlotCount = 7;
 /** Max health is stored in sixteenths of a heart. */
 const healthPerHeart = 16;
 
@@ -111,16 +114,17 @@ const readFlags = <Name>(value: number, field: BitField, names: ReadonlyArray<Na
 };
 
 /**
- * Reads one screen of 24 item slots.
+ * Reads a run of item slots, such as one screen's.
  *
  * @param save - The game's save data.
  * @param offset - Where the slots start in the save data.
+ * @param count - How many slots there are.
  * @returns The items in the slots, in slot order, without empty slots.
  */
-const readSlots = (save: Uint8Array, offset: number) =>
+const readSlots = (save: Uint8Array, offset: number, count = slotCount) =>
   // Each slot is one byte holding an item ID. Empty slots hold 0xFF, which has no name, so they
   // drop out here.
-  Array.from(save.subarray(offset, offset + slotCount)).flatMap((itemId) => {
+  Array.from(save.subarray(offset, offset + count)).flatMap((itemId) => {
     const item = inventoryItems[itemId];
     return item ? [item] : [];
   });
@@ -172,6 +176,7 @@ export const decodeInventory = (
     items: readSlots(save, offsets.items),
     tradeItems,
     masks: readSlots(save, offsets.masks),
+    bottles: readSlots(save, offsets.bottles, bottleSlotCount),
     songs: readFlags(collected, collectFields.songs, songs),
     lullabyIntro: readBits(collected, collectFields.lullabyIntro) === 1,
     bossRemains: readFlags(collected, collectFields.bossRemains, bossRemains),

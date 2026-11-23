@@ -25,32 +25,6 @@ const bombBagSizes = [0, 20, 30, 40];
 const walletSizes = [99, 200, 500];
 const walletNames = ["Child's Wallet", "Adult's Wallet", "Giant's Wallet"];
 
-/** Everything the six bottle slots can hold, so filled bottles count too. */
-const bottleContents: ReadonlyArray<InventoryItem> = [
-  'Bottle',
-  'RedPotion',
-  'GreenPotion',
-  'BluePotion',
-  'Fairy',
-  'DekuPrincess',
-  'Milk',
-  'MilkHalf',
-  'Fish',
-  'Bug',
-  'BlueFire',
-  'Poe',
-  'BigPoe',
-  'Water',
-  'HotSpringWater',
-  'ZoraEgg',
-  'GoldDust',
-  'MagicalMushroom',
-  'SeaHorse',
-  'ChateauRomani',
-  'MysteryMilk',
-  'MysteryMilkSpoiled'
-];
-
 /** Item-screen tiles: icon, name, and the item that means you have it. */
 const itemTiles: ReadonlyArray<readonly [string, string, InventoryItem]> = [
   ['fire-arrow', 'Fire Arrow', 'FireArrow'],
@@ -209,7 +183,7 @@ export const inventoryTiles = (inventory: Inventory | null) => {
 
   const sword = inventory?.sword ?? null;
   const shield = inventory?.shield ?? null;
-  const bottles = items.filter((item) => bottleContents.includes(item)).length;
+  const bottles = inventory?.bottles.length ?? 0;
   const quiver = quiverSizes[inventory?.quiver ?? 0] ?? 0;
   const bombBag = bombBagSizes[inventory?.bombBag ?? 0] ?? 0;
 

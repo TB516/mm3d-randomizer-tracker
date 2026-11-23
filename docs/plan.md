@@ -101,7 +101,6 @@ Done: a map view (a pin per zone on the official map of Termina), the icon inven
 picker, status banners, and a route (bookmarked checks in order, saved per seed). Still to do, in
 order:
 
-- Bottles don't show in the inventory even when the save has them. Find out why.
 - Title deeds traded away for their quests show as never found. Decide whether to keep showing
   them as found.
 - A reminder of items the Song of Time takes away (like the seahorse and gold dust), and which
