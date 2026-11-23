@@ -234,17 +234,14 @@ export const inventoryTiles = (inventory: Inventory | null) => {
     masks: maskTiles.map(([icon, name, item]) =>
       tile(icon, name, inventory?.masks.includes(item) ?? false)
     ),
-    // The ocarina leads the songs, filling the block's one free slot.
-    songs: [
-      tile('ocarina', 'Ocarina of Time', has('Ocarina')),
-      ...songTiles.map(([icon, name, song]) => {
-        const has = inventory?.songs.includes(song) ?? false;
-        // The randomizer gives the Lullaby in two halves, and only the full song is playable.
-        const introOnly = song === 'GoronLullaby' && !has && (inventory?.lullabyIntro ?? false);
+    songs: songTiles.map(([icon, name, song]) => {
+      const has = inventory?.songs.includes(song) ?? false;
+      // The randomizer gives the Lullaby in two halves, and only the full song is playable.
+      const introOnly = song === 'GoronLullaby' && !has && (inventory?.lullabyIntro ?? false);
 
-        return introOnly ? tile(icon, `${name} (intro only)`, false, '1/2') : tile(icon, name, has);
-      })
-    ],
+      return introOnly ? tile(icon, `${name} (intro only)`, false, '1/2') : tile(icon, name, has);
+    }),
+    ocarina: tile('ocarina', 'Ocarina of Time', has('Ocarina')),
     remains: remainsTiles.map(([icon, name, remains]) =>
       tile(icon, name, inventory?.bossRemains.includes(remains) ?? false)
     ),

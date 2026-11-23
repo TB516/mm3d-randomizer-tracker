@@ -24,9 +24,11 @@
   </div>
 
   <div>
-    <h2>Ocarina, songs and remains</h2>
+    <h2>Songs, ocarina and remains</h2>
+    <!-- The ten songs fill two rows, and the ocarina leads the boss remains on the third. -->
     <div class="grid songs">
       {#each tiles.songs as tile (tile.name)}<ItemTile {tile} />{/each}
+      <ItemTile tile={tiles.ocarina} />
       {#each tiles.remains as tile (tile.name)}<ItemTile {tile} />{/each}
     </div>
   </div>
