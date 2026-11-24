@@ -168,6 +168,17 @@ and reading Azahar's process memory directly from Linux.
 - The patch's spheres are only filled with in-game spoilers on. The spoiler log the generator writes
   (`sdmc/MM3DR/Spoiler_Logs/<seed> (<hash>)-spoilerlog.xml`) always has the playthrough, as
   `<sphere>` elements of `<location name>`.
+- Logic modes: glitched logic would add a second rule to each entry (`location_access.hpp`), but
+  none of v1.5.1's rules has one, so it places items exactly like glitchless. No logic and vanilla
+  skip the rules when placing items (`ConditionsMet` returns true), but the rules still describe the
+  game, so the tracker follows them for every mode.
+- Dungeon entrance shuffle isn't in v1.5.1, or on the generator's main branch: the setting is in no
+  menu, the shuffle table in `entrance.cpp` is commented-out Ocarina of Time code, the patch never
+  writes `rEntranceOverrides`, and the game code applies no entrance overrides.
+- Item pool: `normalBottles` in `item_pool.cpp` lists eighteen bottle contents, but nothing uses it.
+  Checks can only give Milk, Red Potion, Gold Dust, Chateau Romani, and Mystery Milk in bottles, and
+  the Deku Princess, Zora Eggs, Seahorse, and cows' Milk to put in one. The Fishing Pass, the bean
+  pack, and the Goron Lullaby's separate halves are never placed: the Lullaby is only progressive.
 - Quirks of the v1.5.1 logic, kept as-is:
   - The generator only recalculates helpers when it applies an item, and events are checked
     without it. `Bugs` and `Fish` are helpers that events also set, so they end up true when either

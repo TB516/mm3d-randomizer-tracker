@@ -16,8 +16,6 @@ const settingsSize = 192;
  * field there is a u8 except a few u32s and one u16, which shift the later fields for alignment.
  */
 const fields = {
-  logic: 7,
-  shuffleDungeonEntrances: 10,
   mapsAndCompasses: 26,
   keysanity: 27,
   bossKeysanity: 28,
@@ -93,9 +91,6 @@ const fields = {
 } as const;
 
 type Field = keyof typeof fields;
-
-/** Values of mm3dr's `LogicSetting`. */
-const logicModes = ['glitchless', 'none', 'vanilla', 'glitched'] as const;
 
 /** The value keys, maps and compasses, and boss keys settings use for "start with". */
 const startWith = 1;
@@ -213,8 +208,6 @@ const templeItems: ReadonlyArray<{
 
 /** What logic needs from a seed's settings. */
 export type SeedSettings = {
-  readonly logic: (typeof logicModes)[number];
-  readonly dungeonEntranceShuffle: boolean;
   readonly logicSettings: LogicSettings;
   /** Every item the player starts with, once per copy. */
   readonly startingItems: ReadonlyArray<ItemKey>;
@@ -273,9 +266,6 @@ export const readSeedSettings = Effect.fn('readSeedSettings')(function* (image: 
   ];
 
   const settings: SeedSettings = {
-    // An unknown mode isn't one logic follows, so checks show no logic status.
-    logic: logicModes[read('logic')] ?? 'none',
-    dungeonEntranceShuffle: read('shuffleDungeonEntrances') === 1,
     logicSettings: {
       skipBombersMinigame: read('skipBombersMinigame') === 1,
       remainsForMoon: read('masksNeededToEnterMoon'),

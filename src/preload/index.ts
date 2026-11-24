@@ -32,8 +32,7 @@ const api = {
    * Works out which items would bring checks into logic.
    *
    * @param ids - The checks' `id`s from the state.
-   * @returns The checks out of logic and not collected, by ID. Empty when the seed's logic isn't
-   *   followed.
+   * @returns The checks out of logic and not collected, by ID.
    */
   findChecksNeeds: (ids: ReadonlyArray<number>): Promise<ChecksNeeds> =>
     ipcRenderer.invoke(channels.findChecksNeeds, ids)

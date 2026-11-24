@@ -15,8 +15,8 @@ import type { ItemKey } from './logic/generated/items';
 type Find =
   | { readonly kind: 'item' | 'mask' | 'trade'; readonly item: InventoryItem }
   | { readonly kind: 'song'; readonly song: Song }
-  /** The Goron Lullaby comes in two halves: the intro, then the full song. */
-  | { readonly kind: 'lullaby'; readonly part: 'intro' | 'full' | 'next' }
+  /** A half of the Goron Lullaby: the intro first, then the full song. */
+  | { readonly kind: 'lullaby' }
   | { readonly kind: 'remains'; readonly remains: BossRemains }
   | { readonly kind: 'notebook' }
   /** What a bottle holds, whether it comes with a new bottle or goes in one already held. */
@@ -72,7 +72,6 @@ const finds: Partial<Record<ItemKey, Find>> = {
   HOOKSHOT: item('Hookshot'),
   GREAT_FAIRYS_SWORD: item('GreatFairySword'),
   MAGIC_BEAN: item('MagicBean'),
-  MAGIC_BEAN_PACK: item('MagicBean'),
   OCARINA_OF_TIME: item('Ocarina'),
 
   MOONS_TEAR: trade('MoonTear'),
@@ -119,9 +118,7 @@ const finds: Partial<Record<ItemKey, Find>> = {
   NEW_WAVE_BOSSA_NOVA: song('NewWaveBossaNova'),
   ELEGY_OF_EMPTINESS: song('ElegyOfEmptiness'),
   OATH_TO_ORDER: song('OathToOrder'),
-  LULLABY_INTRO: { kind: 'lullaby', part: 'intro' },
-  GORONS_LULLABY: { kind: 'lullaby', part: 'full' },
-  PROGRESSIVE_LULLABY: { kind: 'lullaby', part: 'next' },
+  PROGRESSIVE_LULLABY: { kind: 'lullaby' },
 
   ODOLWAS_REMAINS: remains('Odolwa'),
   GOHTS_REMAINS: remains('Goht'),
@@ -132,22 +129,11 @@ const finds: Partial<Record<ItemKey, Find>> = {
   BOTTLE_WITH_MILK: contents('Milk'),
   MILK: contents('Milk'),
   BOTTLE_WITH_RED_POTION: contents('RedPotion'),
-  BOTTLE_WITH_GREEN_POTION: contents('GreenPotion'),
-  BOTTLE_WITH_BLUE_POTION: contents('BluePotion'),
   GOLD_DUST: contents('GoldDust'),
   CHATEAU_ROMANI: contents('ChateauRomani'),
   BOTTLE_WITH_MYSTERY_MILK: contents('MysteryMilk'),
   DEKU_PRINCESS: contents('DekuPrincess'),
-  BOTTLE_WITH_FAIRY: contents('Fairy'),
-  BOTTLE_WITH_BUGS: contents('Bug'),
-  BOTTLE_WITH_FISH: contents('Fish'),
-  BOTTLE_WITH_POE: contents('Poe'),
-  BOTTLE_WITH_BIG_POE: contents('BigPoe'),
-  BOTTLE_WITH_SPRING_WATER: contents('Water'),
-  BOTTLE_WITH_HOT_SPRING_WATER: contents('HotSpringWater'),
-  BOTTLE_WITH_ZORA_EGG: contents('ZoraEgg'),
   ZORA_EGG: contents('ZoraEgg'),
-  BOTTLE_WITH_MUSHROOM: contents('MagicalMushroom'),
   SEAHORSE: contents('SeaHorse'),
 
   KOKIRI_SWORD: upgrade('sword', 1),
@@ -270,9 +256,7 @@ export const addFoundItems = (held: Inventory, found: ReadonlyArray<FoundItem>) 
         addSource(find.song, source);
         break;
       case 'lullaby':
-        if (find.part === 'intro') lullabyIntro = true;
-        if (find.part === 'full') songs.add('GoronLullaby');
-        if (find.part === 'next') lullabyParts += 1;
+        lullabyParts += 1;
         addSource('GoronLullaby', source);
         break;
       case 'remains':

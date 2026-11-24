@@ -56,26 +56,16 @@ const tradeTiles: ReadonlyArray<readonly [string, string, InventoryItem]> = [
   ['letter-to-mama', 'Special Delivery to Mama', 'LetterToMama']
 ];
 
-/** Icons and names for what a bottle can hold. */
+/** Icons and names for what a check can give in a bottle, or to put in one. */
 const bottleContentTiles: Partial<Record<InventoryItem, readonly [string, string]>> = {
   Milk: ['milk', 'Milk'],
   RedPotion: ['red-potion', 'Red Potion'],
-  GreenPotion: ['green-potion', 'Green Potion'],
-  BluePotion: ['blue-potion', 'Blue Potion'],
   GoldDust: ['gold-dust', 'Gold Dust'],
   ChateauRomani: ['chateau-romani', 'Chateau Romani'],
   // There's no Mystery Milk icon, so it borrows the milk's.
   MysteryMilk: ['milk', 'Mystery Milk'],
   DekuPrincess: ['deku-princess', 'Deku Princess'],
-  Fairy: ['fairy', 'Fairy'],
-  Bug: ['bugs', 'Bugs'],
-  Fish: ['fish', 'Fish'],
-  Poe: ['poe', 'Poe'],
-  BigPoe: ['big-poe', 'Big Poe'],
-  Water: ['spring-water', 'Spring Water'],
-  HotSpringWater: ['hot-spring-water', 'Hot Spring Water'],
   ZoraEgg: ['zora-egg', 'Zora Egg'],
-  MagicalMushroom: ['magic-mushroom', 'Magic Mushroom'],
   SeaHorse: ['seahorse', 'Seahorse']
 };
 

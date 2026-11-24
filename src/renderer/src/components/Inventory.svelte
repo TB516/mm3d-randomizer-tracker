@@ -16,20 +16,11 @@
   const tiles = $derived(inventoryTiles(inventory));
   const contents = $derived(bottleContentsTiles(bottleContents));
 
-  /** Rows in every section, so the band keeps its height. */
-  const rows = 3;
-
-  // Three columns of slots, and another column for each three past nine, so a seed with more
-  // contents widens the section instead of making the band taller.
-  const contentColumns = $derived(Math.max(3, Math.ceil(contents.length / rows)));
+  /** Slots for the bottle contents. Checks can give eight kinds, so they always fit. */
+  const contentSlots = 9;
 </script>
 
-<section
-  class="inventory"
-  aria-label="Inventory"
-  style:--content-columns={contentColumns}
-  style:--content-width="{contentColumns}fr"
->
+<section class="inventory" aria-label="Inventory">
   <div>
     <h2>Items</h2>
     <div class="grid items">
@@ -66,7 +57,7 @@
     <!-- Each content found fills the next slot, so a seed's own mix shows without gaps. -->
     <div class="grid contents">
       {#each contents as tile (tile.name)}<ItemTile {tile} />{/each}
-      {#each { length: contentColumns * rows - contents.length }, at (at)}
+      {#each { length: contentSlots - contents.length }, at (at)}
         <span class="slot"></span>
       {/each}
     </div>
@@ -78,7 +69,7 @@
      every tile is the same size. */
   .inventory {
     display: grid;
-    grid-template-columns: 6fr 8fr 5fr 3fr var(--content-width);
+    grid-template-columns: 6fr 8fr 5fr 3fr 3fr;
     gap: 22px;
     align-items: start;
   }
@@ -107,12 +98,9 @@
     grid-template-columns: repeat(5, 1fr);
   }
 
-  .trade {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
+  .trade,
   .contents {
-    grid-template-columns: repeat(var(--content-columns), 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   /* An empty slot, sunken like a missing item's. */

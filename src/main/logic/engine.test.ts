@@ -45,7 +45,6 @@ describe('logic', () => {
         Effect.provide(NodeFileSystem.layer),
         Effect.runPromise
       );
-      if (!seed.logic) throw new Error("The seed's settings aren't ones logic follows.");
 
       const spheres = readPlaythrough(readFileSync(new URL('spoilerlog.xml', folder), 'utf8'));
       expect(spheres.length).toBeGreaterThan(0);

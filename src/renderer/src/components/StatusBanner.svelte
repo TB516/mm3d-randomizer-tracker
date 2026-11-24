@@ -1,20 +1,11 @@
 <script lang="ts">
-  import type { LogicNotFollowed, TrackerState } from '../../../shared/tracker-state';
+  import type { TrackerState } from '../../../shared/tracker-state';
 
   let { state }: { state: TrackerState } = $props();
-
-  /** Why logic doesn't follow the seed, in words. */
-  const reasons: Readonly<Record<LogicNotFollowed, string>> = {
-    none: 'It has no logic.',
-    vanilla: 'It uses vanilla logic.',
-    glitched: 'It uses glitched logic.',
-    dungeonEntranceShuffle: 'It shuffles dungeon entrances.'
-  };
 </script>
 
 <!-- One line about whatever is stopping tracking, with the fix when there is one. Seed problems
-     come first, since tracking a game is no use without a seed. Once tracking, a seed logic
-     doesn't follow says so. -->
+     come first, since tracking a game is no use without a seed. -->
 {#if state.seed.status === 'none'}
   <div class="banner">
     <p>Choose your seed's <code>code.ips</code> to start tracking.</p>
@@ -39,14 +30,6 @@
   <div class="banner problem">
     <p><b>Tracking stopped:</b> {state.game.message}</p>
     <button onclick={() => window.api.restartTracking()}>Restart tracking</button>
-  </div>
-{:else if state.seed.status === 'loaded' && state.seed.logicNotFollowed}
-  <!-- Tracking works, but checks show no logic status, so say why. -->
-  <div class="banner">
-    <p>
-      <b>Logic isn't tracked for this seed.</b>
-      {reasons[state.seed.logicNotFollowed]} Collected checks, items, and the route still work.
-    </p>
   </div>
 {/if}
 

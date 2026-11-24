@@ -26,7 +26,6 @@ const iconsByKey: Readonly<Record<string, string>> = {
   FIRE_ARROWS: 'fire-arrow',
   ICE_ARROWS: 'ice-arrow',
   LIGHT_ARROWS: 'light-arrow',
-  MAGIC_BEAN_PACK: 'magic-bean',
   BUY_MAGIC_BEAN: 'magic-bean',
   OCARINA_OF_TIME: 'ocarina',
   POSTMANS_HAT: 'postman-hat',
@@ -48,24 +47,12 @@ const iconsByKey: Readonly<Record<string, string>> = {
   SH_STRAY_FAIRY: 'stray-fairy',
   GBT_STRAY_FAIRY: 'stray-fairy',
   ST_STRAY_FAIRY: 'stray-fairy',
-  EMPTY_BOTTLE: 'bottle',
   EMPTY_BOTTLE1: 'bottle',
   EMPTY_BOTTLE2: 'bottle',
   BOTTLE_WITH_MILK: 'milk',
   // There's no Mystery Milk icon, and its name shows on hover.
   BOTTLE_WITH_MYSTERY_MILK: 'milk',
   BOTTLE_WITH_RED_POTION: 'red-potion',
-  BOTTLE_WITH_GREEN_POTION: 'green-potion',
-  BOTTLE_WITH_BLUE_POTION: 'blue-potion',
-  BOTTLE_WITH_FAIRY: 'fairy',
-  BOTTLE_WITH_BUGS: 'bugs',
-  BOTTLE_WITH_FISH: 'fish',
-  BOTTLE_WITH_POE: 'poe',
-  BOTTLE_WITH_BIG_POE: 'big-poe',
-  BOTTLE_WITH_SPRING_WATER: 'spring-water',
-  BOTTLE_WITH_HOT_SPRING_WATER: 'hot-spring-water',
-  BOTTLE_WITH_ZORA_EGG: 'zora-egg',
-  BOTTLE_WITH_MUSHROOM: 'magic-mushroom',
   RED_POTION_REFILL: 'red-potion',
   GREEN_POTION_REFILL: 'green-potion',
   BLUE_POTION_REFILL: 'blue-potion',
@@ -82,15 +69,12 @@ const iconsByKey: Readonly<Record<string, string>> = {
   PROGRESSIVE_MAGIC_METER: 'magic-jar',
   EXTENDED_MAGIC_POWER: 'large-magic-jar',
   PROGRESSIVE_SWORD: 'kokiri-sword',
-  LULLABY_INTRO: 'goron-lullaby',
-  GORONS_LULLABY: 'goron-lullaby',
   PROGRESSIVE_LULLABY: 'goron-lullaby',
   EPONAS_SONG: 'eponas-song',
   ODOLWAS_REMAINS: 'odolwa',
   GOHTS_REMAINS: 'goht',
   GYORGS_REMAINS: 'gyorg',
   TWINMOLDS_REMAINS: 'twinmold',
-  FISHING_PASS: 'fishing-pass',
   ICE_TRAP: 'blue-fire'
 };
 
@@ -120,7 +104,7 @@ const iconsByPattern: ReadonlyArray<readonly [RegExp, string]> = [
   [/^(BUY_)?BOMBCHU_/, 'bombchu'],
   [/^(BUY_)?ARROWS_/, 'arrows'],
   [/^(BUY_)?DEKU_NUTS?_/, 'deku-nuts'],
-  [/^(BUY_)?DEKU_STICK_/, 'deku-stick']
+  [/^BUY_DEKU_STICK_/, 'deku-stick']
 ];
 
 /**

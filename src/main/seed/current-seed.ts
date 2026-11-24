@@ -1,10 +1,9 @@
 import { NodeFileSystem } from '@effect/platform-node';
 import { Context, Effect, FileSystem, Layer, Stream, SubscriptionRef } from 'effect';
 
-import type { LogicNotFollowed, SeedState } from '../../shared/tracker-state';
+import type { SeedState } from '../../shared/tracker-state';
 import { describeDefect } from '../describe-defect';
 import type { LogicSeed } from '../logic/engine';
-import type { ItemKey } from '../logic/generated/items';
 import { Settings } from '../settings';
 import type { InvalidIpsPatch } from './ips';
 import { loadSeed, type SeedFileUnreadable } from './load-seed';
@@ -18,10 +17,7 @@ export type SeedStatus =
       readonly status: 'loaded';
       readonly path: string;
       readonly checks: ReadonlyArray<SeedCheck>;
-      /** Null for settings logic doesn't follow. */
-      readonly logic: LogicSeed | null;
-      readonly logicNotFollowed: LogicNotFollowed | null;
-      readonly startingItems: ReadonlyArray<ItemKey>;
+      readonly logic: LogicSeed;
     };
 
 /**
