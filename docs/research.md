@@ -61,7 +61,9 @@ and reading Azahar's process memory directly from Linux.
     fairies at +0x94. The game starts keys at `0xFF`, which the randomizer sets to 0 on a new file.
     The randomizer skips the Song of Time loop that clears these (`patch_DoNotRemoveKeys`), so they
     carry across cycles. Keys and dungeon items confirmed live on a new file with them set to "Start
-    With"; the fairy counts aren't confirmed live yet.
+    With"; the fairy counts aren't confirmed live yet. Turning fairies in at a fountain doesn't
+    lower the count: the fountain works out how many it holds from its own flags (`EnElfgrp` in the
+    N64 decomp), so the count is every fairy found.
   - Skulltula register at +0x1208: ocean count = low 16 bits, swamp count = high 16 bits.
   - Layouts: `mm3dr/code/include/game/common_data.h`, item IDs in `game/items.h`.
 - Randomizer data (`ExtSaveData`, 4296 bytes) is a global placed by the linker in the randomizer's

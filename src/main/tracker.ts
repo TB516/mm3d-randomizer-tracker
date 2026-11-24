@@ -98,6 +98,7 @@ const toTrackerState = (seed: SeedStatus, game: GameStatus): TrackerState => {
       item: collected[at] ? { key: findItemKey(check.item), name: check.item } : null
     })),
     inventory: shown?.inventory ?? null,
+    bottleContents: shown?.bottleContents ?? [],
     foundAt: shown?.sources ?? {}
   };
 };

@@ -63,7 +63,10 @@
         {/snippet}
       </MapView>
       <div class="panel">
-        <Inventory inventory={tracker?.inventory ?? null} />
+        <Inventory
+          inventory={tracker?.inventory ?? null}
+          bottleContents={tracker?.bottleContents ?? []}
+        />
       </div>
     </main>
 
@@ -90,7 +93,7 @@
   .app {
     /* How wide the map's column is for the window's height: the map's shape, plus the inventory
        under it, which grows with the column. */
-    --map-width: 113vh;
+    --map-width: 121vh;
     height: 100vh;
     display: grid;
     grid-template-rows: 56px 1fr;

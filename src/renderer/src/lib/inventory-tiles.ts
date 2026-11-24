@@ -56,6 +56,29 @@ const tradeTiles: ReadonlyArray<readonly [string, string, InventoryItem]> = [
   ['letter-to-mama', 'Special Delivery to Mama', 'LetterToMama']
 ];
 
+/** Icons and names for what a bottle can hold. */
+const bottleContentTiles: Partial<Record<InventoryItem, readonly [string, string]>> = {
+  Milk: ['milk', 'Milk'],
+  RedPotion: ['red-potion', 'Red Potion'],
+  GreenPotion: ['green-potion', 'Green Potion'],
+  BluePotion: ['blue-potion', 'Blue Potion'],
+  GoldDust: ['gold-dust', 'Gold Dust'],
+  ChateauRomani: ['chateau-romani', 'Chateau Romani'],
+  // There's no Mystery Milk icon, so it borrows the milk's.
+  MysteryMilk: ['milk', 'Mystery Milk'],
+  DekuPrincess: ['deku-princess', 'Deku Princess'],
+  Fairy: ['fairy', 'Fairy'],
+  Bug: ['bugs', 'Bugs'],
+  Fish: ['fish', 'Fish'],
+  Poe: ['poe', 'Poe'],
+  BigPoe: ['big-poe', 'Big Poe'],
+  Water: ['spring-water', 'Spring Water'],
+  HotSpringWater: ['hot-spring-water', 'Hot Spring Water'],
+  ZoraEgg: ['zora-egg', 'Zora Egg'],
+  MagicalMushroom: ['magic-mushroom', 'Magic Mushroom'],
+  SeaHorse: ['seahorse', 'Seahorse']
+};
+
 /** Masks in the game's mask-screen order. */
 const maskTiles: ReadonlyArray<readonly [string, string, InventoryItem]> = [
   ['postman-hat', "Postman's Hat", 'PostmanHat'],
@@ -269,3 +292,18 @@ export const inventoryTiles = (inventory: Inventory | null) => {
     }
   };
 };
+
+/**
+ * Lays out the bottle contents found, in the order found.
+ *
+ * @param contents - What bottles held when checks gave them.
+ * @returns A tile for each.
+ */
+export const bottleContentsTiles = (contents: ReadonlyArray<InventoryItem>) =>
+  contents.flatMap((item) => {
+    const known = bottleContentTiles[item];
+    if (!known) return [];
+
+    const [icon, name] = known;
+    return [tile(icon, name, true, item)];
+  });

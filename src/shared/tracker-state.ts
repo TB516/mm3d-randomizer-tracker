@@ -98,6 +98,11 @@ export type TrackerState = {
    * items stay after they're traded away or used up. Null until tracking.
    */
   readonly inventory: Inventory | null;
+  /**
+   * What bottles held when checks or starting items gave them, like Gold Dust or the Seahorse, in
+   * the order the checks come. Empty until tracking.
+   */
+  readonly bottleContents: ReadonlyArray<InventoryItem>;
   /** Where the found parts of the inventory came from. Empty until tracking. */
   readonly foundAt: ItemSources;
 };

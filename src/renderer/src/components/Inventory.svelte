@@ -1,14 +1,35 @@
 <script lang="ts">
   import type { Inventory } from '../../../shared/inventory';
-  import { inventoryTiles } from '../lib/inventory-tiles';
+  import type { InventoryItem } from '../../../shared/items';
+  import { bottleContentsTiles, inventoryTiles } from '../lib/inventory-tiles';
   import ItemTile from './ItemTile.svelte';
 
-  let { inventory }: { inventory: Inventory | null } = $props();
+  let {
+    inventory,
+    bottleContents
+  }: {
+    inventory: Inventory | null;
+    /** What bottles held when checks gave them, in the order found. */
+    bottleContents: ReadonlyArray<InventoryItem>;
+  } = $props();
 
   const tiles = $derived(inventoryTiles(inventory));
+  const contents = $derived(bottleContentsTiles(bottleContents));
+
+  /** Rows in every section, so the band keeps its height. */
+  const rows = 3;
+
+  // Three columns of slots, and another column for each three past nine, so a seed with more
+  // contents widens the section instead of making the band taller.
+  const contentColumns = $derived(Math.max(3, Math.ceil(contents.length / rows)));
 </script>
 
-<section class="inventory" aria-label="Inventory">
+<section
+  class="inventory"
+  aria-label="Inventory"
+  style:--content-columns={contentColumns}
+  style:--content-width="{contentColumns}fr"
+>
   <div>
     <h2>Items</h2>
     <div class="grid items">
@@ -39,6 +60,17 @@
       {#each tiles.trade as tile (tile.name)}<ItemTile {tile} />{/each}
     </div>
   </div>
+
+  <div>
+    <h2>Bottle contents</h2>
+    <!-- Each content found fills the next slot, so a seed's own mix shows without gaps. -->
+    <div class="grid contents">
+      {#each contents as tile (tile.name)}<ItemTile {tile} />{/each}
+      {#each { length: contentColumns * rows - contents.length }, at (at)}
+        <span class="slot"></span>
+      {/each}
+    </div>
+  </div>
 </section>
 
 <style>
@@ -46,7 +78,7 @@
      every tile is the same size. */
   .inventory {
     display: grid;
-    grid-template-columns: 6fr 8fr 5fr 3fr;
+    grid-template-columns: 6fr 8fr 5fr 3fr var(--content-width);
     gap: 22px;
     align-items: start;
   }
@@ -77,5 +109,17 @@
 
   .trade {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .contents {
+    grid-template-columns: repeat(var(--content-columns), 1fr);
+  }
+
+  /* An empty slot, sunken like a missing item's. */
+  .slot {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    background: var(--well);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
   }
 </style>

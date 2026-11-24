@@ -8,3 +8,7 @@ Work in progress.
 
 - Azahar with the RPC server turned on in its settings. While it's on, other devices on your network can reach the emulator, so turn it off when you're done playing.
 - A seed from MM3D Randomizer v1.5.1.
+
+## Good to know
+
+- Copying a file on the game's file select screen only copies the game's save, not the randomizer's record of which checks you've done. A copied file starts with no checks done, in the tracker and in the randomizer itself, so play on the original file.

@@ -99,19 +99,20 @@ picker, and status messages.
 
 Done: a map view (a pin per zone on the official map of Termina), the icon inventory, the seed
 picker, status banners, a route (bookmarked checks in order, saved per seed), an inventory that
-shows what's been found (each tile names where, and opens it), and each collected check's item
-icon. Still to do, in order:
+shows what's been found (each tile names where, and opens it), each collected check's item icon,
+and the bottle contents checks have given. Still to do, in order:
 
-- To check in game: whether turning stray fairies in at a fountain empties their count.
-- A reminder of items the Song of Time takes away (like the seahorse and gold dust), and which
-  check to go back to for each. The full list comes from the randomizer's code.
-- When the run is in go mode, meaning everything needed to finish it is in logic, say so.
-- A narrow-window layout (a single column of regions that expand), and an items-only window for
-  OBS. A three-column list view was tried and dropped: it repeated the map view's sidebar.
-- Remember the window's size and position between launches, in `settings.json` next to the seed
-  path. For now a new window opens maximized.
-- Maybe last: show where the player is (needs the current scene from memory), and have the selected
-  zone follow it until another zone is picked.
 - Seeds logic doesn't follow (anything but glitchless logic, or dungeon entrance shuffle) show
   every check as in logic. Decide what the tracker should do for them. The seed still lists each
   check's item, so completed-check icons can work there too.
+- Last, as the finishing touch: a narrow-window layout (a single column of regions that expand),
+  and an items-only window for OBS. A three-column list view was tried and dropped: it repeated
+  the map view's sidebar.
+
+Set aside for now:
+
+- When the run is in go mode, meaning everything needed to finish it is in logic, say so.
+- Remember the window's size and position between launches, in `settings.json` next to the seed
+  path. For now a new window opens maximized.
+- Show where the player is (needs the current scene from memory), and have the selected zone
+  follow it until another zone is picked.

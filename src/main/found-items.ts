@@ -19,6 +19,8 @@ type Find =
   | { readonly kind: 'lullaby'; readonly part: 'intro' | 'full' | 'next' }
   | { readonly kind: 'remains'; readonly remains: BossRemains }
   | { readonly kind: 'notebook' }
+  /** What a bottle holds, whether it comes with a new bottle or goes in one already held. */
+  | { readonly kind: 'bottleContents'; readonly item: InventoryItem }
   /** An upgrade to a level, or a progressive one to the level after the last found. */
   | { readonly kind: 'upgrade'; readonly upgrade: Upgrade; readonly level: number | 'next' }
   | { readonly kind: 'dungeon'; readonly temple: Temple; readonly part: DungeonPart };
@@ -27,6 +29,10 @@ const item = (inventoryItem: InventoryItem): Find => ({ kind: 'item', item: inve
 const mask = (inventoryItem: InventoryItem): Find => ({ kind: 'mask', item: inventoryItem });
 const trade = (inventoryItem: InventoryItem): Find => ({ kind: 'trade', item: inventoryItem });
 const song = (name: Song): Find => ({ kind: 'song', song: name });
+const contents = (inventoryItem: InventoryItem): Find => ({
+  kind: 'bottleContents',
+  item: inventoryItem
+});
 const remains = (name: BossRemains): Find => ({ kind: 'remains', remains: name });
 const upgrade = (name: Upgrade, level: number | 'next'): Find => ({
   kind: 'upgrade',
@@ -123,6 +129,27 @@ const finds: Partial<Record<ItemKey, Find>> = {
   TWINMOLDS_REMAINS: remains('Twinmold'),
   BOMBERS_NOTEBOOK: { kind: 'notebook' },
 
+  BOTTLE_WITH_MILK: contents('Milk'),
+  MILK: contents('Milk'),
+  BOTTLE_WITH_RED_POTION: contents('RedPotion'),
+  BOTTLE_WITH_GREEN_POTION: contents('GreenPotion'),
+  BOTTLE_WITH_BLUE_POTION: contents('BluePotion'),
+  GOLD_DUST: contents('GoldDust'),
+  CHATEAU_ROMANI: contents('ChateauRomani'),
+  BOTTLE_WITH_MYSTERY_MILK: contents('MysteryMilk'),
+  DEKU_PRINCESS: contents('DekuPrincess'),
+  BOTTLE_WITH_FAIRY: contents('Fairy'),
+  BOTTLE_WITH_BUGS: contents('Bug'),
+  BOTTLE_WITH_FISH: contents('Fish'),
+  BOTTLE_WITH_POE: contents('Poe'),
+  BOTTLE_WITH_BIG_POE: contents('BigPoe'),
+  BOTTLE_WITH_SPRING_WATER: contents('Water'),
+  BOTTLE_WITH_HOT_SPRING_WATER: contents('HotSpringWater'),
+  BOTTLE_WITH_ZORA_EGG: contents('ZoraEgg'),
+  ZORA_EGG: contents('ZoraEgg'),
+  BOTTLE_WITH_MUSHROOM: contents('MagicalMushroom'),
+  SEAHORSE: contents('SeaHorse'),
+
   KOKIRI_SWORD: upgrade('sword', 1),
   RAZOR_SWORD: upgrade('sword', 2),
   GILDED_SWORD: upgrade('sword', 3),
@@ -176,7 +203,8 @@ export type FoundItem = { readonly key: ItemKey; readonly source: ItemSource };
  *
  * @param held - What the save holds now.
  * @param found - The items found at collected checks and the starting items.
- * @returns The inventory to show, and where each part of it was found.
+ * @returns The inventory to show, the bottle contents found in the order the checks come, and where
+ *   each part of it was found.
  */
 export const addFoundItems = (held: Inventory, found: ReadonlyArray<FoundItem>) => {
   const sources: Partial<Record<SourceId, ItemSource[]>> = {};
@@ -189,6 +217,8 @@ export const addFoundItems = (held: Inventory, found: ReadonlyArray<FoundItem>) 
   const tradeItems = new Set(held.tradeItems);
   const songs = new Set(held.songs);
   const bossRemains = new Set(held.bossRemains);
+  // Only what checks gave: what's in the bottles now is the game's to show.
+  const bottleContents = new Set<InventoryItem>();
   let { bombersNotebook, lullabyIntro } = held;
   let lullabyParts = 0;
 
@@ -253,6 +283,10 @@ export const addFoundItems = (held: Inventory, found: ReadonlyArray<FoundItem>) 
         bombersNotebook = true;
         addSource('BombersNotebook', source);
         break;
+      case 'bottleContents':
+        bottleContents.add(find.item);
+        addSource(find.item, source);
+        break;
       case 'upgrade':
         if (find.level === 'next') progressive[find.upgrade] += 1;
         else levels[find.upgrade] = Math.max(levels[find.upgrade], find.level);
@@ -307,7 +341,7 @@ export const addFoundItems = (held: Inventory, found: ReadonlyArray<FoundItem>) 
   };
 
   const foundAt: ItemSources = sources;
-  return { inventory, sources: foundAt };
+  return { inventory, bottleContents: [...bottleContents], sources: foundAt };
 };
 
 /**
