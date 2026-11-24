@@ -1,9 +1,10 @@
 import { NodeFileSystem } from '@effect/platform-node';
 import { Context, Effect, FileSystem, Layer, Stream, SubscriptionRef } from 'effect';
 
-import type { SeedState } from '../../shared/tracker-state';
+import type { LogicNotFollowed, SeedState } from '../../shared/tracker-state';
 import { describeDefect } from '../describe-defect';
 import type { LogicSeed } from '../logic/engine';
+import type { ItemKey } from '../logic/generated/items';
 import { Settings } from '../settings';
 import type { InvalidIpsPatch } from './ips';
 import { loadSeed, type SeedFileUnreadable } from './load-seed';
@@ -19,6 +20,8 @@ export type SeedStatus =
       readonly checks: ReadonlyArray<SeedCheck>;
       /** Null for settings logic doesn't follow. */
       readonly logic: LogicSeed | null;
+      readonly logicNotFollowed: LogicNotFollowed | null;
+      readonly startingItems: ReadonlyArray<ItemKey>;
     };
 
 /**
@@ -66,8 +69,8 @@ export class CurrentSeed extends Context.Service<
         function* (path: string) {
           yield* SubscriptionRef.set(status, { status: 'loading', path });
 
-          const { checks, logic } = yield* loadSeed(path);
-          yield* SubscriptionRef.set(status, { status: 'loaded', path, checks, logic });
+          const seed = yield* loadSeed(path);
+          yield* SubscriptionRef.set(status, { status: 'loaded', path, ...seed });
 
           // Only a seed that loaded is worth coming back to.
           yield* settings.rememberSeedPath(path);

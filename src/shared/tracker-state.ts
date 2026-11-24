@@ -22,8 +22,8 @@ export type CheckState = {
   readonly collected: boolean;
   /**
    * Whether logic says the check can be reached with what's been found. Null until the game is
-   * read, since nothing is known about what's been found. Always true for a seed whose settings
-   * logic doesn't follow.
+   * read, since nothing is known about what's been found, and for a seed whose settings logic
+   * doesn't follow.
    */
   readonly inLogic: boolean | null;
   /** Whether a check in another zone already counts this shared item toward the overall total. */
@@ -71,12 +71,23 @@ export type CheckNeeds =
 /** The needs of checks out of logic, by their `id`. */
 export type ChecksNeeds = Readonly<Record<number, CheckNeeds>>;
 
+/**
+ * Seed settings logic doesn't follow: a logic mode other than glitchless (`none`, `vanilla`, or
+ * `glitched`), or shuffled dungeon entrances.
+ */
+export type LogicNotFollowed = 'none' | 'vanilla' | 'glitched' | 'dungeonEntranceShuffle';
+
 /** The seed the tracker follows. */
 export type SeedState =
   | { readonly status: 'none' }
   | { readonly status: 'loading'; readonly path: string }
   | { readonly status: 'error'; readonly path: string; readonly message: string }
-  | { readonly status: 'loaded'; readonly path: string };
+  | {
+      readonly status: 'loaded';
+      readonly path: string;
+      /** Why logic doesn't follow the seed, or null when it does. */
+      readonly logicNotFollowed: LogicNotFollowed | null;
+    };
 
 /** How far the tracker got in reaching the game. */
 export type GameState =

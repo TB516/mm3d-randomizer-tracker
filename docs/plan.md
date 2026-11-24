@@ -75,7 +75,7 @@ Logic runs in the main process and only sends each check's status to the page.
   to the generated files.
 - **Settings** read from `gSettingsContext`: starting items, the Bombers' minigame skip, and the
   remains the Moon and Majora need. For a seed with anything but glitchless logic, or with dungeon
-  entrance shuffle on, every check shows as in logic for now. A message saying so is still to do.
+  entrance shuffle on, checks show no logic status, and a banner says why.
 - **Engine:** plain functions. Found items, settings, and rules in, the checks in logic out.
   Events and exits repeat until nothing new opens.
 - **Shared items:** the skip list in `seed/spoiler-data.ts` becomes a copy of mm3dr's `multiLocs`
@@ -100,11 +100,11 @@ picker, and status messages.
 Done: a map view (a pin per zone on the official map of Termina), the icon inventory, the seed
 picker, status banners, a route (bookmarked checks in order, saved per seed), an inventory that
 shows what's been found (each tile names where, and opens it), each collected check's item icon,
-and the bottle contents checks have given. Still to do, in order:
+and the bottle contents checks have given, and a note on seeds logic doesn't follow. Still to do, in order:
 
-- Seeds logic doesn't follow (anything but glitchless logic, or dungeon entrance shuffle) show
-  every check as in logic. Decide what the tracker should do for them. The seed still lists each
-  check's item, so completed-check icons can work there too.
+- Logic for dungeon entrance shuffle. For now, seeds with it on (or with a logic mode other than
+  glitchless) show checks with no logic status and a banner saying why, while collected checks,
+  items, and the route still work.
 - Last, as the finishing touch: a narrow-window layout (a single column of regions that expand),
   and an items-only window for OBS. A three-column list view was tried and dropped: it repeated
   the map view's sidebar.

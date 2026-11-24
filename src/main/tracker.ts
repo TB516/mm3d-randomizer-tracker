@@ -4,7 +4,8 @@ import type { CheckNeeds, ChecksNeeds, TrackerState } from '../shared/tracker-st
 import { addFoundItems, type FoundItem } from './found-items';
 import { GameConnection, type GameStatus } from './game/connection';
 import { findChecksNeeds } from './logic/check-needs';
-import { findItemKey, findLocationsInLogic, type LogicSeed } from './logic/engine';
+import { findItemKey, findLocationsInLogic } from './logic/engine';
+import type { ItemKey } from './logic/generated/items';
 import { CurrentSeed, type SeedStatus } from './seed/current-seed';
 import type { SeedCheck } from './seed/place-in-zone';
 
@@ -33,16 +34,15 @@ const findCollected = (checks: ReadonlyArray<SeedCheck>, game: GameStatus) => {
  *
  * @param checks - The seed's checks.
  * @param collected - Whether each check is collected.
- * @param logic - What logic knows about the seed, for the starting items. Null when logic isn't
- *   followed, which leaves them out for now.
+ * @param startingItems - The seed's starting items.
  * @returns Each item found, and where.
  */
 const findFoundItems = (
   checks: ReadonlyArray<SeedCheck>,
   collected: ReadonlyArray<boolean>,
-  logic: LogicSeed | null
+  startingItems: ReadonlyArray<ItemKey>
 ): ReadonlyArray<FoundItem> => [
-  ...(logic?.startingItems ?? []).map((key) => ({ key, source: 'starting' as const })),
+  ...startingItems.map((key) => ({ key, source: 'starting' as const })),
   // A shared item counts once, at the check the overall total counts it at.
   ...checks.flatMap((check, at) => {
     const key = findItemKey(check.item);
@@ -65,7 +65,11 @@ const toTrackerState = (seed: SeedStatus, game: GameStatus): TrackerState => {
   const { collected, indexes } = findCollected(checks, game);
   const locationsInLogic = snapshot && logic ? findLocationsInLogic(logic, indexes) : null;
   const shown =
-    snapshot && addFoundItems(snapshot.inventory, findFoundItems(checks, collected, logic));
+    snapshot &&
+    addFoundItems(
+      snapshot.inventory,
+      findFoundItems(checks, collected, seed.status === 'loaded' ? seed.startingItems : [])
+    );
 
   /**
    * Works out whether logic can reach a check.
@@ -76,8 +80,8 @@ const toTrackerState = (seed: SeedStatus, game: GameStatus): TrackerState => {
   const inLogic = (check: SeedCheck) => {
     if (!snapshot) return null;
 
-    // A seed whose settings logic doesn't follow shows everything as reachable.
-    if (!locationsInLogic) return true;
+    // Logic can't say for a seed whose settings it doesn't follow.
+    if (!locationsInLogic) return null;
 
     // A check made of several copies is in logic when any of them is.
     return check.locations.some((location) => locationsInLogic.has(location));
@@ -85,7 +89,10 @@ const toTrackerState = (seed: SeedStatus, game: GameStatus): TrackerState => {
 
   return {
     // The page gets the statuses without the data attached to them.
-    seed: seed.status === 'loaded' ? { status: 'loaded', path: seed.path } : seed,
+    seed:
+      seed.status === 'loaded'
+        ? { status: 'loaded', path: seed.path, logicNotFollowed: seed.logicNotFollowed }
+        : seed,
     game: game.status === 'tracking' ? { status: 'tracking' } : game,
     checks: checks.map((check, at) => ({
       id: at,

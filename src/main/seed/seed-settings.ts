@@ -273,7 +273,7 @@ export const readSeedSettings = Effect.fn('readSeedSettings')(function* (image: 
   ];
 
   const settings: SeedSettings = {
-    // An unknown mode isn't one logic follows, so it shows every check as in logic.
+    // An unknown mode isn't one logic follows, so checks show no logic status.
     logic: logicModes[read('logic')] ?? 'none',
     dungeonEntranceShuffle: read('shuffleDungeonEntrances') === 1,
     logicSettings: {
