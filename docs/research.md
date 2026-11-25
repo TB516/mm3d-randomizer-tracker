@@ -161,10 +161,11 @@ and reading Azahar's process memory directly from Linux.
   are shared by items that set different logic variables (magic bean and bean pack, some bottles,
   Zora eggs, and ID 0 for stray fairies and magic). For those, logic falls back to the vanilla item.
 - Settings come from `gSettingsContext`, at `0x7c387c` in a v1.5.1 seed's patched image (192 bytes;
-  layout in mm3dr `rnd/settings.h`, with u32s and one u16 aligned). Confirmed on the test seed:
-  glitchless logic at +7, no entrance shuffle at +10, remains needed for the Moon and Majora at +185
-  and +186. The generator writes the overrides, the settings, then `SpoilerData` as consecutive IPS
-  records.
+  layout in mm3dr `rnd/settings.h`, with u32s and one u16 aligned). The tracker reads the starting
+  items (keys, maps, and compasses set to start with count too, and the item pool setting decides
+  whether extra starting hearts are containers or pieces), the Bombers' minigame skip, and the
+  remains needed for the Moon and Majora (+185 and +186, confirmed on the test seed). The
+  generator writes the overrides, the settings, then `SpoilerData` as consecutive IPS records.
 - The patch's spheres are only filled with in-game spoilers on. The spoiler log the generator writes
   (`sdmc/MM3DR/Spoiler_Logs/<seed> (<hash>)-spoilerlog.xml`) always has the playthrough, as
   `<sphere>` elements of `<location name>`.

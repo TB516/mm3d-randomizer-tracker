@@ -1,7 +1,10 @@
 # Build plan
 
 The backend gets built and checked against the live game first. Logic comes after that, and UI
-design comes last. Each step ends with a check against Azahar or the seed before the next starts.
+design comes last. Each step ended with a check against Azahar or the seed before the next started.
+Every step is done except the OBS window at the end of step 6. The steps stay as a record of how
+the tracker was built, so some describe things that have since been replaced, like the first
+Python prototype and the debug page.
 
 ## 1. RPC client
 
@@ -102,11 +105,10 @@ picker, and status messages.
 Done: a map view (a pin per zone on the official map of Termina), the icon inventory, the seed
 picker, status banners, a route (bookmarked checks in order, saved per seed), an inventory that
 shows what's been found (each tile names where, and opens it), each collected check's item icon,
-and the bottle contents checks have given. Still to do:
+and the bottle contents checks have given. A three-column list view was tried and dropped: it
+repeated the map view's sidebar.
 
-- As the finishing touch: a narrow-window layout (a single column of regions that expand),
-  and an items-only window for OBS. A three-column list view was tried and dropped: it repeated
-  the map view's sidebar.
+Still to do: an items-only window for OBS.
 
 Set aside for now:
 
