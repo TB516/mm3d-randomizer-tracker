@@ -1,4 +1,4 @@
-import { NodeFileSystem } from '@effect/platform-node';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
 import { Context, Effect, FileSystem, Layer, Stream, SubscriptionRef } from 'effect';
 
 import type { SeedState } from '../../shared/tracker-state';

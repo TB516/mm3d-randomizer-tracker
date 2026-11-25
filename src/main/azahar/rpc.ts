@@ -1,4 +1,4 @@
-import { NodeDatagramSocket } from '@effect/platform-node';
+import * as NodeDatagramSocket from '@effect/platform-node/NodeDatagramSocket';
 import { Context, Deferred, Effect, Fiber, Layer, Schema } from 'effect';
 import { DatagramSocket } from 'effect/socket';
 
