@@ -92,7 +92,7 @@
                 dropAt = undefined;
               }}
             >
-              <span class="node">{number}</span>
+              <span class="node"><span class="number">{number}</span></span>
               <div class="body">
                 {check.name}
                 {#if number === 1}<span class="tag">Next</span>{/if}
@@ -276,6 +276,13 @@
     font-size: 11px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Trimmed to the digits' height, so the circle centers the digits themselves. Fonts leave
+     different space above and below them, so otherwise the number sits off center. */
+  .number {
+    display: block;
+    text-box: trim-both cap alphabetic;
   }
 
   .body {
