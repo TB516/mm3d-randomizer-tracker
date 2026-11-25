@@ -17,7 +17,7 @@
     "build": "pnpm typecheck && electron-vite build",
     "build:win": "pnpm build && electron-builder --win",
     "build:mac": "pnpm build && electron-builder --mac",
-    "build:linux": "pnpm build && electron-builder --linux"
+    "build:linux": "pnpm build && gzip -nkf build/flatpak/io.github.tb516.mm3d_randomizer_tracker.xml && electron-builder --linux"
   },
   "dependencies": {
     "@effect/platform-node": "4.1.4",

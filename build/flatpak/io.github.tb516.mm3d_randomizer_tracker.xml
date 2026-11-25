@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The app's AppStream entry, which Flatpak reads for the name and summary that app managers show.
+  Without it they show the app ID. flatpak-builder would normally compose this from a metainfo file,
+  but electron-builder skips that step, so `pnpm build:linux` gzips this into the bundle instead.
+-->
+<components version="0.16" origin="flatpak">
+  <component type="desktop-application">
+    <id>io.github.tb516.mm3d_randomizer_tracker</id>
+    <name>MM3D Randomizer Tracker</name>
+    <summary>Live tracker for the Majora's Mask 3D Randomizer, read from Azahar</summary>
+    <description>
+      <p>Reads your game straight from the Azahar emulator while you play, so checks are marked the moment you get them.</p>
+    </description>
+    <launchable type="desktop-id">io.github.tb516.mm3d_randomizer_tracker.desktop</launchable>
+    <url type="homepage">https://github.com/TB516/mm3d-randomizer-tracker</url>
+    <metadata_license>CC0-1.0</metadata_license>
+  </component>
+</components>

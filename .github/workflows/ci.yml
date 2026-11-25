@@ -42,8 +42,7 @@ jobs:
           sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
           # electron-builder installs the runtime and Electron base from a user remote.
           flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-      - run: pnpm exec electron-vite build
-      - run: pnpm exec electron-builder --linux --publish never
+      - run: pnpm build:linux --publish never
       - uses: actions/upload-artifact@v7
         with:
           name: flatpak

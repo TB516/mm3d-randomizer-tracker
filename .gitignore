@@ -3,3 +3,5 @@ dist
 out
 .DS_Store
 *.log*
+# Made from its .xml by `pnpm build:linux`.
+build/flatpak/*.xml.gz

@@ -33,4 +33,8 @@ flatpak:
     - --device=dri
     - --share=network
     - --filesystem=host:ro
+  # The name and summary app managers show. `pnpm build:linux` makes the .gz from the .xml.
+  files:
+    - - build/flatpak/io.github.tb516.mm3d_randomizer_tracker.xml.gz
+      - /share/app-info/xmls/io.github.tb516.mm3d_randomizer_tracker.xml.gz
 npmRebuild: false
