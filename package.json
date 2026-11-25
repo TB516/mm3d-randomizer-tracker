@@ -1,5 +1,5 @@
 {
-  "name": "mm3d-tracker",
+  "name": "mm3d-randomizer-tracker",
   "version": "1.0.0",
   "private": true,
   "description": "Live item tracker for the Majora's Mask 3D Randomizer, read from Azahar.",

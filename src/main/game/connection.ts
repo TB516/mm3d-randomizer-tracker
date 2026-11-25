@@ -68,7 +68,7 @@ export class GameConnection extends Context.Service<
     /** Drops the connection to the game and starts reaching it again from scratch. */
     readonly restart: Effect.Effect<void>;
   }
->()('mm3d-tracker/main/GameConnection') {
+>()('mm3d-randomizer-tracker/main/GameConnection') {
   /** Game connection live layer. Starts reaching the game in the background. */
   static readonly layer = Layer.effect(
     GameConnection,

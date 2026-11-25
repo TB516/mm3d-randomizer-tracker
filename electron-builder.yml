@@ -1,12 +1,12 @@
-appId: io.github.tb516.mm3d-tracker
-productName: MM3D Tracker
+appId: io.github.tb516.mm3d_randomizer_tracker
+productName: MM3D Randomizer Tracker
 directories:
   buildResources: build
 files:
   - 'out/**'
   - 'resources/**'
 win:
-  executableName: mm3d-tracker
+  executableName: mm3d-randomizer-tracker
   target:
     - portable
 portable:

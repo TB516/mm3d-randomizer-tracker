@@ -52,7 +52,7 @@ export class CurrentSeed extends Context.Service<
      */
     readonly load: (path: string) => Effect.Effect<void>;
   }
->()('mm3d-tracker/main/CurrentSeed') {
+>()('mm3d-randomizer-tracker/main/CurrentSeed') {
   /** Current seed live layer. Loads the seed remembered from the last launch, if there is one. */
   static readonly layer = Layer.effect(
     CurrentSeed,

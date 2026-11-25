@@ -1,4 +1,4 @@
-# MM3D Tracker
+# MM3D Randomizer Tracker
 
 A live tracker for the Majora's Mask 3D Randomizer. It reads your game straight from the Azahar emulator while you play, so checks are marked the moment you get them, with no manual clicking and no need to save first.
 
@@ -6,7 +6,7 @@ Work in progress.
 
 ## Download
 
-Get the latest version from the [Releases](https://github.com/TB516/mm3d-tracker/releases) page:
+Get the latest version from the [Releases](https://github.com/TB516/mm3d-randomizer-tracker/releases) page:
 
 - **Linux:** the `.flatpak` file. Install it with `flatpak install --user <file>`.
 - **Windows:** the `-portable.exe` file. It runs without installing. Windows may warn that it's from an unknown publisher; choose "More info", then "Run anyway".
