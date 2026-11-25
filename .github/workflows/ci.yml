@@ -1,0 +1,97 @@
+# Checks and builds the Flatpak and the portable Windows app for every pull request, so packaging
+# breaks before merging. Each push to main also puts the builds on a draft release for
+# package.json's version, for publishing by hand.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v5
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm test
+
+  flatpak:
+    name: Build Flatpak
+    needs: check
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v5
+      - run: pnpm install --frozen-lockfile
+      - name: Install Flatpak tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder
+          # Ubuntu 24.04 blocks the user namespaces flatpak-builder's sandbox needs.
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          # electron-builder installs the runtime and Electron base from a user remote.
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+      - run: pnpm exec electron-vite build
+      - run: pnpm exec electron-builder --linux --publish never
+      - uses: actions/upload-artifact@v7
+        with:
+          name: flatpak
+          path: dist/*.flatpak
+          if-no-files-found: error
+
+  windows:
+    name: Build Windows
+    needs: check
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v5
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec electron-vite build
+      - run: pnpm exec electron-builder --win --publish never
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows
+          path: dist/*-portable.exe
+          if-no-files-found: error
+
+  release:
+    name: Draft release
+    needs: [flatpak, windows]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+      # A new version gets a draft release. A draft not yet published gets the newer builds. A
+      # published version is left alone until package.json's version goes up.
+      - name: Create or update the draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="v$(jq -r .version package.json)"
+          draft=$(gh release view "$tag" --json isDraft --jq .isDraft 2>/dev/null || echo none)
+          case "$draft" in
+            none) gh release create "$tag" dist/* --draft --target "$GITHUB_SHA" --title "$tag" --generate-notes ;;
+            true)
+              gh release upload "$tag" dist/* --clobber
+              gh release edit "$tag" --target "$GITHUB_SHA"
+              ;;
+            *) echo "$tag is already published, so nothing is released. Raise the version to release." ;;
+          esac

@@ -10,6 +10,12 @@ Tools are managed with [mise](https://mise.jdx.dev). Run `mise install`, then `p
 | `pnpm test`    | Run the tests with Vitest (see Logic below)                |
 | `pnpm build:*` | Package for `win`, `mac`, or `linux` with electron-builder |
 
+## Releases
+
+`main` only changes through pull requests, which must pass `pnpm check`, `pnpm test`, and both builds in CI (`.github/workflows/ci.yml`): a Flatpak bundle and a portable Windows `.exe`. Each push to `main` attaches the builds to a draft release for `package.json`'s version. A draft takes newer builds until it's published by hand on GitHub. To release again after that, raise the version.
+
+`pnpm build:linux` builds the Flatpak locally. It needs `flatpak-builder` and Flathub added as a user remote, and installs the 26.08 runtime and Electron base into the user installation the first time. The Flatpak can read every file but write none outside its own data, since the seed can be anywhere.
+
 ## Layout
 
 - `src/main/` is the Electron main process: app lifecycle, windows, IPC, and the tracker. Backend code uses Effect where it adds something.

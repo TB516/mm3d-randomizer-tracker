@@ -4,6 +4,13 @@ A live tracker for the Majora's Mask 3D Randomizer. It reads your game straight 
 
 Work in progress.
 
+## Download
+
+Get the latest version from the [Releases](https://github.com/TB516/mm3d-tracker/releases) page:
+
+- **Linux:** the `.flatpak` file. Install it with `flatpak install --user <file>`.
+- **Windows:** the `-portable.exe` file. It runs without installing. Windows may warn that it's from an unknown publisher; choose "More info", then "Run anyway".
+
 ## Requirements
 
 - Azahar with the RPC server turned on in its settings. While it's on, other devices on your network can reach the emulator, so turn it off when you're done playing.
