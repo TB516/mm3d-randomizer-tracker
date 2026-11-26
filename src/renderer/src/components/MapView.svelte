@@ -97,7 +97,7 @@
         onclick={() => (selected = group.zone.id === selected ? null : group.zone.id)}
       >
         {#if summary.left > 0}
-          {summary.left}
+          <span class="number">{summary.left}</span>
         {:else}
           <svg viewBox="-8 -8 16 16" aria-hidden="true"><path d="M-5 0 L-1.5 3.5 L5 -3.5" /></svg>
         {/if}
@@ -210,6 +210,12 @@
 
   .pin.unknown {
     --state: var(--unknown);
+  }
+
+  /* Trimmed to the digits' height, so the ring centers the digits themselves. */
+  .number {
+    display: block;
+    text-box: trim-both cap alphabetic;
   }
 
   .pin svg {

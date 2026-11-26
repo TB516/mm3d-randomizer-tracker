@@ -1,4 +1,5 @@
-import { NodeFileSystem, NodePath } from '@effect/platform-node';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as NodePath from '@effect/platform-node/NodePath';
 import { Context, Effect, FileSystem, Layer, Path, Schema } from 'effect';
 import { app } from 'electron';
 
@@ -24,7 +25,7 @@ export class Settings extends Context.Service<
      */
     readonly rememberSeedPath: (path: string) => Effect.Effect<void>;
   }
->()('mm3d-tracker/main/Settings') {
+>()('mm3d-randomizer-tracker/main/Settings') {
   /** Settings live layer, stored in Electron's per-user app folder. */
   static readonly layer = Layer.effect(
     Settings,
@@ -32,7 +33,7 @@ export class Settings extends Context.Service<
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
 
-      // `~/.config/mm3d-tracker` on Linux, or under `$XDG_CONFIG_HOME` when that's set.
+      // `~/.config/mm3d-randomizer-tracker` on Linux, or under `$XDG_CONFIG_HOME` when that's set.
       const directory = app.getPath('userData');
       const file = path.join(directory, settingsFileName);
 

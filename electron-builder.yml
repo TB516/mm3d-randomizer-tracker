@@ -1,17 +1,16 @@
-appId: io.github.tb516.mm3d-tracker
-productName: MM3D Tracker
+appId: io.github.tb516.mm3d_randomizer_tracker
+productName: MM3D Randomizer Tracker
 directories:
   buildResources: build
 files:
   - 'out/**'
   - 'resources/**'
 win:
-  executableName: mm3d-tracker
-nsis:
-  artifactName: ${name}-${version}-setup.${ext}
-  shortcutName: ${productName}
-  uninstallDisplayName: ${productName}
-  createDesktopShortcut: always
+  executableName: mm3d-randomizer-tracker
+  target:
+    - portable
+portable:
+  artifactName: ${name}-${version}-portable.${ext}
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   notarize: false
@@ -19,6 +18,23 @@ dmg:
   artifactName: ${name}-${version}.${ext}
 linux:
   target:
-    - dir
+    - flatpak
   category: Utility
+flatpak:
+  # electron-builder 26 defaults to 20.08, which is end-of-life. Both need setting together.
+  runtimeVersion: '26.08'
+  baseVersion: '26.08'
+  # Replaces the defaults, which include read and write access to all of home. The seed can be
+  # anywhere, so files are readable but not writable, and the network reaches Azahar.
+  finishArgs:
+    - --socket=wayland
+    - --socket=fallback-x11
+    - --share=ipc
+    - --device=dri
+    - --share=network
+    - --filesystem=host:ro
+  # The name and summary app managers show. `pnpm build:linux` makes the .gz from the .xml.
+  files:
+    - - build/flatpak/io.github.tb516.mm3d_randomizer_tracker.xml.gz
+      - /share/app-info/xmls/io.github.tb516.mm3d_randomizer_tracker.xml.gz
 npmRebuild: false

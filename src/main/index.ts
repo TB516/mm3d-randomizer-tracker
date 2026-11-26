@@ -13,7 +13,7 @@ const runtime = ManagedRuntime.make(
 );
 
 app.whenReady().then(() => {
-  electronApp.setAppUserModelId('io.github.tb516.mm3d-tracker');
+  electronApp.setAppUserModelId('io.github.tb516.mm3d_randomizer_tracker');
 
   // F12 toggles DevTools in development; reload shortcuts are disabled in production.
   app.on('browser-window-created', (_event, window) =>

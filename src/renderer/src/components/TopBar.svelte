@@ -9,7 +9,7 @@
 </script>
 
 <header>
-  <h1>MM3D Tracker</h1>
+  <h1>MM3D Randomizer Tracker</h1>
 
   <button
     class="seed"

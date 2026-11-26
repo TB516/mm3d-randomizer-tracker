@@ -1,4 +1,4 @@
-import { NodeDatagramSocket } from '@effect/platform-node';
+import * as NodeDatagramSocket from '@effect/platform-node/NodeDatagramSocket';
 import { Context, Deferred, Effect, Fiber, Layer, Schema } from 'effect';
 import { DatagramSocket } from 'effect/socket';
 
@@ -83,7 +83,7 @@ export class AzaharRpc extends Context.Service<
       size: number
     ) => Effect.Effect<Uint8Array, AzaharNotResponding | AzaharSocketClosed | MemoryReadFailed>;
   }
->()('mm3d-tracker/main/azahar/AzaharRpc') {
+>()('mm3d-randomizer-tracker/main/azahar/AzaharRpc') {
   /** Azahar RPC live layer. */
   static readonly layer = Layer.effect(
     AzaharRpc,
